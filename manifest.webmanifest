@@ -1,0 +1,17 @@
+{
+  "name": "송탄영광교회 중고등부",
+  "short_name": "SGY",
+  "description": "송탄영광교회 중고등부 공식 앱 — 설교 팟캐스트와 유튜브 영상을 한 곳에서.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f1f0fb",
+  "theme_color": "#7c6cff",
+  "lang": "ko",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>송탄영광교회 중고등부 · SGY 2.0</title>
+<meta name="description" content="송탄영광교회 중고등부 공식 앱 — 설교 팟캐스트와 유튜브 영상을 한 곳에서.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#7c6cff">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="SGY">
+<style>
+  :root{
+    --bg:#f1f0fb; --surface:#ffffff; --line:#e8e7f3;
+    --primary:#6c5ce7; --primary-soft:#efecff; --gold:#f59e0b; --gold-soft:#fff3df;
+    --tx:#1d1b3a; --tx2:#5d5b7e; --tx3:#a09eb8;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    background:#dfe0ee;color:var(--tx);display:flex;justify-content:center}
+  #app{width:100%;max-width:480px;min-height:100vh;min-height:100dvh;position:relative;
+    background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+  header{padding:calc(env(safe-area-inset-top) + 18px) 20px 18px;display:flex;align-items:center;gap:13px;
+    background:linear-gradient(180deg,#e7e3ff,var(--bg))}
+  .logo{width:52px;height:52px;flex:none;object-fit:contain;border-radius:12px;background:#fff;border:1px solid var(--line)}
+  header h1{font-size:17px;font-weight:700;color:var(--tx)}
+  header p{font-size:12.5px;color:var(--tx2);margin-top:2px}
+  main{flex:1;overflow-y:auto;padding:6px 16px 120px;-webkit-overflow-scrolling:touch}
+  .screen{display:none;animation:fade .25s ease}
+  .screen.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .sec-t{font-size:13px;font-weight:700;color:var(--tx3);letter-spacing:.4px;margin:22px 4px 11px;text-transform:uppercase}
+  .worship{background:linear-gradient(120deg,#7c6cff,#a682ff);border-radius:18px;padding:17px 18px;margin-top:8px;position:relative;overflow:hidden;color:#fff;box-shadow:0 8px 22px rgba(124,108,255,.28)}
+  .worship .lbl{font-size:11px;font-weight:700;opacity:.9;letter-spacing:1px}
+  .worship .big{font-size:21px;font-weight:800;margin-top:5px}
+  .worship .sub{font-size:13px;opacity:.92;margin-top:3px}
+  .worship i{position:absolute;right:-12px;bottom:-12px;font-size:90px;opacity:.2}
+  .feat{display:flex;gap:13px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:13px;margin-bottom:12px;cursor:pointer;align-items:center;box-shadow:0 2px 10px rgba(29,27,58,.04)}
+  .feat:active{transform:scale(.98)}
+  .feat .thumb{width:62px;height:62px;border-radius:12px;flex:none;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--primary)}
+  .feat .meta .k{font-size:11px;color:var(--gold);font-weight:700}
+  .feat .meta .ti2{font-size:14.5px;font-weight:600;margin-top:3px;line-height:1.35;color:var(--tx)}
+  .feat .meta .d{font-size:12px;color:var(--tx2);margin-top:4px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .tile{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:15px 14px;cursor:pointer;display:flex;flex-direction:column;gap:10px;box-shadow:0 2px 10px rgba(29,27,58,.04)}
+  .tile:active{transform:scale(.97)}
+  .tile .ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px}
+  .tile .nm{font-size:14px;font-weight:600;color:var(--tx)}
+  .tile .ds{font-size:11.5px;color:var(--tx2);line-height:1.4}
+  .ic.ig{background:#ffe9f1;color:#e1306c}.ic.bd{background:#e3f9ec;color:#16a34a}
+  .ic.no{background:#eef1f7;color:#475569}.ic.fo{background:var(--gold-soft);color:var(--gold)}
+  .ic.yt{background:#ffe5e5;color:#ef4444}.ic.pc{background:var(--primary-soft);color:var(--primary)}.ic.mp{background:#e4f0ff;color:#2f80ed}
+  .ep{display:flex;gap:12px;align-items:center;padding:13px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+  .ep .n{width:30px;height:30px;border-radius:9px;flex:none;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  .ep .tt{font-size:14px;font-weight:600;line-height:1.35;color:var(--tx)}
+  .ep .dt{font-size:11.5px;color:var(--tx3);margin-top:3px}
+  .ep .pl{margin-left:auto;color:var(--gold);font-size:20px;flex:none}
+  .pod-head{display:flex;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;margin:8px 0 6px;box-shadow:0 2px 10px rgba(29,27,58,.04)}
+  .pod-head img{width:64px;height:64px;border-radius:12px;flex:none;object-fit:cover;background:var(--primary-soft)}
+  .pod-head .h{font-size:15.5px;font-weight:700;color:var(--tx)}.pod-head .s{font-size:12px;color:var(--tx2);margin-top:3px;line-height:1.4}
+  .vwrap{border-radius:16px;overflow:hidden;background:#000;margin:8px 0 4px;aspect-ratio:16/9;border:1px solid var(--line)}
+  .vwrap iframe{width:100%;height:100%;border:0;display:block}
+  .vcard{display:flex;gap:12px;padding:11px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+  .vcard img{width:108px;height:62px;border-radius:9px;object-fit:cover;flex:none;background:#e8e7f3}
+  .vcard .vt{font-size:13.5px;font-weight:600;line-height:1.35;color:var(--tx);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .vcard .vd{font-size:11px;color:var(--tx3);margin-top:5px}
+  .hint{font-size:11.5px;color:var(--tx3);text-align:center;padding:14px 8px;line-height:1.6}
+  .loq{text-align:center;color:var(--tx3);font-size:13px;padding:30px}
+  #mini{position:fixed;left:50%;transform:translateX(-50%);width:calc(100% - 20px);max-width:460px;bottom:76px;display:none;
+    background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:10px 12px;align-items:center;gap:11px;z-index:30;box-shadow:0 6px 24px rgba(29,27,58,.14)}
+  #mini.on{display:flex}
+  #mini .pp{width:40px;height:40px;border-radius:50%;background:var(--gold);color:#fff;border:0;font-size:18px;cursor:pointer;flex:none}
+  #mini .mt{font-size:12.5px;font-weight:600;line-height:1.3;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #mini .ms{font-size:11px;color:var(--tx2);margin-top:2px}
+  #mini .cl{margin-left:auto;background:none;border:0;color:var(--tx3);font-size:20px;cursor:pointer;flex:none}
+  nav{position:fixed;left:50%;transform:translateX(-50%);width:100%;max-width:480px;bottom:0;height:calc(64px + env(safe-area-inset-bottom));display:flex;
+    background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:20;box-shadow:0 -2px 14px rgba(29,27,58,.05)}
+  nav button{flex:1;background:none;border:0;color:var(--tx3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10.5px;cursor:pointer;font-family:inherit}
+  nav button i{font-size:21px}
+  nav button.on{color:var(--primary)}
+  #install{display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:150px;z-index:40;
+    background:var(--primary);color:#fff;border:0;border-radius:999px;padding:11px 20px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(108,92,231,.4)}
+  a{color:inherit;text-decoration:none}
+  main::-webkit-scrollbar{display:none}
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+</head>
+<body>
+<div id="app">
+  <header>
+    <img class="logo" src="logo.png" alt="SGY 2.0 로고">
+    <div><h1>송탄영광교회 중고등부</h1><p>SGY 2.0 · 공식 앱</p></div>
+  </header>
+
+  <main>
+    <section class="screen on" id="s-home">
+      <div class="worship" onclick="go('more')">
+        <div class="lbl">주일예배 안내</div>
+        <div class="big">매주 주일 오전 11시</div>
+        <div class="sub">4층 소예배실 · 경기도 평택시 지산동 355</div>
+        <i class="ti ti-building-church"></i>
+      </div>
+      <div class="sec-t">이번 주 콘텐츠</div>
+      <div class="feat" onclick="go('pod')">
+        <div class="thumb"><i class="ti ti-microphone-2"></i></div>
+        <div class="meta"><div class="k">설교 팟캐스트</div><div class="ti2">강유석 전도사의 파워메시지</div><div class="d">최신 설교 말씀 · 앱에서 바로 듣기</div></div>
+      </div>
+      <div class="feat" onclick="go('vid')">
+        <div class="thumb"><i class="ti ti-brand-youtube"></i></div>
+        <div class="meta"><div class="k">중고등부 영상</div><div class="ti2">예배 · 찬양 · 행사 영상</div><div class="d">유튜브 채널 최신 영상 바로 보기</div></div>
+      </div>
+      <div class="sec-t">바로가기</div>
+      <div class="grid">
+        <div class="tile" onclick="open_('https://vision153.notion.site/_250601-2026eda158ae8095999ac133933fd32a?pvs=4')"><div class="ic no"><i class="ti ti-news"></i></div><div class="nm">온라인 주보</div><div class="ds">이번 주 예배 순서와 광고</div></div>
+        <div class="tile" onclick="open_('https://www.instagram.com/stgc153')"><div class="ic ig"><i class="ti ti-brand-instagram"></i></div><div class="nm">인스타그램</div><div class="ds">@stgc153 소식과 사진</div></div>
+        <div class="tile" onclick="open_('https://band.us/n/acaebbS821711')"><div class="ic bd"><i class="ti ti-users-group"></i></div><div class="nm">중고등부 밴드</div><div class="ds">공지·소통 커뮤니티</div></div>
+        <div class="tile" onclick="open_('https://forms.gle/g3rdDAWXkcrLJjci9')"><div class="ic fo"><i class="ti ti-clipboard-text"></i></div><div class="nm">입회원서</div><div class="ds">새가족 등록 신청</div></div>
+      </div>
+    </section>
+
+    <section class="screen" id="s-pod">
+      <div class="sec-t">설교 팟캐스트</div>
+      <div class="pod-head">
+        <img src="https://img.podbbang.com/img/pb_m/thumb/x200/9230.png" alt="">
+        <div><div class="h">강유석 전도사의 파워메시지</div><div class="s">송탄영광교회 중고등부 담당 · 384개 에피소드</div></div>
+      </div>
+      <div id="ep-list"><div class="loq">최신 설교를 불러오는 중…</div></div>
+      <div class="hint">회차를 누르면 앱 안에서 바로 재생됩니다.</div>
+    </section>
+
+    <section class="screen" id="s-vid">
+      <div class="sec-t">중고등부 유튜브</div>
+      <div class="vwrap"><iframe id="ytmain" src="about:blank" title="중고등부 영상" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>
+      <div style="font-size:12px;color:var(--tx2);padding:6px 4px 2px">@sgy153 · 최신 업로드 자동 재생</div>
+      <div id="vid-list"></div>
+      <div class="hint">영상을 누르면 앱 안에서 바로 재생됩니다.</div>
+    </section>
+
+    <section class="screen" id="s-more">
+      <div class="sec-t">소개 · 정보</div>
+      <div class="worship" style="background:linear-gradient(120deg,#5b8def,#7c6cff)">
+        <div class="lbl">송탄영광교회 중고등부</div>
+        <div class="big" style="font-size:18px">함께 자라는 다음세대, SGY</div>
+        <div class="sub">대한예수교장로회(합동)</div>
+        <i class="ti ti-cross"></i>
+      </div>
+      <div class="grid" style="margin-top:14px">
+        <div class="tile" onclick="open_('https://vision153.notion.site/_-1fb6eda158ae80a8abcfc56bc73981c8?pvs=4')"><div class="ic no"><i class="ti ti-calendar-event"></i></div><div class="nm">연간계획</div><div class="ds">한 해 일정과 행사</div></div>
+        <div class="tile" onclick="open_('https://www.podbbang.com/channels/9230')"><div class="ic pc"><i class="ti ti-brand-apple-podcast"></i></div><div class="nm">팟빵 채널</div><div class="ds">전체 설교 보관함</div></div>
+        <div class="tile" onclick="open_('https://www.youtube.com/@sgy153')"><div class="ic yt"><i class="ti ti-brand-youtube"></i></div><div class="nm">유튜브 채널</div><div class="ds">전체 영상 보기</div></div>
+        <div class="tile" onclick="open_('https://map.naver.com/p/search/송탄영광교회')"><div class="ic mp"><i class="ti ti-map-pin"></i></div><div class="nm">오시는 길</div><div class="ds">평택시 지산동 355</div></div>
+      </div>
+      <div class="hint" style="margin-top:24px">송탄영광교회 중고등부 공식 앱 · SGY 2.0<br>#송탄영광교회 #중고등부 #평택 #송탄</div>
+    </section>
+  </main>
+
+  <div id="mini">
+    <button class="pp" id="mpBtn"><i class="ti ti-player-play"></i></button>
+    <div style="min-width:0;flex:1"><div class="mt" id="mpTitle">재생 중인 설교</div><div class="ms" id="mpStat">강유석 전도사의 파워메시지</div></div>
+    <button class="cl" id="mpClose"><i class="ti ti-x"></i></button>
+    <audio id="audio"></audio>
+  </div>
+
+  <button id="install"><i class="ti ti-download" style="vertical-align:-2px;margin-right:4px"></i>홈 화면에 앱 추가</button>
+
+  <nav>
+    <button class="on" data-s="home" onclick="go('home')"><i class="ti ti-home-2"></i>홈</button>
+    <button data-s="pod" onclick="go('pod')"><i class="ti ti-microphone-2"></i>설교</button>
+    <button data-s="vid" onclick="go('vid')"><i class="ti ti-player-play"></i>영상</button>
+    <button data-s="more" onclick="go('more')"><i class="ti ti-dots"></i>더보기</button>
+  </nav>
+</div>
+
+<script>
+const CH="UUnBnyGe5s5bLvmBua60nn7Q";
+const PROXY="https://api.allorigins.win/raw?url=";
+let ytLoaded=false, podLoaded=false;
+
+function go(s){
+  document.querySelectorAll('.screen').forEach(e=>e.classList.remove('on'));
+  document.getElementById('s-'+s).classList.add('on');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.s===s));
+  document.querySelector('main').scrollTop=0;
+  if(s==='vid'&&!ytLoaded){loadVideos();ytLoaded=true;}
+  if(s==='pod'&&!podLoaded){loadPodcast();podLoaded=true;}
+}
+function open_(u){window.open(u,'_blank');}
+
+function loadVideos(){
+  document.getElementById('ytmain').src="https://www.youtube.com/embed/videoseries?list="+CH+"&rel=0";
+  const feed="https://www.youtube.com/feeds/videos.xml?channel_id=UCnBnyGe5s5bLvmBua60nn7Q";
+  fetch(PROXY+encodeURIComponent(feed)).then(r=>r.text()).then(xml=>{
+    const d=new DOMParser().parseFromString(xml,"text/xml");
+    const ent=[...d.getElementsByTagName("entry")].slice(0,10);
+    if(!ent.length)return;
+    document.getElementById('vid-list').innerHTML=ent.map(e=>{
+      const id=(e.getElementsByTagName("yt:videoId")[0]||e.getElementsByTagNameNS("*","videoId")[0]).textContent;
+      const t=e.getElementsByTagName("title")[0].textContent;
+      const dt=new Date(e.getElementsByTagName("published")[0].textContent).toLocaleDateString('ko-KR');
+      return `<div class="vcard" onclick="playVid('${id}')"><img src="https://i.ytimg.com/vi/${id}/mqdefault.jpg" alt=""><div><div class="vt">${t}</div><div class="vd">${dt}</div></div></div>`;
+    }).join('');
+  }).catch(()=>{});
+}
+function playVid(id){
+  document.getElementById('ytmain').src="https://www.youtube.com/embed/"+id+"?autoplay=1&rel=0";
+  document.querySelector('main').scrollTop=0;
+}
+
+function loadPodcast(){
+  const feeds=["https://www.podbbang.com/rss/9230","http://www.podbbang.com/rss/9230","https://api.podbbang.com/channels/9230/episodes.rss"];
+  (function tryFeed(i){
+    if(i>=feeds.length)return renderEp(null);
+    fetch(PROXY+encodeURIComponent(feeds[i])).then(r=>r.text()).then(xml=>{
+      const d=new DOMParser().parseFromString(xml,"text/xml");
+      const items=[...d.getElementsByTagName("item")];
+      if(items.length)renderEp(items);else tryFeed(i+1);
+    }).catch(()=>tryFeed(i+1));
+  })(0);
+}
+function renderEp(items){
+  const box=document.getElementById('ep-list');
+  if(!items){
+    const demo=["요한복음 강해 — 빛으로 오신 예수","베이직 시리즈 — 믿음의 첫걸음","창세기 강해 — 태초에 하나님이","주일 설교 — 너희는 세상의 소금","청소년 특강 — 진로와 소명"];
+    box.innerHTML=demo.map((t,i)=>epRow(i+1,t,"팟빵에서 듣기","https://www.podbbang.com/channels/9230",null)).join('');
+    return;
+  }
+  box.innerHTML=items.slice(0,15).map((it,i)=>{
+    const t=(it.getElementsByTagName("title")[0]||{}).textContent||"설교";
+    const enc=it.getElementsByTagName("enclosure")[0];
+    const url=enc?enc.getAttribute("url"):null;
+    const dt=(it.getElementsByTagName("pubDate")[0]||{}).textContent||"";
+    const dd=dt?new Date(dt).toLocaleDateString('ko-KR'):"";
+    return epRow(i+1,t,dd,null,url);
+  }).join('');
+}
+function epRow(n,t,sub,link,audio){
+  const act=audio?`playAudio('${audio}','${t.replace(/'/g,"")}')`:`open_('${link}')`;
+  return `<div class="ep" onclick="${act}"><div class="n">${n}</div><div style="min-width:0;flex:1"><div class="tt">${t}</div><div class="dt">${sub}</div></div><i class="ti ti-player-play pl"></i></div>`;
+}
+function playAudio(url,title){
+  const a=document.getElementById('audio');a.src=url;a.play();
+  document.getElementById('mpTitle').textContent=title;
+  document.getElementById('mini').classList.add('on');
+  document.querySelector('#mpBtn i').className="ti ti-player-pause";
+}
+document.getElementById('mpBtn').onclick=function(){
+  const a=document.getElementById('audio');
+  if(a.paused){a.play();this.querySelector('i').className="ti ti-player-pause";}
+  else{a.pause();this.querySelector('i').className="ti ti-player-play";}
+};
+document.getElementById('mpClose').onclick=function(){
+  const a=document.getElementById('audio');a.pause();a.src="";
+  document.getElementById('mini').classList.remove('on');
+};
+
+let deferred=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;
+  const b=document.getElementById('install');b.style.display='block';
+  b.onclick=()=>{deferred.prompt();deferred=null;b.style.display='none';};
+});
+window.addEventListener('appinstalled',()=>{document.getElementById('install').style.display='none';});
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>
