@@ -440,10 +440,6 @@ function openInstall(){ buildInstall(); document.getElementById('instModal').cla
 function closeInstall(){ document.getElementById('instModal').classList.remove('on'); }
 document.getElementById('instDismiss').onclick=function(){ try{localStorage.setItem('sgy_inst','1');}catch(e){} closeInstall(); };
 document.getElementById('instModal').addEventListener('click',function(e){ if(e.target===this) closeInstall(); });
-if(!isStandalone()){
-  let seen=false; try{seen=localStorage.getItem('sgy_inst')==='1';}catch(e){}
-  if(!seen) setTimeout(openInstall,1400);
-}
 
 function openCompassion(){document.getElementById('cmpModal').classList.add('on');}
 function closeCompassion(){document.getElementById('cmpModal').classList.remove('on');}
