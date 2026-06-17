@@ -1,11 +1,9 @@
-const CACHE = "sgy-v1";
+const CACHE = "sgy-v2";
 const SHELL = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
-  "./icon-192.png",
-  "./icon-512.png",
-  "./apple-touch-icon.png"
+  "./sgy_logo.png"
 ];
 
 self.addEventListener("install", e => {
