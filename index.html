@@ -266,8 +266,7 @@ function fetchT(url,ms){
   return fetch(url,{signal:c.signal}).finally(()=>clearTimeout(t));
 }
 const POD_LIMIT=20;
-let podOffset=0, podLoading=false;
-function podApi(off){return "https://app-api6.podbbang.com/channels/9230/episodes?offset="+off+"&limit="+POD_LIMIT+"&sort=desc";}
+let podCache=[], podShown=0;
 function podRowsHTML(eps,start){
   return eps.map(function(e,i){
     const audio=String(e.media.url).replace(/^http:/,"https:");
@@ -283,50 +282,31 @@ function bindEpRows(){
     });
   });
 }
-function setMoreBtn(show){
-  const m=document.getElementById('epMore');
-  if(!m)return;
-  if(show){
+function revealMorePod(){
+  const box=document.getElementById('ep-list');
+  const next=podCache.slice(podShown,podShown+POD_LIMIT);
+  box.insertAdjacentHTML('beforeend',podRowsHTML(next,podShown));
+  podShown+=next.length;
+  bindEpRows();
+  const m=document.getElementById('epMore'); if(!m)return;
+  if(podShown<podCache.length){
     m.innerHTML='<button class="moreBtn" id="epMoreBtn">더보기<i class="ti ti-chevron-down"></i></button>';
-    document.getElementById('epMoreBtn').onclick=loadMorePod;
-  } else { m.innerHTML=''; }
+    document.getElementById('epMoreBtn').onclick=revealMorePod;
+  } else {
+    m.innerHTML='<button class="moreBtn" onclick="open_(\'https://www.podbbang.com/channels/9230\')">팟빵에서 지난 설교 더 보기<i class="ti ti-external-link"></i></button>';
+  }
 }
 function loadPodcast(){
   const box=document.getElementById('ep-list');
-  podOffset=0; podLoading=false;
-  fetchT(podApi(0),9000)
+  fetchT("https://app-api6.podbbang.com/channels/9230/episodes?offset=0&limit=50&sort=desc",9000)
     .then(r=>r.json())
     .then(function(j){
-      const raw=(j.data||[]);
-      const eps=raw.filter(e=>e&&e.media&&e.media.url);
-      if(!eps.length)throw new Error("no eps");
-      box.innerHTML=podRowsHTML(eps,0);
-      podOffset=POD_LIMIT;
-      bindEpRows();
-      setMoreBtn(raw.length>=POD_LIMIT);
+      podCache=(j.data||[]).filter(e=>e&&e.media&&e.media.url);
+      if(!podCache.length)throw new Error("no eps");
+      podShown=0; box.innerHTML="";
+      revealMorePod();
     })
-    .catch(function(){ setMoreBtn(false); renderFallback(); });
-}
-function loadMorePod(){
-  if(podLoading)return; podLoading=true;
-  const btn=document.getElementById('epMoreBtn');
-  if(btn){btn.disabled=true; btn.textContent="불러오는 중…";}
-  fetchT(podApi(podOffset),9000)
-    .then(r=>r.json())
-    .then(function(j){
-      const raw=(j.data||[]);
-      const eps=raw.filter(e=>e&&e.media&&e.media.url);
-      const start=document.getElementById('ep-list').querySelectorAll('.ep').length;
-      document.getElementById('ep-list').insertAdjacentHTML('beforeend',podRowsHTML(eps,start));
-      podOffset+=POD_LIMIT; podLoading=false;
-      bindEpRows();
-      setMoreBtn(raw.length>=POD_LIMIT);
-    })
-    .catch(function(){
-      podLoading=false;
-      const b=document.getElementById('epMoreBtn');
-      if(b){b.disabled=false; b.innerHTML='다시 시도<i class="ti ti-refresh"></i>';}
-    });
+    .catch(function(){ const m=document.getElementById('epMore'); if(m)m.innerHTML=""; renderFallback(); });
 }
 function renderFallback(){
   document.getElementById('ep-list').innerHTML=
