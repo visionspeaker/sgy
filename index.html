@@ -97,6 +97,22 @@
   .instStep .stx{font-size:13.5px;line-height:1.55}
   .instAct{display:block;width:100%;margin-top:18px;background:var(--primary);color:#fff;border:0;border-radius:12px;padding:14px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer}
   .instClose{display:block;width:100%;margin-top:8px;background:none;border:0;color:var(--tx3);font-size:13px;font-family:inherit;cursor:pointer;padding:8px}
+  .giveCard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:15px;margin-top:6px;box-shadow:0 2px 10px rgba(29,27,58,.04)}
+  .giveTop{display:flex;align-items:center;gap:11px;margin-bottom:12px}
+  .giveTop .gi{width:40px;height:40px;border-radius:11px;background:#ffe9f1;color:#e1306c;display:flex;align-items:center;justify-content:center;font-size:20px;flex:none}
+  .giveLabel{font-size:14px;font-weight:600;color:var(--tx)}
+  .giveBank{font-size:12px;color:var(--tx2);margin-top:2px}
+  .giveAcct{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--bg);border-radius:10px;padding:11px 13px}
+  .giveAcct span{font-size:16px;font-weight:700;color:var(--tx);letter-spacing:.3px}
+  .copyBtn{background:var(--primary);color:#fff;border:0;border-radius:8px;padding:8px 13px;font-size:12.5px;font-weight:600;font-family:inherit;cursor:pointer;flex:none}
+  .copyBtn i{font-size:14px;vertical-align:-2px;margin-right:2px}
+  #cmpModal{display:none;position:fixed;inset:0;z-index:100;background:rgba(20,18,45,.55);align-items:flex-end;justify-content:center}
+  #cmpModal.on{display:flex}
+  .childCard{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px;margin-top:10px;cursor:pointer}
+  .childCard:active{transform:scale(.99)}
+  .childIc{width:42px;height:42px;border-radius:12px;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;flex:none}
+  .childNm{font-size:14.5px;font-weight:600;color:var(--tx)}
+  .childDs{font-size:12px;color:var(--tx2);margin-top:2px}
   a{color:inherit;text-decoration:none}
   main::-webkit-scrollbar{display:none}
 </style>
@@ -170,6 +186,19 @@
         <div class="tile" onclick="open_('https://map.naver.com/p/search/송탄영광교회')"><div class="ic mp"><i class="ti ti-map-pin"></i></div><div class="nm">오시는 길</div><div class="ds">평택시 지산동 355</div></div>
         <div class="tile" onclick="openInstall()"><div class="ic" style="background:var(--primary-soft);color:var(--primary)"><i class="ti ti-device-mobile-down"></i></div><div class="nm">홈 화면에 추가</div><div class="ds">앱처럼 바로 열기</div></div>
       </div>
+
+      <div class="sec-t">후원 · 헌금</div>
+      <div class="giveCard">
+        <div class="giveTop">
+          <div class="gi"><i class="ti ti-heart-handshake"></i></div>
+          <div><div class="giveLabel">온라인 헌금 계좌</div><div class="giveBank">카카오뱅크 · 예금주 최영미</div></div>
+        </div>
+        <div class="giveAcct"><span id="acctNo">7942-21-89862</span><button class="copyBtn" id="copyAcct"><i class="ti ti-copy"></i>복사</button></div>
+      </div>
+      <div class="grid" style="margin-top:11px">
+        <div class="tile" onclick="openCompassion()"><div class="ic" style="background:#fff3df;color:#f59e0b"><i class="ti ti-mood-kid"></i></div><div class="nm">해외 어린이 양육</div><div class="ds">살마 · 헤수스 후원</div></div>
+      </div>
+
       <div class="hint" style="margin-top:24px">송탄영광교회 중고등부 공식 앱 · SGY 2.0<br>#송탄영광교회 #중고등부 #평택 #송탄</div>
     </section>
   </main>
@@ -180,6 +209,22 @@
     <button class="cl" id="mpClose"><i class="ti ti-x"></i></button>
     <audio id="audio"></audio>
   </div>
+
+  <div id="cmpModal"><div class="instCard">
+    <h3>해외 어린이 양육 사역</h3>
+    <div class="isub">컴패션을 통해 두 어린이를 후원하고 있어요. 눌러서 소식을 확인하세요.</div>
+    <div class="childCard" onclick="open_('https://www.compassion.or.kr/my/children/openview/003TJ00000XcfiHYAR/a21TJ000002EN21YAG')">
+      <div class="childIc">살</div>
+      <div style="flex:1;min-width:0"><div class="childNm">살마 (Salma)</div><div class="childDs">컴패션 후원 어린이 · 소식 보기</div></div>
+      <i class="ti ti-chevron-right" style="color:var(--tx3);font-size:20px"></i>
+    </div>
+    <div class="childCard" onclick="open_('https://www.compassion.or.kr/my/children/openview/003TJ00000XcfiHYAR/a21TJ000002HtDRYA0')">
+      <div class="childIc">헤</div>
+      <div style="flex:1;min-width:0"><div class="childNm">헤수스 (Jesus)</div><div class="childDs">컴패션 후원 어린이 · 소식 보기</div></div>
+      <i class="ti ti-chevron-right" style="color:var(--tx3);font-size:20px"></i>
+    </div>
+    <button class="instClose" onclick="closeCompassion()">닫기</button>
+  </div></div>
 
   <div id="instModal"><div class="instCard">
     <h3 id="instTitle">홈 화면에 앱으로 추가</h3>
@@ -403,6 +448,18 @@ if(!isStandalone()){
   let seen=false; try{seen=localStorage.getItem('sgy_inst')==='1';}catch(e){}
   if(!seen) setTimeout(openInstall,1400);
 }
+
+function openCompassion(){document.getElementById('cmpModal').classList.add('on');}
+function closeCompassion(){document.getElementById('cmpModal').classList.remove('on');}
+document.getElementById('cmpModal').addEventListener('click',function(e){if(e.target===this)closeCompassion();});
+document.getElementById('copyAcct').onclick=function(){
+  const b=document.getElementById('copyAcct');
+  const done=function(){ b.innerHTML='<i class="ti ti-check"></i>복사됨'; setTimeout(function(){b.innerHTML='<i class="ti ti-copy"></i>복사';},1500); };
+  const txt="7942-21-89862";
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done).catch(function(){window.prompt("계좌번호 복사",txt);});
+  } else { window.prompt("계좌번호 복사",txt); }
+};
 
 document.addEventListener('visibilitychange',function(){
   if(document.visibilityState==='visible'){
