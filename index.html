@@ -129,7 +129,7 @@
         <div><div class="h">강유석 전도사의 파워메시지</div><div class="s">송탄영광교회 중고등부 담당 · 384개 에피소드</div></div>
       </div>
       <div id="ep-list"><div class="loq">최신 설교를 불러오는 중…</div></div>
-      <div class="hint">회차를 누르면 앱 안에서 바로 재생됩니다.</div>
+      <div class="hint">회차를 누르면 앱 안에서 바로 재생됩니다.<br>재생이 안 되면 팟빵 페이지로 자동 연결됩니다.</div>
     </section>
 
     <section class="screen" id="s-vid">
@@ -216,21 +216,21 @@ function fetchT(url,ms){
 }
 function loadPodcast(){
   const box=document.getElementById('ep-list');
-  const term=encodeURIComponent("강유석전도사의 파워메시지");
-  fetchT("https://itunes.apple.com/search?term="+term+"&country=KR&media=podcast&limit=1",8000)
+  fetchT("https://app-api6.podbbang.com/channels/9230/episodes?offset=0&limit=20&sort=desc",9000)
     .then(r=>r.json())
     .then(j=>{
-      const coll=j.results&&j.results[0]&&j.results[0].collectionId;
-      if(!coll)throw new Error("no id");
-      return fetchT("https://itunes.apple.com/lookup?id="+coll+"&country=KR&media=podcast&entity=podcastEpisode&limit=20",8000).then(r=>r.json());
-    })
-    .then(j=>{
-      const eps=(j.results||[]).filter(r=>r.wrapperType==="podcastEpisode"&&r.episodeUrl);
+      const eps=(j.data||[]).filter(e=>e&&e.media&&e.media.url);
       if(!eps.length)throw new Error("no eps");
-      box.innerHTML=eps.slice(0,15).map((e,i)=>{
-        const dt=e.releaseDate?new Date(e.releaseDate).toLocaleDateString('ko-KR'):"";
-        return epRow(i+1,e.trackName||"설교",dt,null,e.episodeUrl);
+      box.innerHTML=eps.slice(0,20).map((e,i)=>{
+        const audio=String(e.media.url).replace(/^http:/,"https:");
+        const page="https://www.podbbang.com/channels/9230/episodes/"+e.id;
+        return rowHTML(i+1,e.title||"설교",e.publishedAtText||"",audio,page);
       }).join('');
+      box.querySelectorAll('.ep').forEach(function(el){
+        el.addEventListener('click',function(){
+          playAudio(decodeURIComponent(el.dataset.a),decodeURIComponent(el.dataset.t),decodeURIComponent(el.dataset.p));
+        });
+      });
     })
     .catch(()=>renderFallback());
 }
@@ -240,16 +240,27 @@ function renderFallback(){
     +'<div style="font-size:13px;color:var(--tx2);line-height:1.7;margin-bottom:16px">설교 목록을 바로 불러오지 못했어요.<br>아래에서 전체 설교를 들으실 수 있습니다.</div>'
     +'<button onclick="open_(\'https://www.podbbang.com/channels/9230\')" style="background:var(--primary);color:#fff;border:0;border-radius:999px;padding:12px 24px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer">팟빵에서 설교 듣기</button></div>';
 }
-function epRow(n,t,sub,link,audio){
-  const safe=String(t).replace(/\\/g,"").replace(/'/g,"’").replace(/"/g,"");
-  const act=audio?"playAudio('"+audio+"','"+safe+"')":"open_('"+link+"')";
-  return '<div class="ep" onclick="'+act+'"><div class="n">'+n+'</div><div style="min-width:0;flex:1"><div class="tt">'+t+'</div><div class="dt">'+sub+'</div></div><i class="ti ti-player-play pl"></i></div>';
+function rowHTML(n,t,sub,audio,page){
+  const et=String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  return '<div class="ep" data-a="'+encodeURIComponent(audio)+'" data-p="'+encodeURIComponent(page)+'" data-t="'+encodeURIComponent(t)+'">'
+    +'<div class="n">'+n+'</div><div style="min-width:0;flex:1"><div class="tt">'+et+'</div><div class="dt">'+sub+'</div></div>'
+    +'<i class="ti ti-player-play pl"></i></div>';
 }
-function playAudio(url,title){
-  const a=document.getElementById('audio');a.src=url;a.play();
+function playAudio(url,title,page){
+  const a=document.getElementById('audio');
   document.getElementById('mpTitle').textContent=title;
+  document.getElementById('mpStat').textContent="불러오는 중…";
   document.getElementById('mini').classList.add('on');
   document.querySelector('#mpBtn i').className="ti ti-player-pause";
+  let fellBack=false;
+  const fallback=function(){ if(!fellBack){fellBack=true; if(page) window.location.href=page; } };
+  a.onerror=fallback;
+  a.src=url;
+  const to=setTimeout(function(){ if(a.readyState<1) fallback(); },9000);
+  a.addEventListener('loadedmetadata',function(){clearTimeout(to);document.getElementById('mpStat').textContent="강유석 전도사의 파워메시지";},{once:true});
+  a.addEventListener('playing',function(){clearTimeout(to);},{once:true});
+  const p=a.play();
+  if(p&&p.catch)p.catch(function(){});
 }
 document.getElementById('mpBtn').onclick=function(){
   const a=document.getElementById('audio');
