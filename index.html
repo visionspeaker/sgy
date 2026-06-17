@@ -82,8 +82,17 @@
   nav button{flex:1;background:none;border:0;color:var(--tx3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10.5px;cursor:pointer;font-family:inherit}
   nav button i{font-size:21px}
   nav button.on{color:var(--primary)}
-  #install{display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:150px;z-index:40;
-    background:var(--primary);color:#fff;border:0;border-radius:999px;padding:11px 20px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(108,92,231,.4)}
+  #instModal{display:none;position:fixed;inset:0;z-index:100;background:rgba(20,18,45,.55);align-items:flex-end;justify-content:center}
+  #instModal.on{display:flex}
+  .instCard{background:var(--surface);width:100%;max-width:480px;border-radius:20px 20px 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom));max-height:85vh;overflow-y:auto;animation:slideUp .25s ease}
+  @keyframes slideUp{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+  .instCard h3{font-size:17px;font-weight:700;margin-bottom:4px}
+  .instCard .isub{font-size:12.5px;color:var(--tx2);margin-bottom:14px;line-height:1.5}
+  .instStep{display:flex;gap:12px;align-items:flex-start;padding:11px 2px;border-bottom:1px solid var(--line)}
+  .instStep .sn{width:24px;height:24px;border-radius:50%;background:var(--primary-soft);color:var(--primary);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none}
+  .instStep .stx{font-size:13.5px;line-height:1.55}
+  .instAct{display:block;width:100%;margin-top:18px;background:var(--primary);color:#fff;border:0;border-radius:12px;padding:14px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer}
+  .instClose{display:block;width:100%;margin-top:8px;background:none;border:0;color:var(--tx3);font-size:13px;font-family:inherit;cursor:pointer;padding:8px}
   a{color:inherit;text-decoration:none}
   main::-webkit-scrollbar{display:none}
 </style>
@@ -153,6 +162,7 @@
         <div class="tile" onclick="open_('https://www.podbbang.com/channels/9230')"><div class="ic pc"><i class="ti ti-brand-apple-podcast"></i></div><div class="nm">팟빵 채널</div><div class="ds">전체 설교 보관함</div></div>
         <div class="tile" onclick="open_('https://www.youtube.com/@sgy153')"><div class="ic yt"><i class="ti ti-brand-youtube"></i></div><div class="nm">유튜브 채널</div><div class="ds">전체 영상 보기</div></div>
         <div class="tile" onclick="open_('https://map.naver.com/p/search/송탄영광교회')"><div class="ic mp"><i class="ti ti-map-pin"></i></div><div class="nm">오시는 길</div><div class="ds">평택시 지산동 355</div></div>
+        <div class="tile" onclick="openInstall()"><div class="ic" style="background:var(--primary-soft);color:var(--primary)"><i class="ti ti-device-mobile-down"></i></div><div class="nm">홈 화면에 추가</div><div class="ds">앱처럼 바로 열기</div></div>
       </div>
       <div class="hint" style="margin-top:24px">송탄영광교회 중고등부 공식 앱 · SGY 2.0<br>#송탄영광교회 #중고등부 #평택 #송탄</div>
     </section>
@@ -165,7 +175,13 @@
     <audio id="audio"></audio>
   </div>
 
-  <button id="install"><i class="ti ti-download" style="vertical-align:-2px;margin-right:4px"></i>홈 화면에 앱 추가</button>
+  <div id="instModal"><div class="instCard">
+    <h3 id="instTitle">홈 화면에 앱으로 추가</h3>
+    <div class="isub" id="instSub">한 번 추가하면 앱 아이콘으로 바로 열 수 있어요.</div>
+    <div id="instBody"></div>
+    <button class="instAct" id="instAction" style="display:none"></button>
+    <button class="instClose" id="instDismiss">닫기</button>
+  </div></div>
 
   <nav>
     <button class="on" data-s="home" onclick="go('home')"><i class="ti ti-home-2"></i>홈</button>
@@ -277,12 +293,48 @@ document.getElementById('mpClose').onclick=function(){
   document.getElementById('mini').classList.remove('on');
 };
 
-let deferred=null;
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;
-  const b=document.getElementById('install');b.style.display='block';
-  b.onclick=()=>{deferred.prompt();deferred=null;b.style.display='none';};
-});
-window.addEventListener('appinstalled',()=>{document.getElementById('install').style.display='none';});
+let installPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();installPrompt=e;});
+function isStandalone(){return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;}
+function instSteps(arr){return arr.map(function(s,i){return '<div class="instStep"><div class="sn">'+(i+1)+'</div><div class="stx">'+s+'</div></div>';}).join('');}
+function buildInstall(){
+  const u=navigator.userAgent||"";
+  const body=document.getElementById('instBody');
+  const act=document.getElementById('instAction');
+  const sub=document.getElementById('instSub');
+  const kakao=/KAKAOTALK/i.test(u), ios=/iPhone|iPad|iPod/i.test(u), android=/Android/i.test(u);
+  act.style.display='none'; act.onclick=null;
+  sub.textContent="한 번 추가하면 앱 아이콘으로 바로 열 수 있어요.";
+  if(kakao&&android){
+    sub.textContent="카카오톡에서는 설치가 안 돼요. 크롬으로 열어주세요.";
+    body.innerHTML=instSteps(["아래 <b>크롬으로 열기</b>를 누르세요.","크롬에서 이 화면이 다시 열리면, 아래쪽 안내대로 <b>홈 화면에 추가</b>를 누르면 끝이에요!"]);
+    act.style.display='block'; act.textContent="크롬으로 열기";
+    act.onclick=function(){ location.href='intent://'+location.host+location.pathname+location.search+'#Intent;scheme=https;package=com.android.chrome;end'; };
+  } else if(kakao&&ios){
+    sub.textContent="카카오톡에서는 설치가 안 돼요. 사파리로 열어주세요.";
+    body.innerHTML=instSteps(["오른쪽 아래 <b>⋯ (더보기)</b> 버튼을 누르세요.","<b>다른 브라우저로 열기</b> 또는 <b>Safari로 열기</b>를 선택하세요.","사파리 아래 <b>공유</b> 버튼(□↑)을 누르세요.","목록에서 <b>홈 화면에 추가</b>를 누르면 끝!"]);
+  } else if(ios){
+    body.innerHTML=instSteps(["화면 아래(또는 위)의 <b>공유</b> 버튼(□↑)을 누르세요.","목록을 내려 <b>홈 화면에 추가</b>를 누르세요.","오른쪽 위 <b>추가</b>를 누르면 끝!"]);
+  } else if(android){
+    if(installPrompt){
+      body.innerHTML='<div style="font-size:13.5px;color:var(--tx2);line-height:1.6;padding:6px 2px">아래 버튼 한 번이면 홈 화면에 추가됩니다.</div>';
+      act.style.display='block'; act.textContent="홈 화면에 추가";
+      act.onclick=function(){ installPrompt.prompt(); installPrompt.userChoice.finally(function(){installPrompt=null; closeInstall();}); };
+    } else {
+      body.innerHTML=instSteps(["오른쪽 위 <b>⋮ (메뉴)</b>를 누르세요.","<b>앱 설치</b> 또는 <b>홈 화면에 추가</b>를 누르면 끝!"]);
+    }
+  } else {
+    body.innerHTML=instSteps(["브라우저 메뉴에서 <b>홈 화면에 추가</b> 또는 <b>설치</b>를 누르세요."]);
+  }
+}
+function openInstall(){ buildInstall(); document.getElementById('instModal').classList.add('on'); }
+function closeInstall(){ document.getElementById('instModal').classList.remove('on'); }
+document.getElementById('instDismiss').onclick=function(){ try{localStorage.setItem('sgy_inst','1');}catch(e){} closeInstall(); };
+document.getElementById('instModal').addEventListener('click',function(e){ if(e.target===this) closeInstall(); });
+if(!isStandalone()){
+  let seen=false; try{seen=localStorage.getItem('sgy_inst')==='1';}catch(e){}
+  if(!seen) setTimeout(openInstall,1400);
+}
 
 document.addEventListener('visibilitychange',function(){
   if(document.visibilityState==='visible'){
