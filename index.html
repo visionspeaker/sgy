@@ -186,7 +186,7 @@ function go(s){
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.s===s));
   document.querySelector('main').scrollTop=0;
   if(s==='vid'&&!ytLoaded){loadVideos();ytLoaded=true;}
-  if(s==='pod'&&!podLoaded){loadPodcast();podLoaded=true;}
+  if(s==='pod'){loadPodcast();}
 }
 function open_(u){window.open(u,'_blank');}
 
@@ -283,6 +283,13 @@ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;
   b.onclick=()=>{deferred.prompt();deferred=null;b.style.display='none';};
 });
 window.addEventListener('appinstalled',()=>{document.getElementById('install').style.display='none';});
+
+document.addEventListener('visibilitychange',function(){
+  if(document.visibilityState==='visible'){
+    const cur=document.querySelector('nav button.on');
+    if(cur&&cur.dataset.s==='pod') loadPodcast();
+  }
+});
 
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
