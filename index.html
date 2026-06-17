@@ -70,6 +70,10 @@
   .vcard .vd{font-size:11px;color:var(--tx3);margin-top:5px}
   .hint{font-size:11.5px;color:var(--tx3);text-align:center;padding:14px 8px;line-height:1.6}
   .loq{text-align:center;color:var(--tx3);font-size:13px;padding:30px}
+  .moreBtn{display:block;width:100%;margin:10px 0 2px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px;font-size:14px;font-weight:600;color:var(--primary);font-family:inherit;cursor:pointer}
+  .moreBtn:active{transform:scale(.99)}
+  .moreBtn i{font-size:16px;vertical-align:-3px;margin-left:2px}
+  .moreBtn[disabled]{color:var(--tx3)}
   #mini{position:fixed;left:50%;transform:translateX(-50%);width:calc(100% - 20px);max-width:460px;bottom:calc(64px + env(safe-area-inset-bottom) + 10px);display:none;
     background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:10px 12px;align-items:center;gap:11px;z-index:30;box-shadow:0 6px 24px rgba(29,27,58,.14)}
   #mini.on{display:flex}
@@ -138,6 +142,7 @@
         <div><div class="h">강유석 전도사의 파워메시지</div><div class="s">송탄영광교회 중고등부 담당 · 384개 에피소드</div></div>
       </div>
       <div id="ep-list"><div class="loq">최신 설교를 불러오는 중…</div></div>
+      <div id="epMore"></div>
       <div class="hint">회차를 누르면 앱 안에서 바로 재생됩니다.<br>재생이 안 되면 팟빵 페이지로 자동 연결됩니다.</div>
     </section>
 
@@ -260,25 +265,68 @@ function fetchT(url,ms){
   const c=new AbortController();const t=setTimeout(()=>c.abort(),ms);
   return fetch(url,{signal:c.signal}).finally(()=>clearTimeout(t));
 }
+const POD_LIMIT=20;
+let podOffset=0, podLoading=false;
+function podApi(off){return "https://app-api6.podbbang.com/channels/9230/episodes?offset="+off+"&limit="+POD_LIMIT+"&sort=desc";}
+function podRowsHTML(eps,start){
+  return eps.map(function(e,i){
+    const audio=String(e.media.url).replace(/^http:/,"https:");
+    const page="https://www.podbbang.com/channels/9230/episodes/"+e.id;
+    return rowHTML(start+i+1,e.title||"설교",e.publishedAtText||"",audio,page);
+  }).join('');
+}
+function bindEpRows(){
+  document.getElementById('ep-list').querySelectorAll('.ep').forEach(function(el){
+    if(el.dataset.bound)return; el.dataset.bound="1";
+    el.addEventListener('click',function(){
+      playAudio(decodeURIComponent(el.dataset.a),decodeURIComponent(el.dataset.t),decodeURIComponent(el.dataset.p));
+    });
+  });
+}
+function setMoreBtn(show){
+  const m=document.getElementById('epMore');
+  if(!m)return;
+  if(show){
+    m.innerHTML='<button class="moreBtn" id="epMoreBtn">더보기<i class="ti ti-chevron-down"></i></button>';
+    document.getElementById('epMoreBtn').onclick=loadMorePod;
+  } else { m.innerHTML=''; }
+}
 function loadPodcast(){
   const box=document.getElementById('ep-list');
-  fetchT("https://app-api6.podbbang.com/channels/9230/episodes?offset=0&limit=20&sort=desc",9000)
+  podOffset=0; podLoading=false;
+  fetchT(podApi(0),9000)
     .then(r=>r.json())
-    .then(j=>{
-      const eps=(j.data||[]).filter(e=>e&&e.media&&e.media.url);
+    .then(function(j){
+      const raw=(j.data||[]);
+      const eps=raw.filter(e=>e&&e.media&&e.media.url);
       if(!eps.length)throw new Error("no eps");
-      box.innerHTML=eps.slice(0,20).map((e,i)=>{
-        const audio=String(e.media.url).replace(/^http:/,"https:");
-        const page="https://www.podbbang.com/channels/9230/episodes/"+e.id;
-        return rowHTML(i+1,e.title||"설교",e.publishedAtText||"",audio,page);
-      }).join('');
-      box.querySelectorAll('.ep').forEach(function(el){
-        el.addEventListener('click',function(){
-          playAudio(decodeURIComponent(el.dataset.a),decodeURIComponent(el.dataset.t),decodeURIComponent(el.dataset.p));
-        });
-      });
+      box.innerHTML=podRowsHTML(eps,0);
+      podOffset=POD_LIMIT;
+      bindEpRows();
+      setMoreBtn(raw.length>=POD_LIMIT);
     })
-    .catch(()=>renderFallback());
+    .catch(function(){ setMoreBtn(false); renderFallback(); });
+}
+function loadMorePod(){
+  if(podLoading)return; podLoading=true;
+  const btn=document.getElementById('epMoreBtn');
+  if(btn){btn.disabled=true; btn.textContent="불러오는 중…";}
+  fetchT(podApi(podOffset),9000)
+    .then(r=>r.json())
+    .then(function(j){
+      const raw=(j.data||[]);
+      const eps=raw.filter(e=>e&&e.media&&e.media.url);
+      const start=document.getElementById('ep-list').querySelectorAll('.ep').length;
+      document.getElementById('ep-list').insertAdjacentHTML('beforeend',podRowsHTML(eps,start));
+      podOffset+=POD_LIMIT; podLoading=false;
+      bindEpRows();
+      setMoreBtn(raw.length>=POD_LIMIT);
+    })
+    .catch(function(){
+      podLoading=false;
+      const b=document.getElementById('epMoreBtn');
+      if(b){b.disabled=false; b.innerHTML='다시 시도<i class="ti ti-refresh"></i>';}
+    });
 }
 function renderFallback(){
   document.getElementById('ep-list').innerHTML=
