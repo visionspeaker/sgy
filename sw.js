@@ -1,4 +1,4 @@
-const CACHE = "sgy-v2";
+const CACHE = "sgy-v3";
 const SHELL = [
   "./",
   "./index.html",

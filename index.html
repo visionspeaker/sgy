@@ -144,7 +144,7 @@
       <div class="sec-t">소개 · 정보</div>
       <div class="worship" style="background:linear-gradient(120deg,#5b8def,#7c6cff)">
         <div class="lbl">송탄영광교회 중고등부</div>
-        <div class="big" style="font-size:18px">함께 자라는 다음세대, SGY</div>
+        <div class="big" style="font-size:18px">바른 길로 함께 가는 교회</div>
         <div class="sub">대한예수교장로회(합동)</div>
         <i class="ti ti-cross"></i>
       </div>
@@ -210,36 +210,40 @@ function playVid(id){
   document.querySelector('main').scrollTop=0;
 }
 
-function loadPodcast(){
-  const feeds=["https://www.podbbang.com/rss/9230","http://www.podbbang.com/rss/9230","https://api.podbbang.com/channels/9230/episodes.rss"];
-  (function tryFeed(i){
-    if(i>=feeds.length)return renderEp(null);
-    fetch(PROXY+encodeURIComponent(feeds[i])).then(r=>r.text()).then(xml=>{
-      const d=new DOMParser().parseFromString(xml,"text/xml");
-      const items=[...d.getElementsByTagName("item")];
-      if(items.length)renderEp(items);else tryFeed(i+1);
-    }).catch(()=>tryFeed(i+1));
-  })(0);
+function fetchT(url,ms){
+  const c=new AbortController();const t=setTimeout(()=>c.abort(),ms);
+  return fetch(url,{signal:c.signal}).finally(()=>clearTimeout(t));
 }
-function renderEp(items){
+function loadPodcast(){
   const box=document.getElementById('ep-list');
-  if(!items){
-    const demo=["요한복음 강해 — 빛으로 오신 예수","베이직 시리즈 — 믿음의 첫걸음","창세기 강해 — 태초에 하나님이","주일 설교 — 너희는 세상의 소금","청소년 특강 — 진로와 소명"];
-    box.innerHTML=demo.map((t,i)=>epRow(i+1,t,"팟빵에서 듣기","https://www.podbbang.com/channels/9230",null)).join('');
-    return;
-  }
-  box.innerHTML=items.slice(0,15).map((it,i)=>{
-    const t=(it.getElementsByTagName("title")[0]||{}).textContent||"설교";
-    const enc=it.getElementsByTagName("enclosure")[0];
-    const url=enc?enc.getAttribute("url"):null;
-    const dt=(it.getElementsByTagName("pubDate")[0]||{}).textContent||"";
-    const dd=dt?new Date(dt).toLocaleDateString('ko-KR'):"";
-    return epRow(i+1,t,dd,null,url);
-  }).join('');
+  const term=encodeURIComponent("강유석전도사의 파워메시지");
+  fetchT("https://itunes.apple.com/search?term="+term+"&country=KR&media=podcast&limit=1",8000)
+    .then(r=>r.json())
+    .then(j=>{
+      const coll=j.results&&j.results[0]&&j.results[0].collectionId;
+      if(!coll)throw new Error("no id");
+      return fetchT("https://itunes.apple.com/lookup?id="+coll+"&country=KR&media=podcast&entity=podcastEpisode&limit=20",8000).then(r=>r.json());
+    })
+    .then(j=>{
+      const eps=(j.results||[]).filter(r=>r.wrapperType==="podcastEpisode"&&r.episodeUrl);
+      if(!eps.length)throw new Error("no eps");
+      box.innerHTML=eps.slice(0,15).map((e,i)=>{
+        const dt=e.releaseDate?new Date(e.releaseDate).toLocaleDateString('ko-KR'):"";
+        return epRow(i+1,e.trackName||"설교",dt,null,e.episodeUrl);
+      }).join('');
+    })
+    .catch(()=>renderFallback());
+}
+function renderFallback(){
+  document.getElementById('ep-list').innerHTML=
+    '<div style="text-align:center;padding:22px 8px">'
+    +'<div style="font-size:13px;color:var(--tx2);line-height:1.7;margin-bottom:16px">설교 목록을 바로 불러오지 못했어요.<br>아래에서 전체 설교를 들으실 수 있습니다.</div>'
+    +'<button onclick="open_(\'https://www.podbbang.com/channels/9230\')" style="background:var(--primary);color:#fff;border:0;border-radius:999px;padding:12px 24px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer">팟빵에서 설교 듣기</button></div>';
 }
 function epRow(n,t,sub,link,audio){
-  const act=audio?`playAudio('${audio}','${t.replace(/'/g,"")}')`:`open_('${link}')`;
-  return `<div class="ep" onclick="${act}"><div class="n">${n}</div><div style="min-width:0;flex:1"><div class="tt">${t}</div><div class="dt">${sub}</div></div><i class="ti ti-player-play pl"></i></div>`;
+  const safe=String(t).replace(/\\/g,"").replace(/'/g,"’").replace(/"/g,"");
+  const act=audio?"playAudio('"+audio+"','"+safe+"')":"open_('"+link+"')";
+  return '<div class="ep" onclick="'+act+'"><div class="n">'+n+'</div><div style="min-width:0;flex:1"><div class="tt">'+t+'</div><div class="dt">'+sub+'</div></div><i class="ti ti-player-play pl"></i></div>';
 }
 function playAudio(url,title){
   const a=document.getElementById('audio');a.src=url;a.play();
