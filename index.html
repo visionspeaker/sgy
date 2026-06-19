@@ -78,8 +78,15 @@
   .moreBtn i{font-size:16px;vertical-align:-3px;margin-left:2px}
   .moreBtn[disabled]{color:var(--tx3)}
   #mini{position:fixed;left:50%;transform:translateX(-50%);width:calc(100% - 20px);max-width:460px;bottom:calc(64px + env(safe-area-inset-bottom) + 10px);display:none;
-    background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:10px 12px;align-items:center;gap:11px;z-index:30;box-shadow:0 6px 24px rgba(29,27,58,.14)}
+    background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:10px 12px 9px;flex-direction:column;gap:8px;z-index:30;box-shadow:0 6px 24px rgba(29,27,58,.14)}
   #mini.on{display:flex}
+  .miniRow{display:flex;align-items:center;gap:11px;width:100%}
+  .miniSeek{display:flex;align-items:center;gap:8px;width:100%}
+  .miniSeek span{font-size:10.5px;color:var(--tx3);min-width:32px;font-variant-numeric:tabular-nums}
+  .miniSeek span#mpDur{text-align:right}
+  #mpSeek{flex:1;-webkit-appearance:none;appearance:none;height:4px;border-radius:4px;background:linear-gradient(to right,#f59e0b 0%,#e8e7f3 0%);outline:none;cursor:pointer;margin:0}
+  #mpSeek::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:13px;height:13px;border-radius:50%;background:#f59e0b;cursor:pointer;border:2px solid #fff;box-shadow:0 0 2px rgba(0,0,0,.25)}
+  #mpSeek::-moz-range-thumb{width:13px;height:13px;border:2px solid #fff;border-radius:50%;background:#f59e0b;cursor:pointer}
   #mini .pp{width:40px;height:40px;border-radius:50%;background:var(--gold);color:#fff;border:0;font-size:18px;cursor:pointer;flex:none}
   #mini .mt{font-size:12.5px;font-weight:600;line-height:1.3;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   #mini .ms{font-size:11px;color:var(--tx2);margin-top:2px}
@@ -204,9 +211,12 @@
   </main>
 
   <div id="mini">
-    <button class="pp" id="mpBtn"><i class="ti ti-player-play"></i></button>
-    <div style="min-width:0;flex:1"><div class="mt" id="mpTitle">재생 중인 설교</div><div class="ms" id="mpStat">강유석 전도사의 파워메시지</div></div>
-    <button class="cl" id="mpClose"><i class="ti ti-x"></i></button>
+    <div class="miniRow">
+      <button class="pp" id="mpBtn"><i class="ti ti-player-play"></i></button>
+      <div style="min-width:0;flex:1"><div class="mt" id="mpTitle">재생 중인 설교</div><div class="ms" id="mpStat">강유석 전도사의 파워메시지</div></div>
+      <button class="cl" id="mpClose"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="miniSeek"><span id="mpCur">0:00</span><input type="range" id="mpSeek" min="0" max="100" value="0" step="1" aria-label="재생 위치"><span id="mpDur">0:00</span></div>
     <audio id="audio"></audio>
   </div>
 
@@ -382,6 +392,7 @@ function playAudio(url,title,page){
   document.getElementById('mpStat').textContent="불러오는 중…";
   document.getElementById('mini').classList.add('on');
   document.querySelector('#mpBtn i').className="ti ti-player-pause";
+  if(window.__resetSeek)window.__resetSeek();
   let fellBack=false;
   const fallback=function(){ if(!fellBack){fellBack=true; if(page) window.location.href=page; } };
   a.onerror=fallback;
@@ -404,7 +415,23 @@ document.getElementById('mpClose').onclick=function(){
   a.onerror=null; clearTimeout(podTO);
   a.pause(); a.removeAttribute('src'); a.load();
   document.getElementById('mini').classList.remove('on');
+  if(window.__resetSeek)window.__resetSeek();
 };
+(function(){
+  const a=document.getElementById('audio');
+  const seek=document.getElementById('mpSeek');
+  const cur=document.getElementById('mpCur');
+  const dur=document.getElementById('mpDur');
+  let seeking=false;
+  function fmt(s){s=Math.floor(s||0);if(!isFinite(s)||s<0)s=0;const m=Math.floor(s/60);const ss=s%60;return m+':'+(ss<10?'0':'')+ss;}
+  function paint(){const max=parseFloat(seek.max)||1;const p=Math.max(0,Math.min(100,(parseFloat(seek.value)/max)*100||0));seek.style.background='linear-gradient(to right,#f59e0b '+p+'%,#e8e7f3 '+p+'%)';}
+  window.__resetSeek=function(){seek.max=100;seek.value=0;cur.textContent='0:00';dur.textContent='0:00';paint();};
+  a.addEventListener('loadedmetadata',function(){if(isFinite(a.duration)&&a.duration>0){seek.max=a.duration;dur.textContent=fmt(a.duration);}});
+  a.addEventListener('timeupdate',function(){if(!seeking){seek.value=a.currentTime;cur.textContent=fmt(a.currentTime);paint();}});
+  a.addEventListener('ended',function(){const i=document.querySelector('#mpBtn i');if(i)i.className='ti ti-player-play';});
+  seek.addEventListener('input',function(){seeking=true;cur.textContent=fmt(seek.value);paint();});
+  seek.addEventListener('change',function(){if(isFinite(a.duration))a.currentTime=parseFloat(seek.value);seeking=false;});
+})();
 
 let installPrompt=null;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();installPrompt=e;});
