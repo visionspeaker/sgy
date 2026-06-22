@@ -95,6 +95,15 @@
   .attBtn{display:block;width:100%;margin-top:20px;background:var(--primary);color:#fff;border:0;border-radius:14px;padding:15px;font-size:15.5px;font-weight:700;font-family:inherit;cursor:pointer}
   .attBtn:active{transform:scale(.99)}
   .attBtn[disabled]{background:var(--line);color:var(--tx3);cursor:default}
+  .writeBtn{display:block;width:100%;margin:2px 0 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px;font-size:14px;font-weight:600;color:var(--primary);font-family:inherit;cursor:pointer}
+  .writeBtn:active{transform:scale(.99)}
+  .writeBtn i{vertical-align:-2px;margin-right:4px;font-size:16px}
+  .noticeCard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 15px;margin-bottom:10px;box-shadow:0 2px 10px rgba(29,27,58,.04)}
+  .noticeText{font-size:14px;color:var(--tx);line-height:1.65;white-space:pre-wrap;word-break:break-word}
+  .noticeDate{font-size:11.5px;color:var(--tx3);margin-top:9px}
+  #noticeModal{display:none;position:fixed;inset:0;z-index:100;background:rgba(20,18,45,.55);align-items:flex-end;justify-content:center}
+  #noticeModal.on{display:flex}
+  #noticeModal textarea{width:100%;min-height:130px;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;font-family:inherit;line-height:1.6;resize:vertical;color:var(--tx);background:var(--bg);box-sizing:border-box}
   .moreBtn{display:block;width:100%;margin:10px 0 2px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px;font-size:14px;font-weight:600;color:var(--primary);font-family:inherit;cursor:pointer}
   .moreBtn:active{transform:scale(.99)}
   .moreBtn i{font-size:16px;vertical-align:-3px;margin-left:2px}
@@ -177,6 +186,7 @@
       <div class="sec-t">바로가기</div>
       <div class="grid">
         <div class="tile" onclick="open_('https://vision153.notion.site/_250601-2026eda158ae8095999ac133933fd32a?pvs=4')"><div class="ic no"><i class="ti ti-news"></i></div><div class="nm">온라인 주보</div><div class="ds">이번 주 예배 순서와 광고</div></div>
+        <div class="tile" onclick="go('notice')"><div class="ic" style="background:#e4f0ff;color:#2f80ed"><i class="ti ti-speakerphone"></i></div><div class="nm">공지사항</div><div class="ds">중고등부 소식·알림</div></div>
         <div class="tile" onclick="open_('https://www.instagram.com/stgc153')"><div class="ic ig"><i class="ti ti-brand-instagram"></i></div><div class="nm">인스타그램</div><div class="ds">@stgc153 소식과 사진</div></div>
         <div class="tile" onclick="open_('https://band.us/n/acaebbS821711')"><div class="ic bd"><i class="ti ti-users-group"></i></div><div class="nm">중고등부 밴드</div><div class="ds">공지·소통 커뮤니티</div></div>
         <div class="tile" onclick="go('attend')"><div class="ic" style="background:#ffe5e5;color:#ef4444"><i class="ti ti-calendar-check"></i></div><div class="nm">출석체크 도장깨기</div><div class="ds">매일 출석하고 도장 받기</div></div>
@@ -251,6 +261,12 @@
       <button class="attBtn" id="attBtn">오늘 출석하기</button>
       <div class="hint">출석한 날엔 도장이 찍혀요 · 오늘 출석은 하루에 한 번만 가능합니다.</div>
     </section>
+
+    <section class="screen" id="s-notice">
+      <div class="sec-t">공지사항</div>
+      <button class="writeBtn" id="noticeWriteBtn"><i class="ti ti-pencil"></i> 공지 작성 (관리자)</button>
+      <div id="noticeList"><div class="loq">공지를 불러오는 중…</div></div>
+    </section>
   </main>
 
   <div id="mini">
@@ -262,6 +278,14 @@
     <div class="miniSeek"><span id="mpCur">0:00</span><input type="range" id="mpSeek" min="0" max="100" value="0" step="1" aria-label="재생 위치"><span id="mpDur">0:00</span></div>
     <audio id="audio"></audio>
   </div>
+
+  <div id="noticeModal"><div class="instCard">
+    <h3>공지 작성</h3>
+    <div class="isub">학생들에게 보일 공지를 적어주세요.</div>
+    <textarea id="noticeText" placeholder="공지 내용을 입력하세요"></textarea>
+    <button class="instAct" id="noticePost">등록</button>
+    <button class="instClose" id="noticeCancel">취소</button>
+  </div></div>
 
   <div id="cmpModal"><div class="instCard">
     <h3>해외 어린이 양육 사역</h3>
@@ -308,6 +332,7 @@ function go(s){
   if(s==='vid'&&!ytLoaded){loadVideos();ytLoaded=true;}
   if(s==='pod'){loadPodcast();}
   if(s==='attend'&&window.__renderAttend){window.__renderAttend();}
+  if(s==='notice'){loadNotices();}
 }
 function open_(u){window.open(u,'_blank');}
 
@@ -606,6 +631,49 @@ document.addEventListener('visibilitychange',function(){
   window.__renderAttend=function(){view=new Date();view.setDate(1);render();};
   renderName(); render();
 })();
+
+/* ===== 공지사항 ===== */
+const NOTICE_API="";  /* 구글 Apps Script 웹앱 URL (관리자 연결 후 입력) */
+const NOTICE_PW="vision153!";
+let noticeUnlocked=false;
+function loadNotices(){
+  const box=document.getElementById('noticeList');
+  if(!NOTICE_API){box.innerHTML='<div class="loq">공지 기능을 준비 중입니다.<br>(관리자 연결 후 표시됩니다)</div>';return;}
+  box.innerHTML='<div class="loq">공지를 불러오는 중…</div>';
+  fetchT(NOTICE_API,9000).then(function(r){return r.json();}).then(function(list){
+    if(!list||!list.length){box.innerHTML='<div class="loq">아직 등록된 공지가 없어요.</div>';return;}
+    box.innerHTML=list.map(function(n){
+      const t=String(n.text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const d=n.time?new Date(n.time).toLocaleString('ko-KR'):'';
+      return '<div class="noticeCard"><div class="noticeText">'+t+'</div><div class="noticeDate">'+d+'</div></div>';
+    }).join('');
+  }).catch(function(){box.innerHTML='<div class="loq">공지를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.</div>';});
+}
+document.getElementById('noticeWriteBtn').onclick=function(){
+  if(!NOTICE_API){alert('공지 기능이 아직 연결되지 않았어요. (관리자 설정 필요)');return;}
+  if(!noticeUnlocked){
+    const p=window.prompt('관리자 비밀번호를 입력하세요');
+    if(p===null)return;
+    if(p!==NOTICE_PW){alert('비밀번호가 올바르지 않습니다.');return;}
+    noticeUnlocked=true;
+  }
+  document.getElementById('noticeText').value='';
+  document.getElementById('noticeModal').classList.add('on');
+};
+document.getElementById('noticeCancel').onclick=function(){document.getElementById('noticeModal').classList.remove('on');};
+document.getElementById('noticeModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('on');});
+document.getElementById('noticePost').onclick=function(){
+  const txt=document.getElementById('noticeText').value.trim();
+  if(!txt){alert('내용을 입력하세요.');return;}
+  const btn=this; btn.disabled=true; btn.textContent='등록 중…';
+  fetch(NOTICE_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({password:NOTICE_PW,text:txt})})
+    .then(function(r){return r.json();}).then(function(res){
+      btn.disabled=false; btn.textContent='등록';
+      if(res&&res.ok===false){alert('등록 권한이 없습니다.');return;}
+      document.getElementById('noticeModal').classList.remove('on');
+      loadNotices();
+    }).catch(function(){btn.disabled=false;btn.textContent='등록';alert('등록에 실패했어요. 잠시 후 다시 시도해 주세요.');});
+};
 
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
