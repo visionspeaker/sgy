@@ -353,9 +353,21 @@ function go(s){
 function open_(u){window.open(u,'_blank');}
 
 const YT_KEY="AIzaSyANbAU2nkj6wT5SRC2wZqQUlHb2HqC8b8I";
-let ytPageToken=null, ytLoadingMore=false;
+let ytPageToken=null, ytLoadingMore=false, ytSeen={};
 function ytApi(token){
   return "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=20&playlistId="+CH+(token?("&pageToken="+token):"")+"&key="+YT_KEY;
+}
+function dedupeVids(items){
+  const out=[];
+  (items||[]).forEach(function(it){
+    const s=it.snippet||{};
+    const id=(s.resourceId&&s.resourceId.videoId)||"";
+    const key=(s.title||"").replace(/\s+/g,' ').trim();
+    if((key&&ytSeen['t:'+key])||(id&&ytSeen['v:'+id]))return;
+    if(key)ytSeen['t:'+key]=1; if(id)ytSeen['v:'+id]=1;
+    out.push(it);
+  });
+  return out;
 }
 function vcardHTML(items){
   return items.map(function(it){
@@ -382,9 +394,9 @@ function loadVideos(){
   document.getElementById('ytmain').src="https://www.youtube.com/embed/videoseries?list="+CH+"&rel=0";
   const box=document.getElementById('vid-list');
   box.innerHTML='<div class="loq">지난 영상을 불러오는 중…</div>';
-  ytPageToken=null; ytLoadingMore=false;
+  ytPageToken=null; ytLoadingMore=false; ytSeen={};
   fetchT(ytApi(null),9000).then(function(r){return r.json();}).then(function(j){
-    const items=(j.items||[]);
+    const items=dedupeVids(j.items);
     if(!items.length)throw new Error("empty");
     box.innerHTML=vcardHTML(items);
     ytPageToken=j.nextPageToken||null;
@@ -398,7 +410,7 @@ function loadMoreVid(){
   if(ytLoadingMore||!ytPageToken)return; ytLoadingMore=true;
   const btn=document.getElementById('vidMoreBtn'); if(btn){btn.disabled=true; btn.textContent="불러오는 중…";}
   fetchT(ytApi(ytPageToken),9000).then(function(r){return r.json();}).then(function(j){
-    const items=(j.items||[]);
+    const items=dedupeVids(j.items);
     document.getElementById('vid-list').insertAdjacentHTML('beforeend',vcardHTML(items));
     ytPageToken=j.nextPageToken||null; ytLoadingMore=false;
     setVidMore(!!ytPageToken);
