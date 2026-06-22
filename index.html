@@ -73,6 +73,28 @@
   .visitCount{text-align:center;font-size:12px;color:var(--tx3);padding:24px 8px 4px}
   .visitCount i{font-size:13px;vertical-align:-2px;margin-right:3px}
   .visitCount b{color:var(--tx2);font-weight:700}
+  .attTop{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:6px}
+  .attName{font-size:16px;font-weight:700;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .attSub{font-size:11.5px;color:var(--tx2);margin-top:2px}
+  .attEdit{margin-left:auto;background:var(--bg);border:1px solid var(--line);border-radius:10px;width:36px;height:36px;color:var(--tx2);cursor:pointer;flex:none;font-size:17px}
+  .attStats{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:11px}
+  .statBox{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+  .statBox .sLbl{font-size:12px;color:var(--tx2)}
+  .statBox .sVal{font-size:14px;color:var(--tx2);margin-top:3px}
+  .statBox .sVal b{font-size:22px;color:var(--primary);font-weight:700;margin-right:2px}
+  .calBar{display:flex;align-items:center;justify-content:space-between;margin:18px 2px 10px}
+  .calTitle{font-size:15.5px;font-weight:700;color:var(--tx)}
+  .calNav{background:var(--surface);border:1px solid var(--line);border-radius:10px;width:34px;height:34px;color:var(--tx2);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+  .calWeek{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:11px;color:var(--tx3);padding:0 4px 6px}
+  .calWeek span:first-child{color:#e2574c}
+  .calGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;padding:0 4px}
+  .calCell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--tx);border-radius:50%}
+  .calCell.dim{color:var(--tx3);opacity:.45}
+  .calCell.today{border:2px solid var(--primary);font-weight:700;color:var(--primary)}
+  .calCell.stamp{background:#ef4444;color:#fff;font-weight:700;box-shadow:0 2px 6px rgba(239,68,68,.35)}
+  .attBtn{display:block;width:100%;margin-top:20px;background:var(--primary);color:#fff;border:0;border-radius:14px;padding:15px;font-size:15.5px;font-weight:700;font-family:inherit;cursor:pointer}
+  .attBtn:active{transform:scale(.99)}
+  .attBtn[disabled]{background:var(--line);color:var(--tx3);cursor:default}
   .moreBtn{display:block;width:100%;margin:10px 0 2px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px;font-size:14px;font-weight:600;color:var(--primary);font-family:inherit;cursor:pointer}
   .moreBtn:active{transform:scale(.99)}
   .moreBtn i{font-size:16px;vertical-align:-3px;margin-left:2px}
@@ -157,7 +179,7 @@
         <div class="tile" onclick="open_('https://vision153.notion.site/_250601-2026eda158ae8095999ac133933fd32a?pvs=4')"><div class="ic no"><i class="ti ti-news"></i></div><div class="nm">온라인 주보</div><div class="ds">이번 주 예배 순서와 광고</div></div>
         <div class="tile" onclick="open_('https://www.instagram.com/stgc153')"><div class="ic ig"><i class="ti ti-brand-instagram"></i></div><div class="nm">인스타그램</div><div class="ds">@stgc153 소식과 사진</div></div>
         <div class="tile" onclick="open_('https://band.us/n/acaebbS821711')"><div class="ic bd"><i class="ti ti-users-group"></i></div><div class="nm">중고등부 밴드</div><div class="ds">공지·소통 커뮤니티</div></div>
-        <div class="tile" onclick="open_('https://forms.gle/g3rdDAWXkcrLJjci9')"><div class="ic fo"><i class="ti ti-clipboard-text"></i></div><div class="nm">입회원서</div><div class="ds">새친구 등록 신청</div></div>
+        <div class="tile" onclick="go('attend')"><div class="ic" style="background:#ffe5e5;color:#ef4444"><i class="ti ti-calendar-check"></i></div><div class="nm">출석체크 도장깨기</div><div class="ds">매일 출석하고 도장 받기</div></div>
       </div>
       <div class="visitCount" id="visitCount"><i class="ti ti-users"></i> 방문자 · Today <b id="vToday">-</b> · Total <b id="vTotal">-</b></div>
     </section>
@@ -196,6 +218,7 @@
         <div class="tile" onclick="open_('https://www.youtube.com/@sgy153')"><div class="ic yt"><i class="ti ti-brand-youtube"></i></div><div class="nm">유튜브 채널</div><div class="ds">전체 영상 보기</div></div>
         <div class="tile" onclick="open_('https://www.podbbang.com/channels/9230')"><div class="ic pc"><i class="ti ti-brand-apple-podcast"></i></div><div class="nm">팟빵 채널</div><div class="ds">전체 설교 보관함</div></div>
         <div class="tile" onclick="openCompassion()"><div class="ic" style="background:#fff3df;color:#f59e0b"><i class="ti ti-mood-kid"></i></div><div class="nm">해외 어린이 양육</div><div class="ds">살마 · 헤수스 후원</div></div>
+        <div class="tile" onclick="open_('https://forms.gle/g3rdDAWXkcrLJjci9')"><div class="ic fo"><i class="ti ti-clipboard-text"></i></div><div class="nm">입회원서</div><div class="ds">새친구 등록 신청</div></div>
         <div class="tile" onclick="openInstall()"><div class="ic" style="background:var(--primary-soft);color:var(--primary)"><i class="ti ti-device-mobile-down"></i></div><div class="nm">홈 화면에 추가</div><div class="ds">앱처럼 바로 열기</div></div>
       </div>
       <div class="giveCard" style="margin-top:11px">
@@ -207,6 +230,27 @@
       </div>
 
       <div class="hint" style="margin-top:24px">송탄영광교회 중고등부 공식 앱 · SGY 2.0<br>#송탄영광교회 #중고등부 #평택 #송탄</div>
+    </section>
+
+    <section class="screen" id="s-attend">
+      <div class="sec-t">출석체크 · 도장깨기</div>
+      <div class="attTop">
+        <div style="min-width:0"><div class="attName" id="attName">이름 등록하기</div><div class="attSub">출석 화면을 캡처해 선생님께 인증하세요</div></div>
+        <button class="attEdit" id="attEdit" aria-label="이름 수정"><i class="ti ti-pencil"></i></button>
+      </div>
+      <div class="attStats">
+        <div class="statBox"><div class="sLbl">이번 달 출석</div><div class="sVal"><b id="attMonthCnt">0</b>일</div></div>
+        <div class="statBox"><div class="sLbl">전체 출석</div><div class="sVal"><b id="attTotalCnt">0</b>일</div></div>
+      </div>
+      <div class="calBar">
+        <button class="calNav" id="calPrev" aria-label="이전 달"><i class="ti ti-chevron-left"></i></button>
+        <div class="calTitle" id="calTitle">—</div>
+        <button class="calNav" id="calNext" aria-label="다음 달"><i class="ti ti-chevron-right"></i></button>
+      </div>
+      <div class="calWeek"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
+      <div class="calGrid" id="calGrid"></div>
+      <button class="attBtn" id="attBtn">오늘 출석하기</button>
+      <div class="hint">출석한 날엔 도장이 찍혀요 · 오늘 출석은 하루에 한 번만 가능합니다.</div>
     </section>
   </main>
 
@@ -264,6 +308,7 @@ function go(s){
   document.querySelector('main').scrollTop=0;
   if(s==='vid'&&!ytLoaded){loadVideos();ytLoaded=true;}
   if(s==='pod'){loadPodcast();}
+  if(s==='attend'&&window.__renderAttend){window.__renderAttend();}
 }
 function open_(u){window.open(u,'_blank');}
 
@@ -504,6 +549,63 @@ document.addEventListener('visibilitychange',function(){
   }).catch(function(){
     const el=document.getElementById('visitCount'); if(el)el.style.display='none';
   });
+})();
+
+(function(){
+  const LAUNCH="2026-06-22";
+  const grid=document.getElementById('calGrid');
+  const title=document.getElementById('calTitle');
+  const btn=document.getElementById('attBtn');
+  const nameEl=document.getElementById('attName');
+  if(!grid)return;
+  let view=new Date(); view.setDate(1);
+  function pad(n){return (n<10?'0':'')+n;}
+  function ds(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+  function todayStr(){return ds(new Date());}
+  function getDays(){try{return JSON.parse(localStorage.getItem('sgy_att_days')||'[]');}catch(e){return [];}}
+  function setDays(a){try{localStorage.setItem('sgy_att_days',JSON.stringify(a));}catch(e){}}
+  function getName(){try{return localStorage.getItem('sgy_att_name')||'';}catch(e){return '';}}
+  function setName(n){try{localStorage.setItem('sgy_att_name',n);}catch(e){}}
+  function renderName(){const n=getName();nameEl.textContent=n?n:'이름 등록하기';}
+  function askName(){const n=window.prompt('이름을 입력하세요 (출석 인증용)',getName());if(n!==null){setName(n.trim());renderName();}}
+  nameEl.onclick=askName; document.getElementById('attEdit').onclick=askName;
+  function render(){
+    const y=view.getFullYear(), m=view.getMonth();
+    title.textContent=y+'년 '+(m+1)+'월';
+    const days=getDays();
+    const first=new Date(y,m,1).getDay();
+    const last=new Date(y,m+1,0).getDate();
+    const tStr=todayStr();
+    let html='';
+    for(let i=0;i<first;i++)html+='<div class="calCell"></div>';
+    for(let d=1;d<=last;d++){
+      const cur=y+'-'+pad(m+1)+'-'+pad(d);
+      let cls='calCell';
+      if(days.indexOf(cur)>=0)cls+=' stamp';
+      else if(cur<LAUNCH)cls+=' dim';
+      else if(cur===tStr)cls+=' today';
+      html+='<div class="'+cls+'">'+d+'</div>';
+    }
+    grid.innerHTML=html;
+    const ym=y+'-'+pad(m+1);
+    document.getElementById('attMonthCnt').textContent=days.filter(function(x){return x.slice(0,7)===ym;}).length;
+    document.getElementById('attTotalCnt').textContent=days.length;
+    const t=todayStr();
+    if(t<LAUNCH){btn.textContent='출석 시작 전이에요';btn.disabled=true;}
+    else if(days.indexOf(t)>=0){btn.textContent='오늘 출석 완료 ✓';btn.disabled=true;}
+    else{btn.textContent='오늘 출석하기';btn.disabled=false;}
+  }
+  btn.onclick=function(){
+    const t=todayStr(); if(t<LAUNCH)return;
+    if(!getName()){askName(); if(!getName())return;}
+    const days=getDays(); if(days.indexOf(t)<0){days.push(t);setDays(days);}
+    view=new Date(); view.setDate(1);
+    render();
+  };
+  document.getElementById('calPrev').onclick=function(){view.setMonth(view.getMonth()-1);render();};
+  document.getElementById('calNext').onclick=function(){view.setMonth(view.getMonth()+1);render();};
+  window.__renderAttend=function(){view=new Date();view.setDate(1);render();};
+  renderName(); render();
 })();
 
 if('serviceWorker' in navigator){
