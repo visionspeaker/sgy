@@ -117,6 +117,29 @@
   .noticeActs{display:flex;gap:6px;flex:none}
   .nAct{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:5px 11px;font-size:12px;color:var(--tx2);font-family:inherit;cursor:pointer}
   .nAct.del{color:#e2574c}
+  .camp-hero{background:linear-gradient(135deg,#5b8def,#7c6cff);color:#fff;border-radius:18px;padding:18px;margin-top:6px;position:relative;overflow:hidden;box-shadow:0 8px 22px rgba(108,92,231,.28)}
+  .camp-hero .ct{font-size:11.5px;font-weight:700;opacity:.92;letter-spacing:.5px}
+  .camp-hero .ch{font-size:19px;font-weight:800;margin-top:7px;line-height:1.35}
+  .camp-hero .cv{font-size:13px;opacity:.95;margin-top:8px}
+  .camp-hero i{position:absolute;right:-8px;bottom:-12px;font-size:78px;opacity:.16}
+  .campCard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:15px;margin-top:11px;box-shadow:0 2px 10px rgba(29,27,58,.04)}
+  .campCard h4{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:9px;display:flex;align-items:center;gap:6px}
+  .campCard h4 i{font-size:17px}
+  .campRow{display:flex;gap:10px;font-size:13.5px;line-height:1.6;padding:4px 0}
+  .campRow .k{color:var(--tx2);min-width:46px;flex:none;font-weight:700}
+  .campRow .v{color:var(--tx)}
+  .campList{margin:0;padding:0;list-style:none}
+  .campList li{font-size:13.5px;color:var(--tx);line-height:1.65;padding:3px 0 3px 15px;position:relative}
+  .campList li::before{content:"";position:absolute;left:3px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--primary)}
+  .feeBox{display:flex;gap:10px}
+  .feePill{flex:1;border:1px solid var(--line);border-radius:12px;padding:11px;text-align:center}
+  .feePill.early{border-color:#f5b301;background:#fff7e6}
+  .feePill .fl{font-size:11.5px;color:var(--tx2)}
+  .feePill .fa{font-size:18px;font-weight:800;color:var(--tx);margin-top:3px}
+  .feePill.early .fa{color:#d9890b}
+  .campNote{font-size:12px;color:var(--tx3);line-height:1.65;margin-top:9px}
+  .campBtn{display:block;width:100%;margin-top:16px;background:var(--primary);color:#fff;border:0;border-radius:12px;padding:14px;font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center}
+  .campBtn:active{transform:scale(.99)}
   #noticeModal{display:none;position:fixed;inset:0;z-index:100;background:rgba(20,18,45,.55);align-items:flex-end;justify-content:center}
   #noticeModal.on{display:flex}
   #noticeModal textarea{width:100%;min-height:130px;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;font-family:inherit;line-height:1.6;resize:vertical;color:var(--tx);background:var(--bg);box-sizing:border-box}
@@ -206,6 +229,7 @@
         <div class="tile" onclick="open_('https://www.instagram.com/stgc153')"><div class="ic ig"><i class="ti ti-brand-instagram"></i></div><div class="nm">인스타그램</div><div class="ds">@stgc153 소식과 사진</div></div>
         <div class="tile" onclick="open_('https://band.us/n/acaebbS821711')"><div class="ic bd"><i class="ti ti-users-group"></i></div><div class="nm">중고등부 밴드</div><div class="ds">공지·소통 커뮤니티</div></div>
         <div class="tile" onclick="go('attend')"><div class="ic" style="background:#ffe5e5;color:#ef4444"><i class="ti ti-calendar-check"></i></div><div class="nm">출석체크 도장깨기</div><div class="ds">매일 출석하고 도장 받기</div></div>
+        <div class="tile" onclick="go('camp')"><div class="ic" style="background:#e3f9ec;color:#16a34a"><i class="ti ti-tent"></i></div><div class="nm">여름수련회</div><div class="ds">2026 주바라기 캠프 3차</div></div>
       </div>
       <div class="visitCount" id="visitCount"><i class="ti ti-users"></i> 방문자 · Today <b id="vToday">-</b> · Total <b id="vTotal">-</b></div>
     </section>
@@ -282,6 +306,69 @@
       <div class="sec-t">공지사항</div>
       <button class="writeBtn" id="noticeWriteBtn"><i class="ti ti-pencil"></i> 공지 작성 (관리자)</button>
       <div id="noticeList"><div class="loq">공지를 불러오는 중…</div></div>
+    </section>
+
+    <section class="screen" id="s-camp">
+      <div class="sec-t">여름수련회</div>
+      <div class="camp-hero">
+        <div class="ct">중고등부 · 2026 SUMMER CAMP</div>
+        <div class="ch">주바라기 캠프 3차<br>“하나님께서 주신 비전을 보라”</div>
+        <div class="cv">사도행전 13:14~15</div>
+        <i class="ti ti-tent"></i>
+      </div>
+      <div class="campCard">
+        <h4><i class="ti ti-calendar-event" style="color:var(--primary)"></i> 일정 안내</h4>
+        <div class="campRow"><span class="k">일정</span><span class="v">7/30(목) ~ 8/1(토) · 2박 3일</span></div>
+        <div class="campRow"><span class="k">장소</span><span class="v">한남대학교 (대전)</span></div>
+        <div class="campRow"><span class="k">대상</span><span class="v">중고등부 학생</span></div>
+        <div class="campRow"><span class="k">접수</span><span class="v">첫날 12:30~14:30 · 개회예배 오후 3시</span></div>
+      </div>
+      <div class="campCard">
+        <h4><i class="ti ti-wallet" style="color:#f59e0b"></i> 참가비</h4>
+        <div class="feeBox">
+          <div class="feePill early"><div class="fl">얼리버드 ~7/12</div><div class="fa">50,000원</div></div>
+          <div class="feePill"><div class="fl">일반 (7/13~)</div><div class="fa">60,000원</div></div>
+        </div>
+        <div class="campNote">원래 참가비 95,000원 → 차액은 <b>중고등부에서 지원</b>합니다.<br>얼리버드 신청 마감 <b>2026. 7. 12.(일)</b> — 마감 임박!</div>
+      </div>
+      <div class="campCard">
+        <h4><i class="ti ti-star" style="color:#7c6cff"></i> 주요 프로그램</h4>
+        <ul class="campList">
+          <li>말씀특강 · 저녁집회 (은혜의 시간)</li>
+          <li>찬양콘서트 · 주바라기 워십</li>
+          <li>비전을 위한 기도 · 한 영혼을 그리스도께로!</li>
+          <li>개회예배 &amp; 오리엔테이션 · 교사세미나</li>
+        </ul>
+      </div>
+      <div class="campCard">
+        <h4><i class="ti ti-microphone-2" style="color:#e2574c"></i> 강사 &amp; 찬양</h4>
+        <div class="campRow"><span class="k">말씀</span><span class="v">박성규(총신대 총장) · 김태훈 · 허진열 · 이광재 · 이세종 · 하재호</span></div>
+        <div class="campRow"><span class="k">찬양</span><span class="v">유은성 · 박요한 · 임선주 · 주바라기 워십</span></div>
+      </div>
+      <div class="campCard">
+        <h4><i class="ti ti-checkbox" style="color:#16a34a"></i> 준비물 &amp; 안내</h4>
+        <ul class="campList">
+          <li>개인 침구 꼭 지참 (모포 대여 시 1장 3,000원)</li>
+          <li>세면도구 · 성경 · 필기구 · 편한 옷</li>
+          <li>식사 5식 제공 (첫날 점심은 각자 준비)</li>
+          <li>명찰 착용 필수 — 없으면 숙소·식당·강당 출입 제한</li>
+          <li>숙소는 캠프 당일 현장 배정 (남/여 구분)</li>
+          <li>캠프장 내 취사 불가 — 필요한 간식만 개인 준비</li>
+        </ul>
+      </div>
+      <div class="campCard">
+        <h4><i class="ti ti-clock" style="color:var(--primary)"></i> 한눈에 보는 일정</h4>
+        <div class="campRow"><span class="k">1일차<br>7/30</span><span class="v">접수(12:30~14:30) → 개회예배·OT(15시) → 찬양콘서트(유은성) → 저녁집회 박성규 · 비전을 위한 기도</span></div>
+        <div class="campRow"><span class="k">2일차<br>7/31</span><span class="v">QT·아침 → 말씀특강 이광재/교사세미나 → 찬양콘서트(임선주·박요한) → 저녁집회 김태훈 · 부흥을 위한 기도</span></div>
+        <div class="campRow"><span class="k">3일차<br>8/1</span><span class="v">QT·아침 → 말씀특강 허진열 → 폐회예배 → 정리 및 귀가</span></div>
+        <div class="campNote">※ 세부 일정은 캠프 사정에 따라 변경될 수 있습니다.</div>
+      </div>
+      <div class="campCard">
+        <h4><i class="ti ti-pencil" style="color:#f59e0b"></i> 신청 안내</h4>
+        <div class="campNote" style="font-size:13px;color:var(--tx)">중고등부 <b>단체 신청</b>으로 진행됩니다. 담당 교역자·교사에게 신청해 주세요.<br>얼리버드 마감 <b>7월 12일(일)</b>! · 문의: 중고등부 담당 교역자</div>
+      </div>
+      <button class="campBtn" onclick="open_('https://www.juba.co.kr/kor/main/index.html')">주바라기선교회 홈페이지 <i class="ti ti-external-link" style="vertical-align:-2px"></i></button>
+      <div class="hint">2026 주바라기 캠프 3차 안내 기준</div>
     </section>
   </main>
 
