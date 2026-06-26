@@ -141,6 +141,8 @@
   .campBtn{display:block;width:100%;margin-top:16px;background:var(--primary);color:#fff;border:0;border-radius:12px;padding:14px;font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center}
   .campBtn:active{transform:scale(.99)}
   .campBtn[disabled]{background:var(--line);color:var(--tx3);cursor:default}
+  #campApplyBtn{background:#f59e0b;color:#fff}
+  #campApplyBtn[disabled]{background:#f59e0b;color:#fff;cursor:default}
   #noticeModal{display:none;position:fixed;inset:0;z-index:100;background:rgba(20,18,45,.55);align-items:flex-end;justify-content:center}
   #noticeModal.on{display:flex}
   #noticeModal textarea{width:100%;min-height:130px;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;font-family:inherit;line-height:1.6;resize:vertical;color:var(--tx);background:var(--bg);box-sizing:border-box}
@@ -447,7 +449,7 @@ function updateCampApply(){
     b.onclick=function(){open_(CAMP_FORM);};
   } else {
     b.disabled=true;
-    b.innerHTML='<i class="ti ti-lock" style="vertical-align:-2px;margin-right:4px"></i>6/28(주일) 0시 신청 오픈';
+    b.innerHTML='<i class="ti ti-lock" style="vertical-align:-2px;margin-right:4px"></i>6/28(주일) 00:00 신청 오픈';
     b.onclick=null;
   }
 }
