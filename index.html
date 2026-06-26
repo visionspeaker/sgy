@@ -140,6 +140,7 @@
   .campNote{font-size:12px;color:var(--tx3);line-height:1.65;margin-top:9px}
   .campBtn{display:block;width:100%;margin-top:16px;background:var(--primary);color:#fff;border:0;border-radius:12px;padding:14px;font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center}
   .campBtn:active{transform:scale(.99)}
+  .campBtn[disabled]{background:var(--line);color:var(--tx3);cursor:default}
   #noticeModal{display:none;position:fixed;inset:0;z-index:100;background:rgba(20,18,45,.55);align-items:flex-end;justify-content:center}
   #noticeModal.on{display:flex}
   #noticeModal textarea{width:100%;min-height:130px;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;font-family:inherit;line-height:1.6;resize:vertical;color:var(--tx);background:var(--bg);box-sizing:border-box}
@@ -363,6 +364,7 @@
       <div class="campCard">
         <h4><i class="ti ti-pencil" style="color:#f59e0b"></i> 신청 안내</h4>
         <div class="campNote" style="font-size:13px;color:var(--tx)">신청 기간 <b>6/28(주일) ~ 7/19(주일)</b><br>얼리버드 마감 <b>7/12(주일)</b><br>※ 6/28(주일) 신청 링크가 열립니다.</div>
+        <button class="campBtn" id="campApplyBtn" style="margin-top:13px" disabled>신청 준비 중</button>
       </div>
       <button class="campBtn" onclick="open_('https://www.juba.co.kr/kor/main/index.html')">주바라기선교회 홈페이지 <i class="ti ti-external-link" style="vertical-align:-2px"></i></button>
       <div class="hint">2026 주바라기 캠프 3차 안내 기준</div>
@@ -433,6 +435,21 @@ function go(s){
   if(s==='pod'){loadPodcast();}
   if(s==='attend'&&window.__renderAttend){window.__renderAttend();}
   if(s==='notice'){loadNotices();}
+  if(s==='camp'){updateCampApply();}
+}
+const CAMP_FORM="https://forms.gle/2fLjLoCApv8bDkto7";
+const CAMP_OPEN=new Date(2026,5,28,0,0,0);
+function updateCampApply(){
+  const b=document.getElementById('campApplyBtn'); if(!b)return;
+  if(new Date()>=CAMP_OPEN){
+    b.disabled=false;
+    b.innerHTML='신청서 작성하기 <i class="ti ti-external-link" style="vertical-align:-2px"></i>';
+    b.onclick=function(){open_(CAMP_FORM);};
+  } else {
+    b.disabled=true;
+    b.innerHTML='<i class="ti ti-lock" style="vertical-align:-2px;margin-right:4px"></i>6/28(주일) 0시 신청 오픈';
+    b.onclick=null;
+  }
 }
 function open_(u){window.open(u,'_blank');}
 
