@@ -143,6 +143,15 @@
   .campBtn[disabled]{background:var(--line);color:var(--tx3);cursor:default}
   #campApplyBtn{background:#f59e0b;color:#fff}
   #campApplyBtn[disabled]{background:#f59e0b;color:#fff;cursor:default}
+  .contactInfo{text-align:center;margin:2px 0 16px}
+  .contactInfo a{font-size:14px;color:var(--primary);font-weight:600;text-decoration:none}
+  .cform label{display:block;font-size:13px;font-weight:700;color:var(--tx);margin:14px 0 6px}
+  .cform input,.cform textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;font-family:inherit;color:var(--tx);background:var(--surface)}
+  .cform textarea{min-height:120px;line-height:1.6;resize:vertical}
+  .ctSend{display:block;width:100%;margin-top:18px;background:#1c1c1c;color:#fff;border:0;border-radius:12px;padding:15px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:.5px}
+  .ctSend:active{transform:scale(.99)}
+  .ctSend[disabled]{opacity:.55;cursor:default}
+  .ctStatus{text-align:center;font-size:13px;color:var(--primary);margin-top:12px;min-height:18px}
   #noticeModal{display:none;position:fixed;inset:0;z-index:100;background:rgba(20,18,45,.55);align-items:flex-end;justify-content:center}
   #noticeModal.on{display:flex}
   #noticeModal textarea{width:100%;min-height:130px;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;font-family:inherit;line-height:1.6;resize:vertical;color:var(--tx);background:var(--bg);box-sizing:border-box}
@@ -251,7 +260,7 @@
     <section class="screen" id="s-vid">
       <div class="sec-t">중고등부 유튜브</div>
       <div class="vwrap"><iframe id="ytmain" src="about:blank" title="중고등부 영상" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>
-      <div style="font-size:12px;color:var(--tx2);padding:6px 4px 2px">@sgy153 · 최신 업로드 자동 재생</div>
+      <div style="font-size:12px;color:var(--tx2);padding:6px 4px 2px">@sgy153 · 최신 업로드 영상</div>
       <div id="vid-list"></div>
       <div id="vidMore"></div>
       <div class="hint">영상을 누르면 앱 안에서 바로 재생됩니다.</div>
@@ -265,7 +274,8 @@
         <div class="sub">대한예수교장로회(합동)</div>
         <i class="ti ti-cross"></i>
       </div>
-      <div class="grid" style="margin-top:14px">
+      <div class="tile" style="margin-top:12px" onclick="go('contact')"><div class="ic" style="background:#e4f0ff;color:#2f80ed"><i class="ti ti-mail"></i></div><div class="nm">문의하기 (Contact)</div><div class="ds">궁금한 점을 남겨주세요</div></div>
+      <div class="grid" style="margin-top:12px">
         <div class="tile" onclick="open_('https://map.naver.com/p/search/송탄영광교회')"><div class="ic mp"><i class="ti ti-map-pin"></i></div><div class="nm">오시는 길</div><div class="ds">평택시 지산로 245-20</div></div>
         <div class="tile" onclick="open_('https://vision153.notion.site/_-1fb6eda158ae80a8abcfc56bc73981c8?pvs=4')"><div class="ic no"><i class="ti ti-calendar-event"></i></div><div class="nm">연간계획</div><div class="ds">한 해 일정과 행사</div></div>
         <div class="tile" onclick="open_('https://www.youtube.com/@sgy153')"><div class="ic yt"><i class="ti ti-brand-youtube"></i></div><div class="nm">중고등부 유튜브</div><div class="ds">전체 영상 보기</div></div>
@@ -370,6 +380,21 @@
       </div>
       <button class="campBtn" onclick="open_('https://www.juba.co.kr/kor/main/index.html')">주바라기선교회 홈페이지 <i class="ti ti-external-link" style="vertical-align:-2px"></i></button>
       <div class="hint">2026 주바라기 캠프 3차 안내 기준</div>
+    </section>
+
+    <section class="screen" id="s-contact">
+      <div class="sec-t">CONTACT · 문의하기</div>
+      <div class="contactInfo"><i class="ti ti-mail" style="vertical-align:-2px;margin-right:5px;color:var(--tx3)"></i><a href="mailto:visionspeaker@kakao.com">visionspeaker@kakao.com</a></div>
+      <div class="cform">
+        <label>이름 (Name) *</label>
+        <input id="ctName" type="text" placeholder="이름을 입력하세요">
+        <label>이메일 또는 전화번호 *</label>
+        <input id="ctContact" type="text" placeholder="연락받을 이메일 또는 전화번호">
+        <label>내용 (Message) *</label>
+        <textarea id="ctMsg" placeholder="문의 내용을 남겨주세요"></textarea>
+        <button class="ctSend" id="ctSend">보내기 (SEND)</button>
+        <div class="ctStatus" id="ctStatus"></div>
+      </div>
     </section>
   </main>
 
@@ -836,6 +861,25 @@ document.getElementById('noticePost').onclick=function(){
   if(!txt){alert('내용을 입력하세요.');return;}
   if(editingId)postNotice({action:'edit',id:editingId,text:txt});
   else postNotice({action:'add',text:txt});
+};
+
+/* ===== 문의(Contact) ===== */
+const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjhCMPo4kOaiW4Gt2zWSQeajz8sf9m9SGcFG-2oua-y12ph9o/exec";  /* 구글 Apps Script 웹앱 URL */
+document.getElementById('ctSend').onclick=function(){
+  const name=document.getElementById('ctName').value.trim();
+  const contact=document.getElementById('ctContact').value.trim();
+  const msg=document.getElementById('ctMsg').value.trim();
+  const st=document.getElementById('ctStatus');
+  if(!name||!contact||!msg){alert('이름, 연락처, 내용을 모두 입력해 주세요.');return;}
+  if(!CONTACT_API){st.textContent='문의 접수 기능이 아직 연결되지 않았어요. (관리자 설정 필요)';return;}
+  const btn=this; btn.disabled=true; btn.textContent='보내는 중…'; st.textContent='';
+  fetch(CONTACT_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({name:name,contact:contact,message:msg})})
+    .then(function(r){return r.json();}).then(function(res){
+      btn.disabled=false; btn.textContent='보내기 (SEND)';
+      if(res&&res.ok===false){st.style.color='var(--danger)';st.textContent='입력을 확인해 주세요.';return;}
+      document.getElementById('ctName').value=''; document.getElementById('ctContact').value=''; document.getElementById('ctMsg').value='';
+      st.style.color='var(--primary)'; st.textContent='문의가 접수되었습니다. 감사합니다! 🙏';
+    }).catch(function(){btn.disabled=false; btn.textContent='보내기 (SEND)'; st.style.color='var(--danger)'; st.textContent='전송에 실패했어요. 잠시 후 다시 시도해 주세요.';});
 };
 
 if('serviceWorker' in navigator){
