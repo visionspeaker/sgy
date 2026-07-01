@@ -51,6 +51,9 @@
   .tile .ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px}
   .tile .nm{font-size:14px;font-weight:600;color:var(--tx)}
   .tile .ds{font-size:11.5px;color:var(--tx2);line-height:1.4}
+  .tile.tileRow{flex-direction:row;align-items:center;gap:12px}
+  .tile.tileRow .ic{flex:none}
+  .tile.tileRow .ds{font-size:12px;margin-top:2px}
   .ic.ig{background:#ffe9f1;color:#e1306c}.ic.bd{background:#e3f9ec;color:#16a34a}
   .ic.no{background:#eef1f7;color:#475569}.ic.fo{background:var(--gold-soft);color:var(--gold)}
   .ic.yt{background:#ffe5e5;color:#ef4444}.ic.pc{background:var(--primary-soft);color:var(--primary)}.ic.mp{background:#e4f0ff;color:#2f80ed}
@@ -274,7 +277,7 @@
         <div class="sub">대한예수교장로회(합동)</div>
         <i class="ti ti-cross"></i>
       </div>
-      <div class="tile" style="margin-top:12px" onclick="go('contact')"><div class="ic" style="background:#e4f0ff;color:#2f80ed"><i class="ti ti-mail"></i></div><div class="nm">문의하기 (Contact)</div><div class="ds">궁금한 점을 남겨주세요</div></div>
+      <div class="tile tileRow" style="margin-top:12px" onclick="go('contact')"><div class="ic" style="background:#e4f0ff;color:#2f80ed"><i class="ti ti-mail"></i></div><div><div class="nm">문의하기</div><div class="ds">궁금한 점을 남겨주세요</div></div></div>
       <div class="grid" style="margin-top:12px">
         <div class="tile" onclick="open_('https://map.naver.com/p/search/송탄영광교회')"><div class="ic mp"><i class="ti ti-map-pin"></i></div><div class="nm">오시는 길</div><div class="ds">평택시 지산로 245-20</div></div>
         <div class="tile" onclick="open_('https://vision153.notion.site/_-1fb6eda158ae80a8abcfc56bc73981c8?pvs=4')"><div class="ic no"><i class="ti ti-calendar-event"></i></div><div class="nm">연간계획</div><div class="ds">한 해 일정과 행사</div></div>
