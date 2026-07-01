@@ -148,7 +148,7 @@
   .cform label{display:block;font-size:13px;font-weight:700;color:var(--tx);margin:14px 0 6px}
   .cform input,.cform textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;font-family:inherit;color:var(--tx);background:var(--surface)}
   .cform textarea{min-height:120px;line-height:1.6;resize:vertical}
-  .ctSend{display:block;width:100%;margin-top:18px;background:#1c1c1c;color:#fff;border:0;border-radius:12px;padding:15px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:.5px}
+  .ctSend{display:block;width:100%;margin-top:18px;background:#f5821f;color:#fff;border:0;border-radius:12px;padding:15px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:.5px}
   .ctSend:active{transform:scale(.99)}
   .ctSend[disabled]{opacity:.55;cursor:default}
   .ctStatus{text-align:center;font-size:13px;color:var(--primary);margin-top:12px;min-height:18px}
@@ -386,13 +386,13 @@
       <div class="sec-t">CONTACT · 문의하기</div>
       <div class="contactInfo"><i class="ti ti-mail" style="vertical-align:-2px;margin-right:5px;color:var(--tx3)"></i><a href="mailto:visionspeaker@kakao.com">visionspeaker@kakao.com</a></div>
       <div class="cform">
-        <label>이름 (Name) *</label>
+        <label>이름 *</label>
         <input id="ctName" type="text" placeholder="이름을 입력하세요">
         <label>이메일 또는 전화번호 *</label>
         <input id="ctContact" type="text" placeholder="연락받을 이메일 또는 전화번호">
-        <label>내용 (Message) *</label>
+        <label>내용 *</label>
         <textarea id="ctMsg" placeholder="문의 내용을 남겨주세요"></textarea>
-        <button class="ctSend" id="ctSend">보내기 (SEND)</button>
+        <button class="ctSend" id="ctSend">보내기</button>
         <div class="ctStatus" id="ctStatus"></div>
       </div>
     </section>
@@ -875,11 +875,11 @@ document.getElementById('ctSend').onclick=function(){
   const btn=this; btn.disabled=true; btn.textContent='보내는 중…'; st.textContent='';
   fetch(CONTACT_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({name:name,contact:contact,message:msg})})
     .then(function(r){return r.json();}).then(function(res){
-      btn.disabled=false; btn.textContent='보내기 (SEND)';
+      btn.disabled=false; btn.textContent='보내기';
       if(res&&res.ok===false){st.style.color='var(--danger)';st.textContent='입력을 확인해 주세요.';return;}
       document.getElementById('ctName').value=''; document.getElementById('ctContact').value=''; document.getElementById('ctMsg').value='';
       st.style.color='var(--primary)'; st.textContent='문의가 접수되었습니다. 감사합니다! 🙏';
-    }).catch(function(){btn.disabled=false; btn.textContent='보내기 (SEND)'; st.style.color='var(--danger)'; st.textContent='전송에 실패했어요. 잠시 후 다시 시도해 주세요.';});
+    }).catch(function(){btn.disabled=false; btn.textContent='보내기'; st.style.color='var(--danger)'; st.textContent='전송에 실패했어요. 잠시 후 다시 시도해 주세요.';});
 };
 
 if('serviceWorker' in navigator){
