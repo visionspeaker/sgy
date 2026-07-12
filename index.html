@@ -140,10 +140,10 @@
   .feePill .fl{font-size:11.5px;color:var(--tx2)}
   .feePill .fa{font-size:18px;font-weight:800;color:var(--tx);margin-top:3px}
   .feePill.early .fa{color:#d9890b}
-  .feePill.ended{border-color:var(--line);background:#f4f4f7;opacity:.72;position:relative}
+  .feePill.ended{border-color:var(--line);background:#f4f4f7;position:relative;overflow:hidden}
   .feePill.ended .fl{color:var(--tx3)}
-  .feePill.ended .fa{color:var(--tx3);text-decoration:line-through}
-  .feePill.ended .feeX{position:absolute;top:5px;right:8px;font-size:15px;font-weight:900;color:#e5484d}
+  .feePill.ended .fa{color:var(--tx3)}
+  .feePill.ended .feeX{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top right, transparent calc(50% - 1.5px), #e5484d calc(50% - 1.5px), #e5484d calc(50% + 1.5px), transparent calc(50% + 1.5px)),linear-gradient(to bottom right, transparent calc(50% - 1.5px), #e5484d calc(50% - 1.5px), #e5484d calc(50% + 1.5px), transparent calc(50% + 1.5px))}
   .feePill.now{border-color:var(--primary);background:var(--primary-soft)}
   .feePill.now .fl{color:var(--primary);font-weight:700}
   .feePill.now .fa{color:var(--primary)}
@@ -352,7 +352,7 @@
       <div class="campCard">
         <h4><i class="ti ti-wallet" style="color:#f59e0b"></i> 참가비</h4>
         <div class="feeBox">
-          <div class="feePill ended"><div class="fl">얼리버드 (~7/12)</div><div class="fa">50,000원</div><span class="feeX">✕</span></div>
+          <div class="feePill ended"><div class="fl">얼리버드 (~7/12)</div><div class="fa">50,000원</div><span class="feeX"></span></div>
           <div class="feePill now"><div class="fl">일반 (7/13~)</div><div class="fa">60,000원</div></div>
         </div>
         <div class="campNote">원래 참가비 95,000원 → 차액은 <b>중고등부에서 지원</b>합니다.<br><s>얼리버드 신청 마감 <b>2026. 7. 12.(주일)</b></s><br>입금계좌 : <b>7942-21-89862</b> 카카오뱅크(최영미)</div>
