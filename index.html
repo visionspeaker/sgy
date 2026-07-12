@@ -140,6 +140,13 @@
   .feePill .fl{font-size:11.5px;color:var(--tx2)}
   .feePill .fa{font-size:18px;font-weight:800;color:var(--tx);margin-top:3px}
   .feePill.early .fa{color:#d9890b}
+  .feePill.ended{border-color:var(--line);background:#f4f4f7;opacity:.72;position:relative}
+  .feePill.ended .fl{color:var(--tx3)}
+  .feePill.ended .fa{color:var(--tx3);text-decoration:line-through}
+  .feePill.ended .feeX{position:absolute;top:5px;right:8px;font-size:15px;font-weight:900;color:#e5484d}
+  .feePill.now{border-color:var(--primary);background:var(--primary-soft)}
+  .feePill.now .fl{color:var(--primary);font-weight:700}
+  .feePill.now .fa{color:var(--primary)}
   .campNote{font-size:12px;color:var(--tx3);line-height:1.65;margin-top:9px}
   .campBtn{display:block;width:100%;margin-top:16px;background:var(--primary);color:#fff;border:0;border-radius:12px;padding:14px;font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center}
   .campBtn:active{transform:scale(.99)}
@@ -334,7 +341,7 @@
       </div>
       <div class="campCard">
         <h4><i class="ti ti-pencil" style="color:#f59e0b"></i> 신청 안내</h4>
-        <div class="campNote" style="font-size:13px;color:var(--tx)">신청 기간 <b>6/28(주일) ~ 7/19(주일)</b><br>얼리버드 마감 <b>7/12(주일)</b></div>
+        <div class="campNote" style="font-size:13px;color:var(--tx)">신청 기간 <b>6/28(주일) ~ 7/19(주일)</b><br><s style="color:var(--tx3)">얼리버드 마감 <b>7/12(주일)</b></s></div>
         <button class="campBtn" id="campApplyBtn" style="margin-top:13px" disabled>신청 준비 중</button>
       </div>
       <div class="campCard">
@@ -345,10 +352,10 @@
       <div class="campCard">
         <h4><i class="ti ti-wallet" style="color:#f59e0b"></i> 참가비</h4>
         <div class="feeBox">
-          <div class="feePill early"><div class="fl">얼리버드 (~7/12)</div><div class="fa">50,000원</div></div>
-          <div class="feePill"><div class="fl">일반 (7/13~)</div><div class="fa">60,000원</div></div>
+          <div class="feePill ended"><div class="fl">얼리버드 (~7/12)</div><div class="fa">50,000원</div><span class="feeX">✕</span></div>
+          <div class="feePill now"><div class="fl">일반 (7/13~)</div><div class="fa">60,000원</div></div>
         </div>
-        <div class="campNote">원래 참가비 95,000원 → 차액은 <b>중고등부에서 지원</b>합니다.<br>얼리버드 신청 마감 <b>2026. 7. 12.(주일)</b><br>입금계좌 : <b>7942-21-89862</b> 카카오뱅크(최영미)</div>
+        <div class="campNote">원래 참가비 95,000원 → 차액은 <b>중고등부에서 지원</b>합니다.<br><s>얼리버드 신청 마감 <b>2026. 7. 12.(주일)</b></s><br>입금계좌 : <b>7942-21-89862</b> 카카오뱅크(최영미)</div>
       </div>
       <div class="campCard">
         <h4><i class="ti ti-star" style="color:#7c6cff"></i> 주요 프로그램</h4>
