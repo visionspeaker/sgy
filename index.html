@@ -33,6 +33,10 @@
   .screen{display:none;animation:fade .25s ease}
   .screen.on{display:block}
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @keyframes slideR{from{transform:translateX(100%)}to{transform:translateX(0)}}
+  @keyframes slideL{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+  .screen.slNext{animation:slideR .3s cubic-bezier(.33,0,.2,1)}
+  .screen.slPrev{animation:slideL .3s cubic-bezier(.33,0,.2,1)}
   .sec-t{font-size:13px;font-weight:700;color:var(--tx3);letter-spacing:.4px;margin:22px 4px 11px;text-transform:uppercase}
   .worship{background:linear-gradient(120deg,#7c6cff,#a682ff);border-radius:18px;padding:17px 18px;margin-top:8px;position:relative;overflow:hidden;color:#fff;box-shadow:0 8px 22px rgba(124,108,255,.28)}
   .worship .lbl{font-size:11px;font-weight:700;opacity:.9;letter-spacing:1px}
@@ -531,9 +535,12 @@ const CH="UUnBnyGe5s5bLvmBua60nn7Q";
 const PROXY="https://api.allorigins.win/raw?url=";
 let ytLoaded=false, podLoaded=false;
 
-function go(s){
-  document.querySelectorAll('.screen').forEach(e=>e.classList.remove('on'));
-  document.getElementById('s-'+s).classList.add('on');
+function go(s,dir){
+  document.querySelectorAll('.screen').forEach(e=>e.classList.remove('on','slNext','slPrev'));
+  const cur=document.getElementById('s-'+s);
+  cur.classList.add('on');
+  if(dir==='next')cur.classList.add('slNext');
+  else if(dir==='prev')cur.classList.add('slPrev');
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.s===s));
   document.querySelector('main').scrollTop=0;
   if(s==='vid'&&!ytLoaded){loadVideos();ytLoaded=true;}
@@ -1039,8 +1046,8 @@ document.getElementById('ctSend').onclick=function(){
     const curS=active?active.id.replace('s-',''):'home';
     const i=TABS.indexOf(curS);
     if(i<0) return;
-    if(dx<0){ if(i<TABS.length-1) go(TABS[i+1]); }
-    else { if(i>0) go(TABS[i-1]); }
+    if(dx<0){ if(i<TABS.length-1) go(TABS[i+1],'next'); }
+    else { if(i>0) go(TABS[i-1],'prev'); }
   },{passive:true});
 })();
 
