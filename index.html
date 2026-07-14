@@ -77,7 +77,8 @@
   .vcard .vd{font-size:11px;color:var(--tx3);margin-top:5px}
   .hint{font-size:11.5px;color:var(--tx3);text-align:center;padding:14px 8px;line-height:1.6}
   .loq{text-align:center;color:var(--tx3);font-size:13px;padding:30px}
-  .visitCount{text-align:center;font-size:12px;color:var(--tx3);padding:24px 8px 4px}
+  .visitCount{position:fixed;left:50%;transform:translateX(-50%);width:100%;max-width:480px;bottom:calc(64px + env(safe-area-inset-bottom));z-index:15;background:var(--surface);border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--tx3);padding:8px 8px;display:none}
+  .visitCount.show{display:block}
   .visitCount i{font-size:13px;vertical-align:-2px;margin-right:3px}
   .visitCount b{color:var(--tx2);font-weight:700}
   .attTop{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:6px}
@@ -182,7 +183,7 @@
   .moreBtn:active{transform:scale(.99)}
   .moreBtn i{font-size:16px;vertical-align:-3px;margin-left:2px}
   .moreBtn[disabled]{color:var(--tx3)}
-  #mini{position:fixed;left:50%;transform:translateX(-50%);width:calc(100% - 20px);max-width:460px;bottom:calc(64px + env(safe-area-inset-bottom) + 10px);display:none;
+  #mini{position:fixed;left:50%;transform:translateX(-50%);width:calc(100% - 20px);max-width:460px;bottom:calc(64px + env(safe-area-inset-bottom) + 46px);display:none;
     background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:10px 12px 9px;flex-direction:column;gap:8px;z-index:30;box-shadow:0 6px 24px rgba(29,27,58,.14)}
   #mini.on{display:flex}
   .miniRow{display:flex;align-items:center;gap:11px;width:100%}
@@ -266,7 +267,6 @@
         <div class="tile" onclick="go('attend')"><div class="ic" style="background:#ffe5e5;color:#ef4444"><i class="ti ti-calendar-check"></i></div><div class="nm">출석체크 도장깨기</div><div class="ds">매일 출석하고 도장 받기</div></div>
         <div class="tile" onclick="go('camp')"><div class="ic" style="background:#e3f9ec;color:#16a34a"><i class="ti ti-tent"></i></div><div class="nm">여름수련회</div><div class="ds">2026 주바라기 캠프 3차</div></div>
       </div>
-      <div class="visitCount" id="visitCount"><i class="ti ti-users"></i> 방문자 · Today <b id="vToday">-</b> · Total <b id="vTotal">-</b></div>
     </section>
 
     <section class="screen" id="s-pod">
@@ -522,6 +522,8 @@
     <button class="instClose" id="instDismiss">닫기</button>
   </div></div>
 
+  <div class="visitCount show" id="visitCount"><i class="ti ti-users"></i> 방문자 · Today <b id="vToday">-</b> · Total <b id="vTotal">-</b></div>
+
   <nav>
     <button class="on" data-s="home" onclick="go('home')"><i class="ti ti-home-2"></i>홈</button>
     <button data-s="pod" onclick="go('pod')"><i class="ti ti-microphone-2"></i>설교</button>
@@ -542,6 +544,7 @@ function go(s,dir){
   if(dir==='next')cur.classList.add('slNext');
   else if(dir==='prev')cur.classList.add('slPrev');
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.s===s));
+  const vc=document.getElementById('visitCount'); if(vc)vc.classList.toggle('show',s==='home');
   document.querySelector('main').scrollTop=0;
   if(s==='vid'&&!ytLoaded){loadVideos();ytLoaded=true;}
   if(s==='pod'){loadPodcast();}
