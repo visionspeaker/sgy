@@ -801,9 +801,21 @@ document.addEventListener('visibilitychange',function(){
   const dk="d"+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate());
   const hit=function(key){return fetch("https://abacus.jasoncameron.dev/hit/"+NS+"/"+key).then(function(r){return r.json();}).then(function(j){return j.value;});};
   const fmt=function(n){return (n||0).toLocaleString('ko-KR');};
+  const countUp=function(el,target){
+    if(!el)return; target=target||0;
+    const dur=1100, t0=performance.now();
+    const ease=function(x){return 1-Math.pow(1-x,3);};
+    const step=function(now){
+      const p=Math.min((now-t0)/dur,1);
+      el.textContent=fmt(Math.round(target*ease(p)));
+      if(p<1)requestAnimationFrame(step);
+    };
+    el.textContent=fmt(0);
+    requestAnimationFrame(step);
+  };
   Promise.all([hit('total'),hit(dk)]).then(function(v){
     const a=document.getElementById('vTotal'); const b=document.getElementById('vToday');
-    if(a)a.textContent=fmt(v[0]); if(b)b.textContent=fmt(v[1]);
+    countUp(a,v[0]); countUp(b,v[1]);
   }).catch(function(){
     const el=document.getElementById('visitCount'); if(el)el.style.display='none';
   });
