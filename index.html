@@ -643,11 +643,23 @@ function fetchT(url,ms){
 }
 const POD_LIMIT=20;
 let podCache=[], podShown=0;
+function fmtKDate(e){
+  let d=null;
+  if(e.publishedAt){
+    const v=e.publishedAt;
+    d=(typeof v==='number')?new Date(v<1e12?v*1000:v):new Date(v);
+  }
+  if((!d||isNaN(d.getTime())) && e.publishedAtText){
+    const m=String(e.publishedAtText).match(/(\d{2,4})\D+(\d{1,2})\D+(\d{1,2})/);
+    if(m){let y=+m[1]; if(y<100)y+=2000; d=new Date(y,(+m[2])-1,+m[3]);}
+  }
+  return (d&&!isNaN(d.getTime()))?d.toLocaleDateString('ko-KR'):(e.publishedAtText||"");
+}
 function podRowsHTML(eps,start){
   return eps.map(function(e,i){
     const audio=String(e.media.url).replace(/^http:/,"https:");
     const page="https://www.podbbang.com/channels/9230/episodes/"+e.id;
-    return rowHTML(start+i+1,e.title||"설교",e.publishedAtText||"",audio,page);
+    return rowHTML(start+i+1,e.title||"설교",fmtKDate(e),audio,page);
   }).join('');
 }
 function bindEpRows(){
