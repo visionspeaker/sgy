@@ -19,7 +19,7 @@
     --tx:#1d1b3a; --tx2:#5d5b7e; --tx3:#a09eb8;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
-  html,body{height:100%}
+  html,body{height:100%;overflow-x:hidden;max-width:100%}
   body{font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
     background:#dfe0ee;color:var(--tx);display:flex;justify-content:center}
   #app{width:100%;max-width:480px;min-height:100vh;min-height:100dvh;position:relative;
@@ -160,8 +160,10 @@
   .cform textarea{min-height:120px;line-height:1.6;resize:vertical}
   .cform select{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;font-family:inherit;color:var(--tx);background:var(--surface);-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23a09eb8' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 12px center}
   .cform textarea.short{min-height:64px}
+  .cform input[type=date]{min-width:0;max-width:100%;-webkit-appearance:none;appearance:none}
+  .cform input[type=date]::-webkit-date-and-time-value{text-align:left}
   .radioRow{display:flex;gap:8px}
-  .radioRow label{flex:1;margin:0;text-align:center;border:1px solid var(--line);border-radius:12px;padding:11px;font-size:14px;font-weight:600;color:var(--tx2);cursor:pointer;user-select:none}
+  .radioRow label{flex:1;margin:0;text-align:center;border:1px solid var(--line);border-radius:12px;padding:11px;font-size:14px;font-weight:600;color:var(--tx);background:var(--surface);cursor:pointer;user-select:none}
   .radioRow label.on{border-color:var(--primary);background:var(--primary-soft);color:var(--primary)}
   .consent{display:flex;gap:9px;align-items:flex-start;margin:18px 0 4px;font-size:12.5px;color:var(--tx2);line-height:1.55;cursor:pointer}
   .consent input{width:19px;height:19px;flex:none;margin:1px 0 0;accent-color:var(--primary)}
