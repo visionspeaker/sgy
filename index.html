@@ -158,6 +158,13 @@
   .cform label{display:block;font-size:13px;font-weight:700;color:var(--tx);margin:14px 0 6px}
   .cform input,.cform textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;font-family:inherit;color:var(--tx);background:var(--surface)}
   .cform textarea{min-height:120px;line-height:1.6;resize:vertical}
+  .cform select{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;font-family:inherit;color:var(--tx);background:var(--surface);-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23a09eb8' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 12px center}
+  .cform textarea.short{min-height:64px}
+  .radioRow{display:flex;gap:8px}
+  .radioRow label{flex:1;margin:0;text-align:center;border:1px solid var(--line);border-radius:12px;padding:11px;font-size:14px;font-weight:600;color:var(--tx2);cursor:pointer;user-select:none}
+  .radioRow label.on{border-color:var(--primary);background:var(--primary-soft);color:var(--primary)}
+  .consent{display:flex;gap:9px;align-items:flex-start;margin:18px 0 4px;font-size:12.5px;color:var(--tx2);line-height:1.55;cursor:pointer}
+  .consent input{width:19px;height:19px;flex:none;margin:1px 0 0;accent-color:var(--primary)}
   .ctSend{display:block;width:100%;margin-top:18px;background:#f5821f;color:#fff;border:0;border-radius:12px;padding:15px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:.5px}
   .ctSend:active{transform:scale(.99)}
   .ctSend[disabled]{opacity:.55;cursor:default}
@@ -291,7 +298,7 @@
         <div class="tile" onclick="open_('https://www.youtube.com/@sgy153')"><div class="ic yt"><i class="ti ti-brand-youtube"></i></div><div class="nm">중고등부 유튜브</div><div class="ds">전체 영상 보기</div></div>
         <div class="tile" onclick="open_('https://www.podbbang.com/channels/9230')"><div class="ic pc"><i class="ti ti-brand-apple-podcast"></i></div><div class="nm">설교 팟캐스트</div><div class="ds">전체 설교 보관함</div></div>
         <div class="tile" onclick="openCompassion()"><div class="ic" style="background:#fff3df;color:#f59e0b"><i class="ti ti-mood-kid"></i></div><div class="nm">해외 어린이 양육</div><div class="ds">살마 · 헤수스 후원</div></div>
-        <div class="tile" onclick="open_('https://forms.gle/g3rdDAWXkcrLJjci9')"><div class="ic fo"><i class="ti ti-clipboard-text"></i></div><div class="nm">입회원서</div><div class="ds">새친구 등록 신청</div></div>
+        <div class="tile" onclick="go('enroll')"><div class="ic fo"><i class="ti ti-clipboard-text"></i></div><div class="nm">입회원서</div><div class="ds">새친구 등록 신청</div></div>
       </div>
       <div class="giveCard" style="margin-top:11px">
         <div class="giveTop">
@@ -404,6 +411,65 @@
         <textarea id="ctMsg" placeholder="문의 내용을 남겨주세요"></textarea>
         <button class="ctSend" id="ctSend">보내기</button>
         <div class="ctStatus" id="ctStatus"></div>
+      </div>
+    </section>
+
+    <section class="screen" id="s-enroll">
+      <div class="sec-t">입회원서 · 새친구 등록 신청</div>
+      <div class="cform">
+        <label>성명 *</label>
+        <input id="enName" type="text" placeholder="이름을 입력하세요">
+
+        <label>성별 *</label>
+        <div class="radioRow" id="enGender">
+          <label data-v="남">남</label>
+          <label data-v="여">여</label>
+        </div>
+
+        <label>생년월일 *</label>
+        <input id="enBirth" type="date">
+
+        <label>주소 *</label>
+        <input id="enAddr" type="text" placeholder="주소를 입력하세요">
+
+        <label>학교 / 학년 *</label>
+        <input id="enSchool" type="text" placeholder="예) 송탄고 1학년">
+
+        <label>연락처 *</label>
+        <input id="enPhone" type="tel" placeholder="예) 010-0000-0000">
+
+        <label>보호자 성명 / 관계 / 연락처</label>
+        <input id="enGuardian" type="text" placeholder="예) 홍길동 / 부 / 010-0000-0000">
+
+        <label>신급 *</label>
+        <select id="enFaith">
+          <option value="">선택하세요</option>
+          <option value="유아세례">유아세례</option>
+          <option value="입교">입교</option>
+          <option value="학습">학습</option>
+          <option value="세례">세례</option>
+          <option value="모름/받은 적 없음">모름 / 받은 적 없음</option>
+        </select>
+
+        <label>인도자</label>
+        <input id="enInviter" type="text" placeholder="나를 인도해 준 사람 (선택)">
+
+        <label>기도제목</label>
+        <textarea id="enPrayer" class="short" placeholder="기도제목을 남겨주세요 (선택)"></textarea>
+
+        <label>희망 선물 종류 *</label>
+        <input id="enGift" type="text" placeholder="받고 싶은 선물을 적어주세요">
+
+        <label>기타 문의 및 건의 사항</label>
+        <textarea id="enEtc" class="short" placeholder="자유롭게 남겨주세요 (선택)"></textarea>
+
+        <label class="consent">
+          <input type="checkbox" id="enConsent">
+          <span><b>개인정보(사진/영상) 수집·촬영 및 이용 동의 *</b><br>동의합니다. (졸업 후 청년부 등으로 정보는 이관될 수 있습니다. 단, 교회를 옮기는 경우 파기됩니다.)</span>
+        </label>
+
+        <button class="ctSend" id="enSend">제출하기</button>
+        <div class="ctStatus" id="enStatus"></div>
       </div>
     </section>
   </main>
@@ -891,6 +957,52 @@ document.getElementById('ctSend').onclick=function(){
       st.style.color='var(--primary)'; st.textContent='문의가 접수되었습니다. 감사합니다! 🙏';
     }).catch(function(){btn.disabled=false; btn.textContent='보내기'; st.style.color='var(--danger)'; st.textContent='전송에 실패했어요. 잠시 후 다시 시도해 주세요.';});
 };
+
+/* ===== 입회원서(Enrollment) → 구글 설문지 응답 전송 ===== */
+(function(){
+  const ENROLL_FORM="https://docs.google.com/forms/d/e/1FAIpQLScJgX_qNufsQXNx_1Bc1cWX14drUYjTeK7q39MU4k0zsiQnFQ/formResponse";
+  const gender=document.getElementById('enGender');
+  let genderVal='';
+  gender.querySelectorAll('label').forEach(function(l){
+    l.onclick=function(){ gender.querySelectorAll('label').forEach(x=>x.classList.remove('on')); l.classList.add('on'); genderVal=l.dataset.v; };
+  });
+  document.getElementById('enSend').onclick=function(){
+    const v=id=>document.getElementById(id).value.trim();
+    const name=v('enName'), birth=document.getElementById('enBirth').value, addr=v('enAddr'), school=v('enSchool'),
+          phone=v('enPhone'), guardian=v('enGuardian'), faith=document.getElementById('enFaith').value,
+          inviter=v('enInviter'), prayer=v('enPrayer'), gift=v('enGift'), etc=v('enEtc'),
+          consent=document.getElementById('enConsent').checked;
+    const st=document.getElementById('enStatus');
+    if(!name||!genderVal||!birth||!addr||!school||!phone||!faith||!gift){ st.style.color='#e5484d'; st.textContent='* 필수 항목을 모두 입력해 주세요.'; return; }
+    if(!consent){ st.style.color='#e5484d'; st.textContent='개인정보 수집·이용에 동의해 주세요.'; return; }
+    const parts=birth.split('-');
+    const p=new URLSearchParams();
+    p.append('entry.1500008658',name);
+    p.append('entry.78713903',genderVal);
+    p.append('entry.1035599540_year',String(parseInt(parts[0],10)));
+    p.append('entry.1035599540_month',String(parseInt(parts[1],10)));
+    p.append('entry.1035599540_day',String(parseInt(parts[2],10)));
+    p.append('entry.867171415',addr);
+    p.append('entry.1698371375',school);
+    p.append('entry.616728798',phone);
+    if(guardian) p.append('entry.2072099139',guardian);
+    p.append('entry.1817034948',faith);
+    if(inviter) p.append('entry.774145586',inviter);
+    if(prayer) p.append('entry.1911936439',prayer);
+    p.append('entry.1334466374',gift);
+    p.append('entry.978193550','동의합니다.(졸업 후 청년부 등으로 정보는 이관 될 수 있습니다. 단, 교회를 옮기는 경우 파기 됩니다.)');
+    if(etc) p.append('entry.409161383',etc);
+    const btn=this; btn.disabled=true; btn.textContent='제출 중…'; st.textContent='';
+    fetch(ENROLL_FORM,{method:'POST',mode:'no-cors',body:p})
+      .then(function(){
+        btn.disabled=false; btn.textContent='제출하기';
+        document.querySelectorAll('#s-enroll input, #s-enroll textarea, #s-enroll select').forEach(function(el){ if(el.type==='checkbox'){el.checked=false;} else {el.value='';} });
+        gender.querySelectorAll('label').forEach(x=>x.classList.remove('on')); genderVal='';
+        st.style.color='var(--primary)'; st.textContent='입회원서가 제출되었습니다. 감사합니다! 🙏';
+      })
+      .catch(function(){ btn.disabled=false; btn.textContent='제출하기'; st.style.color='#e5484d'; st.textContent='제출에 실패했어요. 잠시 후 다시 시도해 주세요.'; });
+  };
+})();
 
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
