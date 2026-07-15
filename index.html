@@ -153,6 +153,30 @@
   .feePill.now{border-color:var(--primary);background:var(--primary-soft)}
   .feePill.now .fl{color:var(--primary);font-weight:700}
   .feePill.now .fa{color:var(--primary)}
+  .tile.prayTile{background:#fff7ee;border-color:#f6d9b3;box-shadow:0 2px 10px rgba(245,130,31,.10)}
+  .prayIc{background:#ffe6c9;color:#f5821f;display:flex;align-items:center;justify-content:center}
+  .prayBadge{flex:none;background:#f5821f;color:#fff;font-size:12px;font-weight:800;border-radius:999px;padding:5px 11px}
+  .prayCard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:11px;box-shadow:0 2px 10px rgba(29,27,58,.04)}
+  .prayTitle{font-size:14px;font-weight:800;color:var(--tx);margin-bottom:9px}
+  .prayText{font-size:13.5px;line-height:1.9;color:#3a3860}
+  .prayStampHead{display:flex;align-items:center;justify-content:space-between}
+  .prayStampT{font-size:14px;font-weight:700;color:var(--tx)}
+  .prayCnt{font-size:12.5px;color:var(--tx2)}
+  .prayCnt b{color:#f5821f;font-weight:800}
+  .prayGridNote{font-size:11.5px;color:var(--tx3);margin:4px 0 13px}
+  .prayGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .prayStamp{position:relative;aspect-ratio:1;border-radius:14px;background:#faf9ff;border:1.5px dashed #cfc8f0;display:flex;flex-direction:column;align-items:center;justify-content:center;user-select:none}
+  .prayStamp .pdate{font-size:11px;color:var(--tx3)}
+  .prayStamp .pday{font-size:12.5px;font-weight:800;color:var(--tx2);margin-top:1px}
+  .prayStamp.today{border-style:solid;border-color:#f5b301;background:#fff7e6;cursor:pointer;transition:transform .12s}
+  .prayStamp.today:active{transform:scale(.94)}
+  .prayStamp.today .pdate{color:#c98a10}
+  .prayStamp.today .pday{color:#d9890b}
+  .prayStamp.done{border-style:solid;border-color:#f0d2d2;background:#fff}
+  .prayStamp.done .pdate,.prayStamp.done .pday{opacity:.3}
+  .praySeal{position:absolute;width:52px;height:52px;border-radius:50%;border:2px solid #d64545;box-shadow:inset 0 0 0 3px #fff, inset 0 0 0 5px #d64545;color:#d64545;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-9deg);opacity:.93;font-weight:900;pointer-events:none}
+  .praySeal .s1{font-size:8px;letter-spacing:1px}
+  .praySeal .s2{font-size:12px;margin-top:-2px}
   .campNote{font-size:12px;color:var(--tx3);line-height:1.65;margin-top:9px}
   .campBtn{display:block;width:100%;margin-top:16px;background:var(--primary);color:#fff;border:0;border-radius:12px;padding:14px;font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center}
   .campBtn:active{transform:scale(.99)}
@@ -249,6 +273,11 @@
         <div class="big">매주 주일 오전 11시</div>
         <div class="sub">4층 소예배실 · 경기도 평택시 지산로 245-20</div>
         <i class="ti ti-building-church"></i>
+      </div>
+      <div class="tile tileRow prayTile" style="margin-top:12px" onclick="go('pray')">
+        <div class="ic prayIc"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M11.25 4.4c0-.9-1-1.5-1.8-1-.4.2-.7.6-.8 1L7 11c-.2.6-.5 1.1-1 1.5l-1.2 1.1c-.9.8-1 2.1-.3 3l1.9 2.3c.4.5 1 .8 1.7.8h1.15z"/><path d="M12.75 4.4c0-.9 1-1.5 1.8-1 .4.2.7.6.8 1L16.9 11c.2.6.5 1.1 1 1.5l1.2 1.1c.9.8 1 2.1.3 3l-1.9 2.3c-.4.5-1 .8-1.7.8h-1.15z"/></svg></div>
+        <div style="flex:1;min-width:0"><div class="nm">여름 수련회를 위한 30번 중보기도</div><div class="ds">매일 함께 기도해요 · 기도 후 도장깨기</div></div>
+        <div class="prayBadge"><span id="prayBadgeN">18</span>일차</div>
       </div>
       <div class="sec-t">이번 주 콘텐츠</div>
       <div class="feat" onclick="go('pod')">
@@ -479,6 +508,22 @@
         <div class="ctStatus" id="enStatus"></div>
       </div>
     </section>
+
+    <section class="screen" id="s-pray">
+      <div class="sec-t">중보기도 · <span id="prayDayT">18</span>일차</div>
+      <div class="prayCard">
+        <div class="prayTitle">[2026 여름 수련회를 위한 30번 중보기도문]</div>
+        <div class="prayText">하나님 아버지, 감사합니다.<br>여름 수련회를 위해서 기도합니다.<br><br>우리 중고등부에게 여름 수련회를 허락하시고, 특별히 주바라기 캠프에 참석할 수 있게 해 주셔서 감사합니다.<br><br>이번 수련회를 통해서 우리 중고등부가 충만한 은혜를 받게 하시고, 성령을 체험하게 하시고, 비전을 발견하고, 예수님을 인격적으로 만나는 귀한 시간 되도록 성령님 강력하게 역사해 주세요.<br><br>수련회가 준비되고, 진행되는 모든 과정 가운데 성령님께서 간섭하여 주시고 준비하시는 우리 선생님들에게 지혜와 능력으로 함께 해 주세요. 출발해서 돌아올 때까지 단 한 건의 사고 없이, 은혜 가운데 마칠 수 있도록 우리를 보호해 주세요.<br><br>캠프장으로 이동하는 모든 차량의 안전을 지켜주시고, 운전하시는 분들의 건강과 컨디션을 붙들어 주세요.<br><br>귀한 강사님들을 예비 해 주셔서 감사합니다.<br><b>[박성규 총장님, 김태훈 목사님, 허진열 목사님]</b><br><br>강사님들을 영적으로 육적으로 강건하게 하시고, 준비되고 증거 되는 말씀들이 나에게 꼭 필요한 생명의 말씀 되게 하셔서, 선포되는 말씀으로 인해 내 인생이 변화 되도록 은혜를 부어 주세요.<br><br>집회를 인도하는 찬양팀에게도 함께하셔서 마음을 여는 능력의 찬양으로 인도하게 하시고, 찬양팀이 준비하는 모든 과정에 함께 해 주세요.<br><br>캠프를 준비하는 주바라기 스태프들에게 함께 하셔서 온전히 성령님의 인도하심만 의지해서 캠프를 계획하고 준비 할 수 있도록 도와주세요.<br><br>이번 수련회에 우리 중고등부가 함께 참여 할 수 있도록 특별히 마음을 열어주시고, 귀한 은혜의 자리를 사모하며 힘써 참석 할 수 있도록 인도 해 주세요. 캠프의 모든 순서에 감사와 기쁨으로 참여하게 해 주세요.<br><br>우리의 기도를 듣고 응답하실 것을 믿습니다.<br>예수님의 이름으로 간절히 기도합니다. <b style="color:var(--primary)">아멘!</b></div>
+      </div>
+      <div class="prayCard">
+        <div class="prayStampHead">
+          <div class="prayStampT"><i class="ti ti-stamp" style="color:#f5821f;vertical-align:-2px;margin-right:5px"></i>기도 도장깨기 · 18~30일차</div>
+          <div class="prayCnt"><b id="prayCnt">0</b> / 13</div>
+        </div>
+        <div class="prayGridNote">기도 후 오늘 날짜의 도장을 찍어요 (오늘만 가능)</div>
+        <div class="prayGrid" id="prayGrid"></div>
+      </div>
+    </section>
   </main>
 
   <div id="mini">
@@ -547,6 +592,7 @@ function afterActivate(s){
   if(s==='attend'&&window.__renderAttend){window.__renderAttend();}
   if(s==='notice'){loadNotices();}
   if(s==='camp'){updateCampApply();}
+  if(s==='pray'&&window.__renderPray){window.__renderPray();}
 }
 function go(s,dir){
   if(window.__resetSwipe)window.__resetSwipe();
@@ -1163,6 +1209,44 @@ document.getElementById('ctSend').onclick=function(){
     main.classList.remove('swiping');
     curScreen=null; dragging=false; boundary=false;
   }
+})();
+
+/* ===== 여름 수련회 30번 중보기도 (일차 계산 + 도장깨기) ===== */
+(function(){
+  function prayDay(){
+    const a=new Date(2026,6,15); a.setHours(0,0,0,0);   /* 2026-07-15 = 18일차 */
+    const t=new Date(); t.setHours(0,0,0,0);
+    let d=18+Math.round((t-a)/86400000);
+    if(d<1)d=1; if(d>30)d=30; return d;
+  }
+  const KEY='sgy_pray_stamp';
+  function getStamps(){ try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){return [];} }
+  function setStamps(a){ try{localStorage.setItem(KEY,JSON.stringify(a));}catch(e){} }
+  const SEAL='<div class="praySeal"><span class="s1">기도</span><span class="s2">완료</span></div>';
+  function mdOf(n){ const base=new Date(2026,6,15); const dt=new Date(base.getTime()+(n-18)*86400000); return (dt.getMonth()+1)+'/'+dt.getDate(); }
+  window.__renderPray=function(){
+    const day=prayDay();
+    const bn=document.getElementById('prayBadgeN'); if(bn)bn.textContent=day;
+    const dt=document.getElementById('prayDayT'); if(dt)dt.textContent=day;
+    const grid=document.getElementById('prayGrid'); if(!grid)return;
+    const stamps=getStamps();
+    let html='';
+    for(let d=18; d<=30; d++){
+      const done=stamps.indexOf(d)>=0;
+      const today=(d===day);
+      const cls='prayStamp'+(done?' done':'')+((today&&!done)?' today':'');
+      html+='<div class="'+cls+'" data-d="'+d+'">'+(done?SEAL:'')+'<span class="pdate">'+mdOf(d)+'</span><span class="pday">'+d+'일차</span></div>';
+    }
+    grid.innerHTML=html;
+    const cnt=document.getElementById('prayCnt'); if(cnt)cnt.textContent=stamps.filter(function(x){return x>=18&&x<=30;}).length;
+    if(day>=18 && day<=30){
+      const tc=grid.querySelector('.prayStamp[data-d="'+day+'"]');
+      if(tc){ tc.style.cursor='pointer';
+        tc.onclick=function(){ let s=getStamps(); if(s.indexOf(day)>=0){ s=s.filter(function(x){return x!==day;}); } else { s.push(day); } setStamps(s); window.__renderPray(); };
+      }
+    }
+  };
+  window.__renderPray();
 })();
 
 if('serviceWorker' in navigator){
