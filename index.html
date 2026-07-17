@@ -181,6 +181,13 @@
   .prayStamp.dday .pdate{color:#5b8f6b}
   .prayStamp.dday .pday{color:#16a34a}
   .prayStamp .pdd{font-size:15px;color:#16a34a;margin-bottom:1px}
+  .planZoomHint{display:flex;align-items:center;gap:7px;background:#eef4ff;border:1px solid #d7e4fb;border-radius:12px;padding:10px 12px;color:#2f6fd0;font-size:12px;margin-bottom:12px}
+  .planZoomHint i{font-size:17px}
+  .planCard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px;box-shadow:0 2px 10px rgba(29,27,58,.04);margin-bottom:10px}
+  .planPg{font-size:11px;color:var(--tx3);margin:2px 2px 7px}
+  .planImg{width:100%;display:block;border-radius:10px;border:1px solid var(--line)}
+  .planSave{margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid var(--primary);border-radius:12px;padding:13px;color:var(--primary);background:var(--surface);font-weight:700;font-size:14px;text-decoration:none}
+  .planSave i{font-size:19px}
   .campNote{font-size:12px;color:var(--tx3);line-height:1.65;margin-top:9px}
   .campBtn{display:block;width:100%;margin-top:16px;background:var(--primary);color:#fff;border:0;border-radius:12px;padding:14px;font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center}
   .campBtn:active{transform:scale(.99)}
@@ -344,7 +351,7 @@
       <div class="tile tileRow" style="margin-top:12px" onclick="go('contact')"><div class="ic" style="background:#e4f0ff;color:#2f80ed"><i class="ti ti-mail"></i></div><div><div class="nm">문의하기</div><div class="ds">궁금한 점을 남겨주세요</div></div></div>
       <div class="grid" style="margin-top:12px">
         <div class="tile" onclick="open_('https://map.naver.com/p/search/송탄영광교회')"><div class="ic mp"><i class="ti ti-map-pin"></i></div><div class="nm">오시는 길</div><div class="ds">평택시 지산로 245-20</div></div>
-        <div class="tile" onclick="open_('https://vision153.notion.site/_-1fb6eda158ae80a8abcfc56bc73981c8?pvs=4')"><div class="ic no"><i class="ti ti-calendar-event"></i></div><div class="nm">연간계획</div><div class="ds">한 해 일정과 행사</div></div>
+        <div class="tile" onclick="go('plan')"><div class="ic no"><i class="ti ti-calendar-event"></i></div><div class="nm">연간계획</div><div class="ds">한 해 일정과 행사</div></div>
         <div class="tile" onclick="open_('https://www.youtube.com/@sgy153')"><div class="ic yt"><i class="ti ti-brand-youtube"></i></div><div class="nm">중고등부 유튜브</div><div class="ds">전체 영상 보기</div></div>
         <div class="tile" onclick="open_('https://www.podbbang.com/channels/9230')"><div class="ic pc"><i class="ti ti-brand-apple-podcast"></i></div><div class="nm">설교 팟캐스트</div><div class="ds">전체 설교 보관함</div></div>
         <div class="tile" onclick="openCompassion()"><div class="ic" style="background:#fff3df;color:#f59e0b"><i class="ti ti-mood-kid"></i></div><div class="nm">해외 어린이 양육</div><div class="ds">살마 · 헤수스 후원</div></div>
@@ -548,6 +555,14 @@
         <div class="prayGridNote">기도 후 오늘 날짜의 도장을 찍어요 (오늘만 가능)</div>
         <div class="prayGrid" id="prayGrid"></div>
       </div>
+    </section>
+
+    <section class="screen" id="s-plan">
+      <div class="sec-t">연간계획 · 2026</div>
+      <div class="planZoomHint"><i class="ti ti-zoom-in"></i> 두 손가락으로 벌려 확대해서 보세요</div>
+      <div class="planCard"><div class="planPg">1페이지 · 1~6월</div><img class="planImg" src="plan-1.jpg" alt="2026 연간계획 1~6월" loading="lazy"></div>
+      <div class="planCard"><div class="planPg">2페이지 · 7~12월</div><img class="planImg" src="plan-2.jpg" alt="2026 연간계획 7~12월" loading="lazy"></div>
+      <a class="planSave" href="annual-plan-2026.pdf" download="송탄영광교회중고등부_연간계획_2026.pdf"><i class="ti ti-file-download"></i> 원본 PDF 저장</a>
     </section>
   </main>
 
