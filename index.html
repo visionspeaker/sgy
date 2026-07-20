@@ -648,6 +648,7 @@ function afterActivate(s){
   if(s==='notice'){loadNotices();}
   if(s==='camp'){updateCampApply();}
   if(s==='pray'&&window.__renderPray){window.__renderPray();}
+  try{ history.replaceState(null,'','#'+s); }catch(e){}
 }
 function go(s,dir){
   if(window.__resetSwipe)window.__resetSwipe();
@@ -1340,6 +1341,19 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
     }
   };
   window.__renderPray();
+})();
+
+/* ===== 메뉴 딥링크 (URL 라우팅) ===== */
+(function(){
+  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan'];
+  function applyRoute(){
+    let k=(location.hash||'').replace(/^#\/?/,'').trim();
+    if(!k){ const m=(location.search||'').match(/[?&]p=([^&]+)/); if(m)k=decodeURIComponent(m[1]); }
+    k=k.toLowerCase();
+    if(ROUTES.indexOf(k)>=0) go(k);
+  }
+  window.addEventListener('hashchange',applyRoute);
+  applyRoute();
 })();
 
 if('serviceWorker' in navigator){
