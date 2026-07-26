@@ -192,6 +192,9 @@
   .planCard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px;box-shadow:0 2px 10px rgba(29,27,58,.04);margin-bottom:10px}
   .planPg{font-size:11px;color:var(--tx3);margin:2px 2px 7px}
   .planImg{width:100%;display:block;border-radius:10px;border:1px solid var(--line)}
+  .archiveEmpty{text-align:center;color:var(--tx3);font-size:13px;padding:44px 12px}
+  #s-archive .tile{margin-bottom:10px}
+  .archiveBadge{flex:none;background:#eeedf4;color:var(--tx2);font-size:10.5px;font-weight:700;border-radius:999px;padding:3px 8px}
   .campNote{font-size:12px;color:var(--tx3);line-height:1.65;margin-top:9px}
   .campBtn{display:block;width:100%;margin-top:16px;background:var(--primary);color:#fff;border:0;border-radius:12px;padding:14px;font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center}
   .campBtn:active{transform:scale(.99)}
@@ -328,7 +331,7 @@
         <div class="tile" onclick="open_('https://www.instagram.com/stgc153')"><div class="ic ig"><i class="ti ti-brand-instagram"></i></div><div class="nm">인스타그램</div><div class="ds">@stgc153 소식과 사진</div></div>
         <div class="tile" onclick="open_('https://band.us/n/acaebbS821711')"><div class="ic bd"><i class="ti ti-users-group"></i></div><div class="nm">중고등부 밴드</div><div class="ds">공지·소통 커뮤니티</div></div>
         <div class="tile" onclick="go('attend')"><div class="ic" style="background:#ffe5e5;color:#ef4444"><i class="ti ti-calendar-check"></i></div><div class="nm">출석체크 도장깨기</div><div class="ds">매일 출석하고 도장 받기</div></div>
-        <div class="tile" onclick="go('camp')"><div class="ic" style="background:#e3f9ec;color:#16a34a"><i class="ti ti-tent"></i></div><div class="nm">여름수련회</div><div class="ds">2026 주바라기 캠프 3차</div></div>
+        <div class="tile" id="homeCampTile" onclick="go('camp')"><div class="ic" style="background:#e3f9ec;color:#16a34a"><i class="ti ti-tent"></i></div><div class="nm">여름수련회</div><div class="ds">2026 주바라기 캠프 3차</div></div>
       </div>
     </section>
 
@@ -373,6 +376,11 @@
           <div><div class="giveLabel">온라인 헌금 계좌</div><div class="giveBank">카카오뱅크 · 예금주 송탄영광교회중고등부(최영미)</div></div>
         </div>
         <div class="giveAcct"><span id="acctNo">7942-21-89862</span><button class="copyBtn" id="copyAcct"><i class="ti ti-copy"></i>복사</button></div>
+      </div>
+
+      <div class="tile tileRow" style="margin-top:12px" onclick="go('archive')">
+        <div class="ic" style="background:#eef0f4;color:var(--tx2)"><i class="ti ti-archive"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">아카이브</div><div class="ds">지난 행사·자료 보관함</div></div>
       </div>
 
       <div class="hint" style="margin-top:24px">송탄영광교회 중고등부 공식 앱 · SGY 2.0<br>#송탄영광교회 #중고등부 #평택 #송탄</div>
@@ -580,6 +588,16 @@
       <div class="planZoomHint"><i class="ti ti-zoom-in"></i> 두 손가락으로 벌려 확대해서 보세요</div>
       <div class="planCard"><div class="planPg">1페이지 · 1~6월</div><img class="planImg" src="plan-1.jpg" alt="2026 연간계획 1~6월" loading="lazy"></div>
       <div class="planCard"><div class="planPg">2페이지 · 7~12월</div><img class="planImg" src="plan-2.jpg" alt="2026 연간계획 7~12월" loading="lazy"></div>
+    </section>
+
+    <section class="screen" id="s-archive">
+      <div class="sec-t">아카이브</div>
+      <div class="archiveEmpty" id="archiveEmpty">보관된 항목이 없습니다.</div>
+      <div class="tile tileRow" id="arcCamp" onclick="go('camp')" style="display:none">
+        <div class="ic" style="background:#efe7ff;color:var(--primary)"><i class="ti ti-tent"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">2026 여름수련회</div><div class="ds">주바라기 캠프 3차 · 종료</div></div>
+        <span class="archiveBadge">지난 행사</span>
+      </div>
     </section>
   </main>
 
@@ -1346,9 +1364,21 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   window.__renderPray();
 })();
 
+/* ===== 아카이브: 8/1 23:50부터 여름수련회를 홈→아카이브로 이동 ===== */
+(function(){
+  const cut=new Date(2026,7,1,23,50,0); /* 2026-08-01 23:50 */
+  const moved=new Date()>=cut;
+  const homeTile=document.getElementById('homeCampTile');
+  const arcCamp=document.getElementById('arcCamp');
+  const arcEmpty=document.getElementById('archiveEmpty');
+  if(homeTile) homeTile.style.display = moved ? 'none' : '';
+  if(arcCamp) arcCamp.style.display = moved ? '' : 'none';
+  if(arcEmpty) arcEmpty.style.display = moved ? 'none' : '';
+})();
+
 /* ===== 메뉴 딥링크 (URL 라우팅) ===== */
 (function(){
-  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan'];
+  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive'];
   function applyRoute(){
     let k=(location.hash||'').replace(/^#\/?/,'').trim();
     if(!k){ const m=(location.search||'').match(/[?&]p=([^&]+)/); if(m)k=decodeURIComponent(m[1]); }
