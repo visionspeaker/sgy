@@ -219,6 +219,36 @@
   #s-archive .tile{margin-bottom:10px}
   .archiveBadge{flex:none;background:#eeedf4;color:var(--tx2);font-size:10.5px;font-weight:700;border-radius:999px;padding:3px 8px}
   .appFooter{font-size:10.5px;color:var(--tx3);text-align:center;line-height:1.6;padding:18px 10px 10px;margin-top:6px;opacity:.85}
+  .svHero{background:linear-gradient(120deg,#5b8def,#7c6cff);color:#fff;border-radius:16px;padding:16px 16px 15px;margin-top:8px;position:relative;overflow:hidden}
+  .svHero .st{font-size:11px;font-weight:800;letter-spacing:.4px;opacity:.9}
+  .svHero .sh{font-size:18px;font-weight:800;margin-top:5px;line-height:1.35}
+  .svHero .ss{font-size:12px;opacity:.92;margin-top:6px}
+  .svHero i{position:absolute;right:14px;bottom:10px;font-size:52px;opacity:.16}
+  .svQ{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 15px;margin-top:11px}
+  .svQ .qn{font-size:14px;font-weight:700;color:var(--tx);line-height:1.45}
+  .svQ .qn .req{color:#e2574c;margin-left:3px}
+  .svQ .qh{font-size:11.5px;color:var(--tx3);margin-top:4px;line-height:1.5}
+  .svIn,.svTa{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:14px;font-family:inherit;color:var(--tx);background:#fff;margin-top:11px;outline:none}
+  .svIn:focus,.svTa:focus{border-color:var(--primary)}
+  .svTa{min-height:82px;resize:vertical;line-height:1.5}
+  .svScale{display:flex;gap:6px;margin-top:12px}
+  .svScale .op{flex:1;text-align:center;border:1px solid var(--line);border-radius:10px;padding:9px 0;font-size:15px;font-weight:700;color:var(--tx2);background:#fff;cursor:pointer;transition:.12s}
+  .svScale .op.sel{background:var(--primary);border-color:var(--primary);color:#fff}
+  .svScaleLbl{display:flex;justify-content:space-between;font-size:10.5px;color:var(--tx3);margin-top:6px}
+  .svRadio{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:11px 12px;margin-top:9px;cursor:pointer;font-size:14px;color:var(--tx)}
+  .svRadio.sel{border-color:var(--primary);background:var(--primary-soft)}
+  .svRadio .dot{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid #cdcbe0}
+  .svRadio.sel .dot{border-color:var(--primary);background:radial-gradient(circle,#fff 32%,var(--primary) 40%)}
+  .svEtc{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:9px 11px;font-size:13.5px;font-family:inherit;margin-top:8px;outline:none;display:none}
+  .svEtc.on{display:block}
+  .svEtc:focus{border-color:var(--primary)}
+  .svSubmit{width:100%;border:none;border-radius:12px;background:var(--gold);color:#fff;font-size:16px;font-weight:800;padding:15px;margin-top:18px;cursor:pointer}
+  .svSubmit:disabled{opacity:.6}
+  .svErr{color:#e2574c;font-size:12px;text-align:center;margin-top:10px;min-height:14px}
+  .svDone{text-align:center;padding:60px 18px}
+  .svDone .ic{width:74px;height:74px;border-radius:50%;background:#e3f9ec;color:#16a34a;display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 18px}
+  .svDone h3{font-size:20px;font-weight:800;color:var(--tx);margin:0 0 8px}
+  .svDone p{font-size:13.5px;color:var(--tx2);line-height:1.6;margin:0}
   .campNote{font-size:12px;color:var(--tx3);line-height:1.65;margin-top:9px}
   .campBtn{display:block;width:100%;margin-top:16px;background:var(--primary);color:#fff;border:0;border-radius:12px;padding:14px;font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center}
   .campBtn:active{transform:scale(.99)}
@@ -340,6 +370,11 @@
         <div class="ic prayIc" style="font-size:24px"><i class="ti ti-pray"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">여름 수련회를 위한 30번 중보기도</div><div class="ds">매일 함께 기도해요 · 기도 후 도장찍기</div></div>
         <div class="prayBadge"><span id="prayBadgeN">18일차</span></div>
+      </div>
+      <div class="tile tileRow surveyTile" style="margin-top:10px" onclick="go('survey')">
+        <div class="ic" style="background:#e7f0ff;color:#2f6fed;font-size:22px"><i class="ti ti-clipboard-check"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">2026 여름수련회 설문</div><div class="ds">수련회 소감을 남겨주세요 · 참여 환영</div></div>
+        <i class="ti ti-chevron-right" style="color:var(--tx3);font-size:20px"></i>
       </div>
       <div class="feat" onclick="go('pod')" style="margin-top:14px">
         <div class="thumb"><i class="ti ti-microphone-2"></i></div>
@@ -621,6 +656,117 @@
         <div class="ic" style="background:#efe7ff;color:var(--primary)"><i class="ti ti-tent"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">2026 여름수련회</div><div class="ds">주바라기 캠프 3차 · 종료</div></div>
         <span class="archiveBadge">지난 행사</span>
+      </div>
+    </section>
+
+    <section class="screen" id="s-survey">
+      <div class="sec-t">여름수련회 설문</div>
+      <div id="surveyForm">
+        <div class="svHero">
+          <div class="st">2026 SUMMER CAMP · 설문</div>
+          <div class="sh">수련회 소감을 들려주세요</div>
+          <div class="ss">7/30~8/1 · 한남대학교(대전) · 주바라기 캠프 3차</div>
+          <i class="ti ti-clipboard-check"></i>
+        </div>
+
+        <div class="svQ">
+          <div class="qn">이름 <span class="req">*</span></div>
+          <input class="svIn" id="sv_name" type="text" placeholder="이름을 입력하세요" autocomplete="off">
+        </div>
+
+        <div class="svQ" data-scale="sv_all">
+          <div class="qn">이번 수련회의 전체적인 만족도는? <span class="req">*</span></div>
+          <div class="qh">매우 나쁨/나쁨을 선택했다면 마지막 문항에 이유를 적어주세요.</div>
+          <div class="svScale">
+            <div class="op" data-v="1">1</div><div class="op" data-v="2">2</div><div class="op" data-v="3">3</div><div class="op" data-v="4">4</div><div class="op" data-v="5">5</div>
+          </div>
+          <div class="svScaleLbl"><span>매우 나쁨</span><span>매우 좋음</span></div>
+        </div>
+
+        <div class="svQ" data-radio="sv_depart">
+          <div class="qn">[1일차] 출발 전 교회로 어떻게 들어왔나요? <span class="req">*</span></div>
+          <div class="svRadio" data-v="교회 차"><span class="dot"></span>교회 차</div>
+          <div class="svRadio" data-v="부모님"><span class="dot"></span>부모님</div>
+          <div class="svRadio" data-v="선생님"><span class="dot"></span>선생님</div>
+          <div class="svRadio" data-v="택시"><span class="dot"></span>택시</div>
+          <div class="svRadio" data-v="걸어서"><span class="dot"></span>걸어서</div>
+          <div class="svRadio" data-v="__other__"><span class="dot"></span>기타</div>
+          <input class="svEtc" id="sv_depart_etc" type="text" placeholder="기타 내용을 입력하세요">
+        </div>
+
+        <div class="svQ" data-scale="sv_bus">
+          <div class="qn">[전체] 교회에서 수련회장(한남대)으로 이동한 버스는 어땠나요? <span class="req">*</span></div>
+          <div class="svScale"><div class="op" data-v="1">1</div><div class="op" data-v="2">2</div><div class="op" data-v="3">3</div><div class="op" data-v="4">4</div><div class="op" data-v="5">5</div></div>
+          <div class="svScaleLbl"><span>매우 나쁨</span><span>매우 좋음</span></div>
+        </div>
+
+        <div class="svQ" data-scale="sv_meal">
+          <div class="qn">[전체] 수련회 기간 중 식사는 어땠나요? <span class="req">*</span></div>
+          <div class="svScale"><div class="op" data-v="1">1</div><div class="op" data-v="2">2</div><div class="op" data-v="3">3</div><div class="op" data-v="4">4</div><div class="op" data-v="5">5</div></div>
+          <div class="svScaleLbl"><span>매우 나쁨</span><span>매우 좋음</span></div>
+        </div>
+
+        <div class="svQ" data-scale="sv_snack">
+          <div class="qn">[전체] 밤 간식은 어땠나요? <span class="req">*</span></div>
+          <div class="svScale"><div class="op" data-v="1">1</div><div class="op" data-v="2">2</div><div class="op" data-v="3">3</div><div class="op" data-v="4">4</div><div class="op" data-v="5">5</div></div>
+          <div class="svScaleLbl"><span>매우 나쁨</span><span>매우 좋음</span></div>
+        </div>
+
+        <div class="svQ" data-scale="sv_room">
+          <div class="qn">[전체] 숙소(한남대 생활관)에 대한 만족도는? <span class="req">*</span></div>
+          <div class="svScale"><div class="op" data-v="1">1</div><div class="op" data-v="2">2</div><div class="op" data-v="3">3</div><div class="op" data-v="4">4</div><div class="op" data-v="5">5</div></div>
+          <div class="svScaleLbl"><span>매우 나쁨</span><span>매우 좋음</span></div>
+        </div>
+
+        <div class="svQ" data-scale="sv_word">
+          <div class="qn">[말씀·집회] 저녁집회·말씀특강의 은혜는 어땠나요? <span class="req">*</span></div>
+          <div class="svScale"><div class="op" data-v="1">1</div><div class="op" data-v="2">2</div><div class="op" data-v="3">3</div><div class="op" data-v="4">4</div><div class="op" data-v="5">5</div></div>
+          <div class="svScaleLbl"><span>매우 나쁨</span><span>매우 좋음</span></div>
+        </div>
+
+        <div class="svQ" data-scale="sv_praise">
+          <div class="qn">[찬양] 찬양콘서트·주바라기 워십은 어땠나요?</div>
+          <div class="qh">선택 문항입니다.</div>
+          <div class="svScale"><div class="op" data-v="1">1</div><div class="op" data-v="2">2</div><div class="op" data-v="3">3</div><div class="op" data-v="4">4</div><div class="op" data-v="5">5</div></div>
+          <div class="svScaleLbl"><span>매우 나쁨</span><span>매우 좋음</span></div>
+        </div>
+
+        <div class="svQ" data-radio="sv_fee">
+          <div class="qn">[전체] 수련회비(얼리버드 5만원/일반 6만원) 금액은 적정했나요? <span class="req">*</span></div>
+          <div class="svRadio" data-v="싸다"><span class="dot"></span>싸다</div>
+          <div class="svRadio" data-v="적당하다"><span class="dot"></span>적당하다</div>
+          <div class="svRadio" data-v="비싸다"><span class="dot"></span>비싸다</div>
+          <div class="svRadio" data-v="__other__"><span class="dot"></span>기타</div>
+          <input class="svEtc" id="sv_fee_etc" type="text" placeholder="기타 내용을 입력하세요">
+        </div>
+
+        <div class="svQ">
+          <div class="qn">[전체] 수련회 기간 중 가장 좋았던(인상 깊었던) 순서가 있었다면? <span class="req">*</span></div>
+          <div class="qh">가장 좋았던 순서의 이유도 함께 적어주면 좋아요.</div>
+          <textarea class="svTa" id="sv_best" placeholder="자유롭게 적어주세요"></textarea>
+        </div>
+
+        <div class="svQ">
+          <div class="qn">[후기] 수련회 후기를 적어주세요. <span class="req">*</span></div>
+          <div class="qh">정성껏 작성한 후기는 선정해서 시상합니다.</div>
+          <textarea class="svTa" id="sv_review" placeholder="수련회를 통해 느낀 것, 은혜, 감동을 나눠주세요"></textarea>
+        </div>
+
+        <div class="svQ">
+          <div class="qn">[감사] 찬조해 주신 분들과 선생님들께 감사 메시지</div>
+          <div class="qh">선택 문항입니다.</div>
+          <textarea class="svTa" id="sv_thanks" placeholder="감사한 마음을 자유롭게 남겨주세요"></textarea>
+        </div>
+
+        <button class="svSubmit" id="svSubmitBtn">제출하기</button>
+        <div class="svErr" id="svErr"></div>
+        <div class="hint">응답은 안전하게 저장됩니다 · 개인정보는 설문 목적 외 사용되지 않습니다.</div>
+      </div>
+      <div id="surveyDone" class="svDone" style="display:none">
+        <div class="ic"><i class="ti ti-check"></i></div>
+        <h3>설문이 제출되었습니다</h3>
+        <p>소중한 의견 감사합니다.<br>여러분의 이야기가 다음 수련회를 더 좋게 만듭니다.</p>
+        <button class="svSubmit" id="svAgainBtn" style="max-width:220px;margin:22px auto 0;background:#eef0f4;color:var(--tx2)">다른 응답 작성하기</button>
       </div>
     </section>
   </main>
@@ -1402,7 +1548,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
 
 /* ===== 메뉴 딥링크 (URL 라우팅) ===== */
 (function(){
-  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive'];
+  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey'];
   function applyRoute(){
     let k=(location.hash||'').replace(/^#\/?/,'').trim();
     if(!k){ const m=(location.search||'').match(/[?&]p=([^&]+)/); if(m)k=decodeURIComponent(m[1]); }
@@ -1430,6 +1576,104 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
+
+/* ===== 2026 여름수련회 설문 (구글폼 formResponse 제출) ===== */
+(function(){
+  const ACTION="https://docs.google.com/forms/d/e/1FAIpQLSdi6qatllwoyuZ6ADfTh6aZFXRRE_IwH9L4CSyVKCgHr1W3Hw/formResponse";
+  const sec=document.getElementById('s-survey'); if(!sec)return;
+  const sel={}; /* scale/radio 선택값 저장: key -> value */
+
+  /* 선형 배율(1~5) 선택 */
+  sec.querySelectorAll('[data-scale]').forEach(function(q){
+    const key=q.getAttribute('data-scale');
+    q.querySelectorAll('.svScale .op').forEach(function(op){
+      op.addEventListener('click',function(){
+        q.querySelectorAll('.op').forEach(function(o){o.classList.remove('sel');});
+        op.classList.add('sel'); sel[key]=op.getAttribute('data-v');
+      });
+    });
+  });
+  /* 객관식(라디오) 선택 + 기타 입력 토글 */
+  sec.querySelectorAll('[data-radio]').forEach(function(q){
+    const key=q.getAttribute('data-radio');
+    const etc=q.querySelector('.svEtc');
+    q.querySelectorAll('.svRadio').forEach(function(r){
+      r.addEventListener('click',function(){
+        q.querySelectorAll('.svRadio').forEach(function(o){o.classList.remove('sel');});
+        r.classList.add('sel'); sel[key]=r.getAttribute('data-v');
+        if(etc){ const other=(sel[key]==='__other__'); etc.classList.toggle('on',other); if(other){etc.focus();} else {etc.value='';} }
+      });
+    });
+  });
+
+  const err=document.getElementById('svErr');
+  const btn=document.getElementById('svSubmitBtn');
+  function val(id){const e=document.getElementById(id);return e?e.value.trim():'';}
+
+  btn.addEventListener('click',function(){
+    err.textContent='';
+    const name=val('sv_name');
+    const best=val('sv_best'), review=val('sv_review');
+    /* 필수 검증 */
+    const missing=[];
+    if(!name) missing.push('이름');
+    if(!sel.sv_all) missing.push('전체 만족도');
+    if(!sel.sv_depart) missing.push('출발 방법');
+    else if(sel.sv_depart==='__other__' && !val('sv_depart_etc')) missing.push('출발 방법(기타)');
+    if(!sel.sv_bus) missing.push('버스');
+    if(!sel.sv_meal) missing.push('식사');
+    if(!sel.sv_snack) missing.push('밤 간식');
+    if(!sel.sv_room) missing.push('숙소');
+    if(!sel.sv_word) missing.push('말씀·집회');
+    if(!sel.sv_fee) missing.push('수련회비');
+    else if(sel.sv_fee==='__other__' && !val('sv_fee_etc')) missing.push('수련회비(기타)');
+    if(!best) missing.push('가장 좋았던 순서');
+    if(!review) missing.push('후기');
+    if(missing.length){ err.textContent='다음 항목을 확인해주세요: '+missing.join(', ');
+      sec.parentNode.scrollTop=0; return; }
+
+    const p=new URLSearchParams();
+    p.append('entry.33009713', name);
+    p.append('entry.1938871323', sel.sv_all);
+    /* 출발방법 */
+    if(sel.sv_depart==='__other__'){ p.append('entry.386777222','__other_option__'); p.append('entry.386777222.other_option_response', val('sv_depart_etc')); }
+    else p.append('entry.386777222', sel.sv_depart);
+    p.append('entry.264512178', sel.sv_bus);
+    p.append('entry.2066240756', sel.sv_meal);
+    p.append('entry.1501388038', sel.sv_snack);
+    p.append('entry.152857545', sel.sv_room);
+    p.append('entry.464932640', sel.sv_word);
+    if(sel.sv_praise) p.append('entry.2003800689', sel.sv_praise);
+    /* 수련회비 */
+    if(sel.sv_fee==='__other__'){ p.append('entry.1048338943','__other_option__'); p.append('entry.1048338943.other_option_response', val('sv_fee_etc')); }
+    else p.append('entry.1048338943', sel.sv_fee);
+    p.append('entry.2037892854', best);
+    p.append('entry.1107317139', review);
+    const thanks=val('sv_thanks'); if(thanks) p.append('entry.1469452150', thanks);
+
+    btn.disabled=true; btn.textContent='제출 중…';
+    fetch(ACTION,{method:'POST',mode:'no-cors',body:p})
+      .then(function(){ done(); })
+      .catch(function(){ done(); }); /* no-cors는 opaque 응답이라 성공/실패 구분 불가 → 전송 시도 후 완료 처리 */
+  });
+
+  function done(){
+    document.getElementById('surveyForm').style.display='none';
+    document.getElementById('surveyDone').style.display='block';
+    sec.parentNode.scrollTop=0;
+  }
+  function resetForm(){
+    /* 값 초기화 */
+    ['sv_name','sv_depart_etc','sv_fee_etc','sv_best','sv_review','sv_thanks'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
+    for(var k in sel){delete sel[k];}
+    sec.querySelectorAll('.op.sel,.svRadio.sel').forEach(function(o){o.classList.remove('sel');});
+    sec.querySelectorAll('.svEtc').forEach(function(e){e.classList.remove('on');});
+    err.textContent=''; btn.disabled=false; btn.textContent='제출하기';
+    document.getElementById('surveyDone').style.display='none';
+    document.getElementById('surveyForm').style.display='block';
+  }
+  const again=document.getElementById('svAgainBtn'); if(again) again.addEventListener('click',resetForm);
+})();
 
 /* ===== 저작권 표기: 각 화면 하단 푸터 ===== */
 (function(){
