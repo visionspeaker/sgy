@@ -371,7 +371,7 @@
         <div style="flex:1;min-width:0"><div class="nm">여름 수련회를 위한 30번 중보기도</div><div class="ds">매일 함께 기도해요 · 기도 후 도장찍기</div></div>
         <div class="prayBadge"><span id="prayBadgeN">18일차</span></div>
       </div>
-      <div class="tile tileRow surveyTile" style="margin-top:10px" onclick="go('survey')">
+      <div class="tile tileRow surveyTile" id="homeSurveyTile" style="margin-top:10px" onclick="go('survey')">
         <div class="ic" style="background:#e7f0ff;color:#2f6fed;font-size:22px"><i class="ti ti-clipboard-check"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">2026 여름수련회 설문</div><div class="ds">수련회 소감을 남겨주세요 · 참여 환영</div></div>
         <i class="ti ti-chevron-right" style="color:var(--tx3);font-size:20px"></i>
@@ -656,6 +656,11 @@
         <div class="ic" style="background:#efe7ff;color:var(--primary)"><i class="ti ti-tent"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">2026 여름수련회</div><div class="ds">주바라기 캠프 3차 · 종료</div></div>
         <span class="archiveBadge">지난 행사</span>
+      </div>
+      <div class="tile tileRow" id="arcSurvey" style="display:none">
+        <div class="ic" style="background:#e7f0ff;color:#2f6fed"><i class="ti ti-clipboard-check"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">2026 여름수련회 설문</div><div class="ds">8/1(토) 오전 8시 오픈 예정</div></div>
+        <span class="archiveBadge" style="background:#e7f0ff;color:#2f6fed">예정</span>
       </div>
     </section>
 
@@ -1534,16 +1539,25 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   window.__renderPray();
 })();
 
-/* ===== 아카이브: 8/1 23:50부터 여름수련회를 홈→아카이브로 이동 ===== */
+/* ===== 아카이브 날짜 로직 ===== */
 (function(){
-  const cut=new Date(2026,7,1,23,50,0); /* 2026-08-01 23:50 */
-  const moved=new Date()>=cut;
-  const homeTile=document.getElementById('homeCampTile');
+  const now=new Date();
+  /* 여름수련회: 8/1 23:50부터 홈→아카이브로 이동 */
+  const campMoved = now >= new Date(2026,7,1,23,50,0);
+  const homeCamp=document.getElementById('homeCampTile');
   const arcCamp=document.getElementById('arcCamp');
+  if(homeCamp) homeCamp.style.display = campMoved ? 'none' : '';
+  if(arcCamp) arcCamp.style.display = campMoved ? '' : 'none';
+  /* 수련회 설문: 8/1 08:00에 오픈 → 그 전엔 아카이브(예정), 오픈 후 홈으로 */
+  const svOpen = now >= new Date(2026,7,1,8,0,0);
+  const homeSurvey=document.getElementById('homeSurveyTile');
+  const arcSurvey=document.getElementById('arcSurvey');
+  if(homeSurvey) homeSurvey.style.display = svOpen ? '' : 'none';
+  if(arcSurvey) arcSurvey.style.display = svOpen ? 'none' : '';
+  /* 아카이브 빈 상태: 표시 중인 아카이브 항목이 하나도 없을 때만 노출 */
   const arcEmpty=document.getElementById('archiveEmpty');
-  if(homeTile) homeTile.style.display = moved ? 'none' : '';
-  if(arcCamp) arcCamp.style.display = moved ? '' : 'none';
-  if(arcEmpty) arcEmpty.style.display = moved ? 'none' : '';
+  const anyArc = (arcCamp && arcCamp.style.display!=='none') || (arcSurvey && arcSurvey.style.display!=='none');
+  if(arcEmpty) arcEmpty.style.display = anyArc ? 'none' : '';
 })();
 
 /* ===== 메뉴 딥링크 (URL 라우팅) ===== */
