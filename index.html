@@ -183,6 +183,10 @@
   .feePill.now .fl{color:var(--primary);font-weight:700}
   .feePill.now .fa{color:var(--primary)}
   .tile.prayTile{background:#fff7ee;border-color:#f6d9b3;box-shadow:0 2px 10px rgba(245,130,31,.10)}
+  .tile.campTile{background:#eefdf3;border-color:#bfe9cf;box-shadow:0 2px 10px rgba(22,163,74,.10)}
+  .tile.campTile .nm{color:#14532d}
+  .tile.campTile .ds{color:#3f7a52}
+  .campBadge{flex:none;background:#16a34a;color:#fff;font-size:11.5px;font-weight:800;border-radius:999px;padding:4px 10px}
   .prayIc{background:#ffe6c9;color:#f5821f;display:flex;align-items:center;justify-content:center}
   .prayBadge{flex:none;background:#f5821f;color:#fff;font-size:12px;font-weight:800;border-radius:999px;padding:5px 11px}
   .prayCard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:11px;box-shadow:0 2px 10px rgba(29,27,58,.04)}
@@ -368,7 +372,12 @@
         <div class="sub">4층 소예배실 · 경기도 평택시 지산로 245-20</div>
         <i class="ti ti-building-church"></i>
       </div>
-      <div class="tile tileRow prayTile" style="margin-top:12px" onclick="go('pray')">
+      <div class="tile tileRow campTile" id="homeCampTile" style="margin-top:12px" onclick="go('camp')">
+        <div class="ic" style="background:#dff5e6;color:#16a34a;font-size:23px"><i class="ti ti-tent"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">여름수련회(7/30~8/1) 진행중</div><div class="ds">주바라기 캠프 3차 · 대전 한남대학교</div></div>
+        <span class="campBadge">진행중</span>
+      </div>
+      <div class="tile tileRow prayTile" style="margin-top:10px" onclick="go('pray')">
         <div class="ic prayIc" style="font-size:24px"><i class="ti ti-pray"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">여름 수련회를 위한 30번 중보기도</div><div class="ds">매일 함께 기도해요 · 기도 후 도장찍기</div></div>
         <div class="prayBadge"><span id="prayBadgeN">18일차</span></div>
@@ -392,7 +401,6 @@
         <div class="tile" onclick="open_('https://www.instagram.com/stgc153')"><div class="ic ig"><i class="ti ti-brand-instagram"></i></div><div class="nm">인스타그램</div><div class="ds">@stgc153 소식과 사진</div></div>
         <div class="tile" onclick="open_('https://band.us/n/acaebbS821711')"><div class="ic bd"><i class="ti ti-users-group"></i></div><div class="nm">중고등부 밴드</div><div class="ds">공지·소통 커뮤니티</div></div>
         <div class="tile" onclick="go('attend')"><div class="ic" style="background:#ffe5e5;color:#ef4444"><i class="ti ti-calendar-check"></i></div><div class="nm">출석체크 도장깨기</div><div class="ds">매일 출석하고 도장 받기</div></div>
-        <div class="tile" id="homeCampTile" onclick="go('camp')"><div class="ic" style="background:#e3f9ec;color:#16a34a"><i class="ti ti-tent"></i></div><div class="nm">여름수련회</div><div class="ds">2026 주바라기 캠프 3차</div></div>
       </div>
     </section>
 
