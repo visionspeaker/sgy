@@ -377,7 +377,7 @@
         <div style="flex:1;min-width:0"><div class="nm">여름수련회(7/30~8/1) 진행중</div><div class="ds">주바라기 캠프 3차 · 대전 한남대학교</div></div>
         <span class="campBadge">진행중</span>
       </div>
-      <div class="tile tileRow prayTile" style="margin-top:10px" onclick="go('pray')">
+      <div class="tile tileRow prayTile" id="homePrayTile" style="margin-top:10px" onclick="go('pray')">
         <div class="ic prayIc" style="font-size:24px"><i class="ti ti-pray"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">여름 수련회를 위한 30번 중보기도</div><div class="ds">매일 함께 기도해요 · 기도 후 도장찍기</div></div>
         <div class="prayBadge"><span id="prayBadgeN">18일차</span></div>
@@ -671,6 +671,11 @@
         <div class="ic" style="background:#e7f0ff;color:#2f6fed"><i class="ti ti-clipboard-check"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">2026 여름수련회 설문</div><div class="ds">8/1(토) 오전 8시 오픈 예정</div></div>
         <span class="archiveBadge" style="background:#e7f0ff;color:#2f6fed">예정</span>
+      </div>
+      <div class="tile tileRow" id="arcPray" onclick="go('pray')" style="display:none">
+        <div class="ic" style="background:#ffe6c9;color:#f5821f"><i class="ti ti-pray"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">여름 수련회를 위한 30번 중보기도</div><div class="ds">30일 중보기도 · 종료</div></div>
+        <span class="archiveBadge">지난 행사</span>
       </div>
     </section>
 
@@ -1564,9 +1569,15 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   const arcSurvey=document.getElementById('arcSurvey');
   if(homeSurvey) homeSurvey.style.display = svOpen ? '' : 'none';
   if(arcSurvey) arcSurvey.style.display = svOpen ? 'none' : '';
+  /* 30번 중보기도: 7/30 15:00부터 홈→아카이브로 이동 */
+  const prayMoved = now >= new Date(2026,6,30,15,0,0);
+  const homePray=document.getElementById('homePrayTile');
+  const arcPray=document.getElementById('arcPray');
+  if(homePray) homePray.style.display = prayMoved ? 'none' : '';
+  if(arcPray) arcPray.style.display = prayMoved ? '' : 'none';
   /* 아카이브 빈 상태: 표시 중인 아카이브 항목이 하나도 없을 때만 노출 */
   const arcEmpty=document.getElementById('archiveEmpty');
-  const anyArc = (arcCamp && arcCamp.style.display!=='none') || (arcSurvey && arcSurvey.style.display!=='none');
+  const anyArc = (arcCamp && arcCamp.style.display!=='none') || (arcSurvey && arcSurvey.style.display!=='none') || (arcPray && arcPray.style.display!=='none');
   if(arcEmpty) arcEmpty.style.display = anyArc ? 'none' : '';
 })();
 
