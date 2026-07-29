@@ -262,6 +262,8 @@
   .applyT i{color:var(--primary);vertical-align:-2px;margin-right:5px;font-size:16px}
   .applyCnt{font-size:12px;color:var(--tx2)}
   .applyCnt b{color:var(--primary)}
+  .applySub{font-size:13.5px;font-weight:700;color:var(--tx);margin-top:7px}
+  .applySub b{color:var(--primary)}
   .applyGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
   .applyName{background:#f6f5fb;border:1px solid #ecebf5;border-radius:9px;padding:7px 2px;text-align:center;font-size:12px;font-weight:600;color:#3a3860;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .applyNote{font-size:10.5px;color:var(--tx3);margin-top:9px;line-height:1.5}
@@ -487,8 +489,9 @@
         <div class="applyList">
           <div class="applyHead">
             <div class="applyT"><i class="ti ti-users"></i>신청자 명단 (7/26 기준)</div>
-            <div class="applyCnt">총 <b id="applyCntN">27</b>명</div>
+            <div class="applyCnt">총 <b>42</b>명</div>
           </div>
+          <div class="applySub">학생 <b id="applyCntN">28</b>명 · 인솔 교사 14명</div>
           <div class="applyGrid" id="applyGrid"></div>
           <div class="applyNote">※ 개인정보 보호를 위해 이름 가운데 글자를 가렸습니다.</div>
         </div>
@@ -864,7 +867,7 @@ function go(s,dir){
 }
 const CAMP_FORM="https://forms.gle/2fLjLoCApv8bDkto7";
 const CAMP_OPEN=new Date(2026,5,28,0,0,0);
-const APPLY_NAMES=["강*아","강*희","김*규","김*현","김*온","김*우","김*호","박*","박*우","박*은","박*유","신*준","신*연","앨*","유*라","유*빈","이*나","이*승","이*지","이*서","이*형","이*아","최*원","최*근","홍*인","홍*주","홍*솔"];
+const APPLY_NAMES=["강*아","강*희","김*규","김*현","김*온","김*우","김*호","박*","박*우","박*은","박*유","신*준","신*연","앨*","유*라","유*빈","이*건","이*나","이*승","이*지","이*서","이*형","이*아","최*원","최*근","홍*인","홍*주","홍*솔"];
 function renderApplyList(){
   const g=document.getElementById('applyGrid'); if(!g)return;
   g.innerHTML=APPLY_NAMES.map(function(n){return '<div class="applyName">'+n+'</div>';}).join('');
