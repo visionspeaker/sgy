@@ -394,7 +394,7 @@
       </div>
       <div class="tile tileRow campTile" id="homeCampTile" style="margin-top:12px" onclick="go('camp')">
         <div class="ic" style="background:#dff5e6;color:#16a34a;font-size:23px"><i class="ti ti-tent"></i></div>
-        <div style="flex:1;min-width:0"><div class="nm">여름수련회(7/30~8/1) 진행중</div><div class="ds">주바라기 캠프 3차 · 대전 한남대학교</div></div>
+        <div style="flex:1;min-width:0"><div class="nm">여름 수련회(7/30~8/1) 진행중</div><div class="ds">주바라기 캠프 3차 · 대전 한남대학교</div></div>
         <span class="campBadge">진행중</span>
       </div>
       <div class="tile tileRow thanksTile" id="homeThanksTile" style="margin-top:10px;display:none" onclick="go('thanks')">
@@ -409,7 +409,7 @@
       </div>
       <div class="tile tileRow surveyTile" id="homeSurveyTile" style="margin-top:10px" onclick="go('survey')">
         <div class="ic" style="background:#e7f0ff;color:#2f6fed;font-size:22px"><i class="ti ti-clipboard-check"></i></div>
-        <div style="flex:1;min-width:0"><div class="nm">2026 여름수련회 설문</div><div class="ds">수련회 소감을 남겨주세요 · 참여 환영</div></div>
+        <div style="flex:1;min-width:0"><div class="nm">2026 여름 수련회 설문</div><div class="ds">수련회 소감을 남겨주세요 · 참여 환영</div></div>
         <i class="ti ti-chevron-right" style="color:var(--tx3);font-size:20px"></i>
       </div>
       <div class="feat" onclick="go('pod')" style="margin-top:14px">
@@ -508,7 +508,7 @@
     </section>
 
     <section class="screen" id="s-camp">
-      <div class="sec-t">여름수련회</div>
+      <div class="sec-t">여름 수련회</div>
       <div class="camp-hero">
         <div class="ct">중고등부 · 2026 SUMMER CAMP</div>
         <div class="ch">주바라기 캠프 3차<br>“하나님께서 주신 비전을 보라”</div>
@@ -718,12 +718,12 @@
       <div class="archiveEmpty" id="archiveEmpty">보관된 항목이 없습니다.</div>
       <div class="tile tileRow" id="arcCamp" onclick="go('camp')" style="display:none">
         <div class="ic" style="background:#efe7ff;color:var(--primary)"><i class="ti ti-tent"></i></div>
-        <div style="flex:1;min-width:0"><div class="nm">2026 여름수련회</div><div class="ds">주바라기 캠프 3차 · 종료</div></div>
+        <div style="flex:1;min-width:0"><div class="nm">2026 여름 수련회</div><div class="ds">주바라기 캠프 3차 · 종료</div></div>
         <span class="archiveBadge">지난 행사</span>
       </div>
       <div class="tile tileRow" id="arcSurvey" style="display:none">
         <div class="ic" style="background:#e7f0ff;color:#2f6fed"><i class="ti ti-clipboard-check"></i></div>
-        <div style="flex:1;min-width:0"><div class="nm">2026 여름수련회 설문</div><div class="ds">8/1(토) 오전 8시 오픈 예정</div></div>
+        <div style="flex:1;min-width:0"><div class="nm">2026 여름 수련회 설문</div><div class="ds">8/1(토) 오전 8시 오픈 예정</div></div>
         <span class="archiveBadge" style="background:#e7f0ff;color:#2f6fed">예정</span>
       </div>
       <div class="tile tileRow" id="arcPray" onclick="go('pray')" style="display:none">
@@ -739,7 +739,7 @@
     </section>
 
     <section class="screen" id="s-survey">
-      <div class="sec-t">여름수련회 설문</div>
+      <div class="sec-t">여름 수련회 설문</div>
       <div id="surveyForm">
         <div class="svHero">
           <div class="st">2026 SUMMER CAMP · 설문</div>
@@ -1662,7 +1662,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
 /* ===== 아카이브 날짜 로직 ===== */
 (function(){
   const now=new Date();
-  /* 여름수련회: 8/1 23:50부터 홈→아카이브로 이동 */
+  /* 여름 수련회: 8/1 23:50부터 홈→아카이브로 이동 */
   const campMoved = now >= new Date(2026,7,1,23,50,0);
   const homeCamp=document.getElementById('homeCampTile');
   const arcCamp=document.getElementById('arcCamp');
@@ -1680,7 +1680,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   const arcPray=document.getElementById('arcPray');
   if(homePray) homePray.style.display = prayMoved ? 'none' : '';
   if(arcPray) arcPray.style.display = prayMoved ? '' : 'none';
-  /* 수련회 종료 감사 7일 기도: 7/31 08:00에 홈(여름수련회 아래) 노출 → 그 전엔 아카이브(예정) */
+  /* 수련회 종료 감사 7일 기도: 7/31 08:00에 홈(여름 수련회 아래) 노출 → 그 전엔 아카이브(예정) */
   const thanksOn = now >= new Date(2026,6,31,8,0,0);
   const homeThanks=document.getElementById('homeThanksTile');
   const arcThanks=document.getElementById('arcThanks');
@@ -1723,7 +1723,7 @@ if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
 
-/* ===== 2026 여름수련회 설문 (구글폼 formResponse 제출) ===== */
+/* ===== 2026 여름 수련회 설문 (구글폼 formResponse 제출) ===== */
 (function(){
   const ACTION="https://docs.google.com/forms/d/e/1FAIpQLSdi6qatllwoyuZ6ADfTh6aZFXRRE_IwH9L4CSyVKCgHr1W3Hw/formResponse";
   const sec=document.getElementById('s-survey'); if(!sec)return;
