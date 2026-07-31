@@ -190,6 +190,25 @@
   .campBadge{flex:none;background:#16a34a;color:#fff;font-size:11.5px;font-weight:800;border-radius:999px;padding:4px 10px}
   .prayIc{background:#ffe6c9;color:#f5821f;display:flex;align-items:center;justify-content:center}
   .prayBadge{flex:none;background:#f5821f;color:#fff;font-size:12px;font-weight:800;border-radius:999px;padding:5px 11px}
+  .tile.thanksTile{background:#fff8ec;border-color:#f3e0b8;box-shadow:0 2px 10px rgba(214,155,40,.10)}
+  .tile.thanksTile .nm{color:#7a5410}
+  .tile.thanksTile .ds{color:#a07a2e}
+  .thanksIc{background:#fbeccb;color:#c98a12;display:flex;align-items:center;justify-content:center}
+  .thanksBadge{flex:none;background:#e6b23a;color:#fff;font-size:12px;font-weight:800;border-radius:999px;padding:5px 11px}
+  .thanksHero{background:linear-gradient(135deg,#e6a817,#c9741a);color:#fff;border-radius:18px;padding:18px;margin-top:6px;position:relative;overflow:hidden;box-shadow:0 8px 22px rgba(201,116,26,.26)}
+  .thanksHero .ct{font-size:11.5px;font-weight:700;opacity:.92;letter-spacing:.5px}
+  .thanksHero .ch{font-size:19px;font-weight:800;margin-top:7px;line-height:1.35}
+  .thanksHero .cv{font-size:12.5px;opacity:.95;margin-top:8px}
+  .thanksHero i{position:absolute;right:-6px;bottom:-14px;font-size:76px;opacity:.16}
+  .thanksBtn{width:100%;border:none;border-radius:12px;background:#e6a817;color:#fff;font-size:15px;font-weight:800;padding:14px;margin-top:11px;cursor:pointer;font-family:inherit}
+  .thanksBtn:active{transform:scale(.99)}
+  .thanksBtn.doneState{background:#fbeccb;color:#b07d16}
+  .thanksSeal{position:absolute;width:52px;height:52px;border-radius:50%;border:2px solid #c9741a;box-shadow:inset 0 0 0 3px #fff, inset 0 0 0 5px #c9741a;color:#c9741a;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-9deg);opacity:.95;font-weight:900;pointer-events:none}
+  .thanksSeal .s1{font-size:8px;letter-spacing:1px}
+  .thanksSeal .s2{font-size:12px;margin-top:-2px}
+  .prayStamp.todayGold{border-style:solid;border-color:#e6a817;background:#fff7e6;cursor:pointer}
+  .prayStamp.todayGold .pdate{color:#c98a10}
+  .prayStamp.todayGold .pday{color:#d9890b}
   .prayCard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:11px;box-shadow:0 2px 10px rgba(29,27,58,.04)}
   .prayTitle{font-size:14px;font-weight:800;color:var(--tx);margin-bottom:9px}
   .prayText{font-size:13.5px;line-height:1.9;color:#3a3860}
@@ -377,6 +396,11 @@
         <div class="ic" style="background:#dff5e6;color:#16a34a;font-size:23px"><i class="ti ti-tent"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">여름수련회(7/30~8/1) 진행중</div><div class="ds">주바라기 캠프 3차 · 대전 한남대학교</div></div>
         <span class="campBadge">진행중</span>
+      </div>
+      <div class="tile tileRow thanksTile" id="homeThanksTile" style="margin-top:10px;display:none" onclick="go('thanks')">
+        <div class="ic thanksIc" style="font-size:24px"><i class="ti ti-pray"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">수련회 종료 감사 7일 기도문</div><div class="ds">8/1~8/7 · 매일 기도 후 도장찍기</div></div>
+        <span class="thanksBadge">7일</span>
       </div>
       <div class="tile tileRow prayTile" id="homePrayTile" style="margin-top:10px" onclick="go('pray')">
         <div class="ic prayIc" style="font-size:24px"><i class="ti ti-pray"></i></div>
@@ -658,6 +682,30 @@
       </div>
     </section>
 
+    <section class="screen" id="s-thanks">
+      <div class="sec-t">수련회 종료 감사 7일 기도</div>
+      <div class="thanksHero">
+        <div class="ct">2026 여름 수련회 · 종료 감사</div>
+        <div class="ch">수련회 종료 감사 7일 기도</div>
+        <div class="cv">8/1(토)~8/7(금) · 하루 한 번 기도 후 도장</div>
+        <i class="ti ti-pray"></i>
+      </div>
+      <div class="prayCard">
+        <div class="prayTitle">[수련회 종료 감사 7일 기도문]</div>
+        <div class="prayGridNote" style="margin:0 0 12px">※ 2026년 여름 수련회 종료 감사기도에 일주일간 함께 해 주세요!</div>
+        <div class="prayText">하나님 아버지, 감사합니다.<br>2026년 여름 수련회를 은혜 가운데, 안전하게 잘 마치게 하시니 감사합니다.<br><br>무더운 날씨 가운데 2박 3일 동안 눈동자처럼 지켜주시고, 함께 해 주셔서 감사합니다.<br><br>우리 중고등부가 수련회를 통해서 받은 은혜를 잘 간직하게 하시고, 주일부터 이어지는 중고등부 예배를 더욱 뜨겁게, 더 열심히 마음을 다해 드리는 예배자가 되게 해 주세요.<br><br>귀한 시간을 내어 헌신하며 함께 수고하신 선생님들을 기억하시고 특별히 좋은 컨디션과 건강, 넘치는 축복으로 갚아 주세요.<br><br>수련회를 위해 중보기도와 재정으로 함께 해 주신 분들에게도 하나님께서 충만한 복을 부어 주세요.<br><br>수련회 기간 중 작정하며 전도하기로 결단한 친구 <b>OOO</b>을(를) 위해 기도합니다. 하나님 앞에 전도하기로 작정했으니, 친구를 위해 기도하며 담대하게 입술을 열어 전도할 수 있도록 능력을 부어 주세요.<br><br>전도할 때 친구 <b>OOO</b>의 마음 문을 열어주시고, 함께 예배 드리며 예수님 믿고 구원 받게 되도록 역사해 주세요.<br><br>수련회를 통해 주신 은혜를 빼앗기지 않도록 우리의 입에서 불평과 불만이 떠나가게 하시고, 감사의 고백만 흘러 넘치도록 말과 생각을 붙들어 주세요.<br><br>부어주신 은혜에 감사드립니다. 함께 해 주신 하나님 감사합니다. 단 한 건의 사고 없이 모든 일정을 마치게 하심에 감사합니다.<br><br>예수님의 이름으로 기도드립니다. <b style="color:#c9741a">아멘!</b></div>
+      </div>
+      <button class="thanksBtn" id="thanksBtn">오늘 기도 후 도장찍기</button>
+      <div class="prayCard" style="margin-top:11px">
+        <div class="prayStampHead">
+          <div class="prayStampT"><i class="ti ti-stamp" style="color:#e6a817;vertical-align:-2px;margin-right:5px"></i>기도 도장 (7일)</div>
+          <div class="prayCnt"><b id="thanksCnt">0</b> / 7</div>
+        </div>
+        <div class="prayGridNote">8/1~8/7 · 기도 후 오늘 날짜의 도장을 찍어요 (오늘만 가능)</div>
+        <div class="prayGrid" id="thanksGrid"></div>
+      </div>
+    </section>
+
     <section class="screen" id="s-plan">
       <div class="sec-t">연간계획 · 2026</div>
       <div class="planZoomHint"><i class="ti ti-zoom-in"></i> 두 손가락으로 벌려 확대해서 보세요</div>
@@ -682,6 +730,11 @@
         <div class="ic" style="background:#ffe6c9;color:#f5821f"><i class="ti ti-pray"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">여름 수련회를 위한 30번 중보기도</div><div class="ds">30일 중보기도 · 종료</div></div>
         <span class="archiveBadge">지난 행사</span>
+      </div>
+      <div class="tile tileRow" id="arcThanks" onclick="go('thanks')" style="display:none">
+        <div class="ic" style="background:#fbeccb;color:#c98a12"><i class="ti ti-pray"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">수련회 종료 감사 7일 기도문</div><div class="ds">7/31(목) 오전 8시 오픈 예정</div></div>
+        <span class="archiveBadge" style="background:#fbeccb;color:#a07a2e">예정</span>
       </div>
     </section>
 
@@ -864,6 +917,7 @@ function afterActivate(s){
   if(s==='notice'){loadNotices();}
   if(s==='camp'){updateCampApply();}
   if(s==='pray'&&window.__renderPray){window.__renderPray();}
+  if(s==='thanks'&&window.__renderThanks){window.__renderThanks();}
   try{ history.replaceState(null,'','#'+s); }catch(e){}
 }
 function go(s,dir){
@@ -1560,6 +1614,51 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   window.__renderPray();
 })();
 
+/* ===== 수련회 종료 감사 7일 기도 (8/1~8/7 도장) ===== */
+(function(){
+  const BASE=new Date(2026,7,1); BASE.setHours(0,0,0,0); /* 2026-08-01 = 1일차 */
+  function thanksDay(){
+    const t=new Date(); t.setHours(0,0,0,0);
+    return 1+Math.round((t-BASE)/86400000); /* <1: 시작 전, 1~7: 진행, >7: 종료 */
+  }
+  const KEY='sgy_thanks_stamp';
+  function getStamps(){ try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){return [];} }
+  function setStamps(a){ try{localStorage.setItem(KEY,JSON.stringify(a));}catch(e){} }
+  const SEAL='<div class="thanksSeal"><span class="s1">감사</span><span class="s2">완료</span></div>';
+  function toggle(day){ let s=getStamps(); if(s.indexOf(day)>=0){ s=s.filter(function(x){return x!==day;}); } else { s.push(day); } setStamps(s); window.__renderThanks(); }
+  window.__renderThanks=function(){
+    const day=thanksDay();
+    const grid=document.getElementById('thanksGrid'); if(!grid)return;
+    const stamps=getStamps();
+    let html='';
+    for(let n=1; n<=7; n++){
+      const done=stamps.indexOf(n)>=0;
+      const today=(n===day);
+      const cls='prayStamp'+(done?' done':(today?' todayGold':''));
+      const inner=done?SEAL:'';
+      html+='<div class="'+cls+'" data-d="'+n+'">'+inner+'<span class="pdate">8/'+n+'</span><span class="pday">'+n+'일차</span></div>';
+    }
+    grid.innerHTML=html;
+    const cnt=document.getElementById('thanksCnt'); if(cnt)cnt.textContent=stamps.filter(function(x){return x>=1&&x<=7;}).length;
+    if(day>=1 && day<=7){
+      const tc=grid.querySelector('.prayStamp[data-d="'+day+'"]');
+      if(tc){ tc.style.cursor='pointer'; tc.onclick=function(){ toggle(day); }; }
+    }
+    const btn=document.getElementById('thanksBtn');
+    if(btn){
+      if(day<1){ btn.textContent='8/1(토)부터 도장을 찍을 수 있어요'; btn.classList.remove('doneState'); btn.disabled=true; btn.style.opacity=.6; }
+      else if(day>7){ btn.textContent='감사 7일 기도가 마무리되었습니다'; btn.classList.add('doneState'); btn.disabled=true; btn.style.opacity=1; }
+      else { btn.disabled=false; btn.style.opacity=1;
+        const isDone=stamps.indexOf(day)>=0;
+        btn.textContent = isDone ? ('오늘('+day+'일차) 도장 완료 ✓ · 취소하려면 누르세요') : ('오늘('+day+'일차) 기도 후 도장찍기');
+        btn.classList.toggle('doneState', isDone);
+        btn.onclick=function(){ toggle(day); };
+      }
+    }
+  };
+  window.__renderThanks();
+})();
+
 /* ===== 아카이브 날짜 로직 ===== */
 (function(){
   const now=new Date();
@@ -1581,15 +1680,21 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   const arcPray=document.getElementById('arcPray');
   if(homePray) homePray.style.display = prayMoved ? 'none' : '';
   if(arcPray) arcPray.style.display = prayMoved ? '' : 'none';
+  /* 수련회 종료 감사 7일 기도: 7/31 08:00에 홈(여름수련회 아래) 노출 → 그 전엔 아카이브(예정) */
+  const thanksOn = now >= new Date(2026,6,31,8,0,0);
+  const homeThanks=document.getElementById('homeThanksTile');
+  const arcThanks=document.getElementById('arcThanks');
+  if(homeThanks) homeThanks.style.display = thanksOn ? '' : 'none';
+  if(arcThanks) arcThanks.style.display = thanksOn ? 'none' : '';
   /* 아카이브 빈 상태: 표시 중인 아카이브 항목이 하나도 없을 때만 노출 */
   const arcEmpty=document.getElementById('archiveEmpty');
-  const anyArc = (arcCamp && arcCamp.style.display!=='none') || (arcSurvey && arcSurvey.style.display!=='none') || (arcPray && arcPray.style.display!=='none');
+  const anyArc = (arcCamp && arcCamp.style.display!=='none') || (arcSurvey && arcSurvey.style.display!=='none') || (arcPray && arcPray.style.display!=='none') || (arcThanks && arcThanks.style.display!=='none');
   if(arcEmpty) arcEmpty.style.display = anyArc ? 'none' : '';
 })();
 
 /* ===== 메뉴 딥링크 (URL 라우팅) ===== */
 (function(){
-  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey'];
+  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks'];
   function applyRoute(){
     let k=(location.hash||'').replace(/^#\/?/,'').trim();
     if(!k){ const m=(location.search||'').match(/[?&]p=([^&]+)/); if(m)k=decodeURIComponent(m[1]); }
