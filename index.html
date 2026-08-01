@@ -373,6 +373,17 @@
   .childNm{font-size:14.5px;font-weight:600;color:var(--tx)}
   .childDs{font-size:12px;color:var(--tx2);margin-top:2px}
   a{color:inherit;text-decoration:none}
+  .dlBack{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--tx2);margin:16px 4px 0;cursor:pointer}
+  .dlBack i{font-size:17px}
+  .dlBack:active{opacity:.6}
+  .dlIntro{font-size:12.5px;color:var(--tx2);line-height:1.55;margin:0 4px 4px}
+  .dlGroup{font-size:12px;font-weight:700;color:var(--tx3);margin:16px 4px 8px;letter-spacing:.3px}
+  .dlRow{display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:7px}
+  .dlNm{font-size:14px;color:var(--tx)}
+  .dlUrl{font-size:11px;color:var(--tx2);font-family:monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+  .dlCopy{flex:none;width:36px;height:36px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--tx2);display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer}
+  .dlCopy:active{transform:scale(.95)}
+  .dlCopy.done{color:#1aa06d;border-color:#bfe6d4}
   main::-webkit-scrollbar{display:none}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
@@ -736,6 +747,18 @@
         <div style="flex:1;min-width:0"><div class="nm">수련회 종료 감사 7일 기도</div><div class="ds">7/31(목) 오전 8시 오픈 예정</div></div>
         <span class="archiveBadge" style="background:#fbeccb;color:#a07a2e">예정</span>
       </div>
+      <div class="tile tileRow" id="arcDeeplink" onclick="go('deeplink')" style="margin-top:14px">
+        <div class="ic" style="background:#e7f0ff;color:#2f6fed"><i class="ti ti-link"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">딥링크 모음</div><div class="ds">메뉴별 바로가기 주소 복사</div></div>
+        <i class="ti ti-chevron-right" style="color:var(--tx3);font-size:20px"></i>
+      </div>
+    </section>
+
+    <section class="screen" id="s-deeplink">
+      <div class="dlBack" onclick="go('archive')"><i class="ti ti-arrow-left"></i> 아카이브</div>
+      <div class="sec-t">딥링크 모음</div>
+      <div class="dlIntro">복사 버튼을 눌러 카톡·문자로 공유하세요. 링크를 열면 해당 메뉴가 바로 나타납니다.</div>
+      <div id="dlList"></div>
     </section>
 
     <section class="screen" id="s-survey">
@@ -1694,15 +1717,56 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
 
 /* ===== 메뉴 딥링크 (URL 라우팅) ===== */
 (function(){
-  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks'];
+  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks','deeplink'];
+  const EXT={
+    bulletin:'https://vision153.notion.site/_250601-2026eda158ae8095999ac133933fd32a?pvs=4',
+    map:'https://map.naver.com/p/search/송탄영광교회',
+    youtube:'https://www.youtube.com/@sgy153',
+    podbbang:'https://www.podbbang.com/channels/9230',
+    insta:'https://www.instagram.com/stgc153',
+    band:'https://band.us/n/acaebbS821711'
+  };
   function applyRoute(){
     let k=(location.hash||'').replace(/^#\/?/,'').trim();
     if(!k){ const m=(location.search||'').match(/[?&]p=([^&]+)/); if(m)k=decodeURIComponent(m[1]); }
     k=k.toLowerCase();
+    if(EXT[k]){ location.href=EXT[k]; return; }
+    if(k==='compassion'){ go('more'); if(window.openCompassion)openCompassion(); return; }
     if(ROUTES.indexOf(k)>=0) go(k);
   }
   window.addEventListener('hashchange',applyRoute);
   applyRoute();
+})();
+
+/* ===== 딥링크 모음 리스트 ===== */
+(function(){
+  const wrap=document.getElementById('dlList'); if(!wrap)return;
+  const BASE=location.origin+location.pathname.replace(/[^/]*$/,'');
+  const groups=[
+    ['메인',[['홈','home'],['설교 팟캐스트','pod'],['유튜브 영상','vid'],['더보기','more']]],
+    ['여름 수련회',[['여름 수련회','camp'],['2026 여름 수련회 설문','survey'],['수련회 종료 감사 7일 기도','thanks'],['30번 중보기도','pray']]],
+    ['신앙·참여',[['공지사항','notice'],['출석체크 도장깨기','attend'],['입회원서','enroll'],['문의하기','contact']]],
+    ['정보·보관',[['연간계획','plan'],['보관함(아카이브)','archive']]],
+    ['외부 링크',[['온라인 주보','bulletin'],['오시는 길','map'],['중고등부 유튜브','youtube'],['설교 팟캐스트(팟빵)','podbbang'],['인스타그램','insta'],['중고등부 밴드','band'],['해외 어린이 양육','compassion']]]
+  ];
+  function fallback(text){ try{ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity=0; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }catch(e){} }
+  groups.forEach(function(g){
+    const h=document.createElement('div'); h.className='dlGroup'; h.textContent=g[0]; wrap.appendChild(h);
+    g[1].forEach(function(it){
+      const url=BASE+'#'+it[1];
+      const row=document.createElement('div'); row.className='dlRow';
+      const t=document.createElement('div'); t.style.cssText='flex:1;min-width:0';
+      t.innerHTML='<div class="dlNm"></div><div class="dlUrl">#'+it[1]+'</div>';
+      t.querySelector('.dlNm').textContent=it[0];
+      const b=document.createElement('button'); b.className='dlCopy'; b.setAttribute('aria-label','복사'); b.innerHTML='<i class="ti ti-copy"></i>';
+      b.onclick=function(){
+        function ok(){ b.classList.add('done'); b.innerHTML='<i class="ti ti-check"></i>'; setTimeout(function(){b.classList.remove('done'); b.innerHTML='<i class="ti ti-copy"></i>';},1200); }
+        if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(ok).catch(function(){fallback(url);ok();}); }
+        else { fallback(url); ok(); }
+      };
+      row.appendChild(t); row.appendChild(b); wrap.appendChild(row);
+    });
+  });
 })();
 
 /* ===== 강제 새로고침 (SW 해제 + 캐시 삭제 + 캐시버스트 재로딩) ===== */
