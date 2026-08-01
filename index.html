@@ -1662,8 +1662,8 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
 /* ===== 아카이브 날짜 로직 ===== */
 (function(){
   const now=new Date();
-  /* 여름 수련회: 8/1 23:50부터 홈→아카이브로 이동 */
-  const campMoved = now >= new Date(2026,7,1,23,50,0);
+  /* 여름 수련회: 홈→아카이브로 이동 완료 (8/1 종료) */
+  const campMoved = true;
   const homeCamp=document.getElementById('homeCampTile');
   const arcCamp=document.getElementById('arcCamp');
   if(homeCamp) homeCamp.style.display = campMoved ? 'none' : '';
