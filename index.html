@@ -269,6 +269,15 @@
   .svSubmit{width:100%;border:none;border-radius:12px;background:var(--gold);color:#fff;font-size:16px;font-weight:800;padding:15px;margin-top:18px;cursor:pointer}
   .svSubmit:disabled{opacity:.6}
   .svErr{color:#e2574c;font-size:12px;text-align:center;margin-top:10px;min-height:14px}
+  .svLockBanner{display:flex;gap:10px;align-items:flex-start;background:#fbeccb;border:1px solid #f0dca8;border-radius:12px;padding:12px 13px;margin-top:8px}
+  .svLockBanner i{color:#a07a2e;font-size:20px;flex:none;margin-top:1px}
+  .svLockBanner .lt{font-size:14px;font-weight:800;color:#7a5a12}
+  .svLockBanner .lp{font-size:12px;color:#a07a2e;line-height:1.55;margin-top:3px}
+  .svRO .svHero{opacity:.72}
+  .svRO .svIn,.svRO .svTa,.svRO .svEtc{background:#f5f4fa;color:#8b89a3;pointer-events:none}
+  .svRO .svScale,.svRO .svRadio{pointer-events:none}
+  .svRO .svScale .op,.svRO .svRadio{background:#f5f4fa;color:#8b89a3;opacity:.75;cursor:default}
+  .svRO #svSubmitBtn{background:#eeedf4;color:var(--tx3);cursor:default;opacity:1}
   .svDone{text-align:center;padding:60px 18px}
   .svDone .ic{width:74px;height:74px;border-radius:50%;background:#e3f9ec;color:#16a34a;display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 18px}
   .svDone h3{font-size:20px;font-weight:800;color:var(--tx);margin:0 0 8px}
@@ -729,23 +738,23 @@
       <div class="archiveEmpty" id="archiveEmpty">보관된 항목이 없습니다.</div>
       <div class="tile tileRow" id="arcCamp" onclick="go('camp')" style="display:none">
         <div class="ic" style="background:#efe7ff;color:var(--primary)"><i class="ti ti-tent"></i></div>
-        <div style="flex:1;min-width:0"><div class="nm">2026 여름 수련회</div><div class="ds">주바라기 캠프 3차 · 종료</div></div>
-        <span class="archiveBadge">지난 행사</span>
+        <div style="flex:1;min-width:0"><div class="nm">2026 여름 수련회</div><div class="ds">주바라기 캠프 3차 · 2026/07/30~08/01</div></div>
+        <span class="archiveBadge">종료</span>
       </div>
-      <div class="tile tileRow" id="arcSurvey" style="display:none">
-        <div class="ic" style="background:#eef0f4;color:var(--tx2)"><i class="ti ti-clipboard-check"></i></div>
-        <div style="flex:1;min-width:0"><div class="nm">2026 여름 수련회 설문</div><div class="ds">설문 종료 · 참여해 주셔서 감사합니다</div></div>
-        <span class="archiveBadge">지난 행사</span>
+      <div class="tile tileRow" id="arcSurvey" onclick="go('survey')" style="display:none">
+        <div class="ic" style="background:#e7f0ff;color:#2f6fed"><i class="ti ti-clipboard-check"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">2026 여름 수련회 설문</div><div class="ds" id="arcSurveyDs">응답 기간 2026/08/01~08/02</div></div>
+        <span class="archiveBadge" id="arcSurveyBadge">종료</span>
       </div>
       <div class="tile tileRow" id="arcPray" onclick="go('pray')" style="display:none">
         <div class="ic" style="background:#ffe6c9;color:#f5821f"><i class="ti ti-pray"></i></div>
-        <div style="flex:1;min-width:0"><div class="nm">여름 수련회를 위한 30번 중보기도</div><div class="ds">30일 중보기도 · 종료</div></div>
-        <span class="archiveBadge">지난 행사</span>
+        <div style="flex:1;min-width:0"><div class="nm">여름 수련회를 위한 30번 중보기도</div><div class="ds">30일 중보기도 · 2026/06/28~07/30</div></div>
+        <span class="archiveBadge">종료</span>
       </div>
       <div class="tile tileRow" id="arcThanks" onclick="go('thanks')" style="display:none">
         <div class="ic" style="background:#fbeccb;color:#c98a12"><i class="ti ti-pray"></i></div>
-        <div style="flex:1;min-width:0"><div class="nm">수련회 종료 감사 7일 기도</div><div class="ds">7/31(목) 오전 8시 오픈 예정</div></div>
-        <span class="archiveBadge" style="background:#fbeccb;color:#a07a2e">예정</span>
+        <div style="flex:1;min-width:0"><div class="nm">수련회 종료 감사 7일 기도</div><div class="ds" id="arcThanksDs">7/31(목) 오전 8시 오픈 예정</div></div>
+        <span class="archiveBadge" id="arcThanksBadge" style="background:#fbeccb;color:#a07a2e">예정</span>
       </div>
       <div class="tile tileRow" id="arcDeeplink" onclick="go('deeplink')" style="margin-top:14px">
         <div class="ic" style="background:#e7f0ff;color:#2f6fed"><i class="ti ti-link"></i></div>
@@ -763,6 +772,10 @@
 
     <section class="screen" id="s-survey">
       <div class="sec-t">여름 수련회 설문</div>
+      <div id="surveyClosed" class="svLockBanner" style="display:none">
+        <i class="ti ti-lock"></i>
+        <div><div class="lt">설문이 종료되었습니다</div><div class="lp">응답은 마감되었고 내용만 보실 수 있습니다.<br>참여해 주신 모든 분께 감사드립니다.</div></div>
+      </div>
       <div id="surveyForm">
         <div class="svHero">
           <div class="st">2026 SUMMER CAMP · 설문</div>
@@ -869,12 +882,6 @@
         <h3>설문이 제출되었습니다</h3>
         <p>소중한 의견 감사합니다.<br>여러분의 이야기가 다음 수련회를 더 좋게 만듭니다.</p>
         <button class="svSubmit" id="svAgainBtn" style="max-width:220px;margin:22px auto 0;background:#eef0f4;color:var(--tx2)">다른 응답 작성하기</button>
-      </div>
-      <div id="surveyClosed" class="svDone" style="display:none">
-        <div class="ic"><i class="ti ti-clipboard-check"></i></div>
-        <h3>설문이 종료되었습니다</h3>
-        <p>2026 여름 수련회 설문 응답이 마감되었습니다.<br>참여해 주셔서 감사합니다.</p>
-        <button class="svSubmit" id="svHomeBtn" style="max-width:220px;margin:22px auto 0;background:#eef0f4;color:var(--tx2)">홈으로 가기</button>
       </div>
     </section>
   </main>
@@ -1712,10 +1719,16 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   if(arcPray) arcPray.style.display = prayMoved ? '' : 'none';
   /* 수련회 종료 감사 7일 기도: 7/31 08:00에 홈(여름 수련회 아래) 노출 → 그 전엔 아카이브(예정) */
   const thanksOn = now >= new Date(2026,6,31,8,0,0);
+  /* 8/8부터 종료 → 홈에서 내리고 아카이브(종료)로 이동 */
+  const thanksEnded = now >= new Date(2026,7,8,0,0,0);
   const homeThanks=document.getElementById('homeThanksTile');
   const arcThanks=document.getElementById('arcThanks');
-  if(homeThanks) homeThanks.style.display = thanksOn ? '' : 'none';
-  if(arcThanks) arcThanks.style.display = thanksOn ? 'none' : '';
+  if(homeThanks) homeThanks.style.display = (thanksOn && !thanksEnded) ? '' : 'none';
+  if(arcThanks) arcThanks.style.display = (thanksOn && !thanksEnded) ? 'none' : '';
+  if(thanksEnded){
+    const td=document.getElementById('arcThanksDs'); if(td) td.textContent='7일 기도 · 2026/08/01~08/07';
+    const tb=document.getElementById('arcThanksBadge'); if(tb){ tb.textContent='종료'; tb.removeAttribute('style'); }
+  }
   /* 아카이브 빈 상태: 표시 중인 아카이브 항목이 하나도 없을 때만 노출 */
   const arcEmpty=document.getElementById('archiveEmpty');
   const anyArc = (arcCamp && arcCamp.style.display!=='none') || (arcSurvey && arcSurvey.style.display!=='none') || (arcPray && arcPray.style.display!=='none') || (arcThanks && arcThanks.style.display!=='none');
@@ -1798,13 +1811,19 @@ if('serviceWorker' in navigator){
 (function(){
   const ACTION="https://docs.google.com/forms/d/e/1FAIpQLSdi6qatllwoyuZ6ADfTh6aZFXRRE_IwH9L4CSyVKCgHr1W3Hw/formResponse";
   const sec=document.getElementById('s-survey'); if(!sec)return;
-  /* 응답 종료: 폼을 감추고 종료 안내만 노출 (직접 링크로 들어와도 제출 불가) */
+  /* 응답 종료: 내용은 볼 수 있게 두고 입력·제출만 잠금 */
   const SURVEY_CLOSED = true;
   if(SURVEY_CLOSED){
-    const fm=document.getElementById('surveyForm'); if(fm) fm.style.display='none';
     const dn=document.getElementById('surveyDone'); if(dn) dn.style.display='none';
-    const cl=document.getElementById('surveyClosed'); if(cl) cl.style.display='block';
-    const hb=document.getElementById('svHomeBtn'); if(hb) hb.addEventListener('click',function(){ go('home'); });
+    const cl=document.getElementById('surveyClosed'); if(cl) cl.style.display='flex';
+    const fm=document.getElementById('surveyForm');
+    if(fm){
+      fm.style.display='block';
+      sec.classList.add('svRO');
+      fm.querySelectorAll('input,textarea').forEach(function(e){ e.readOnly=true; e.tabIndex=-1; });
+      const b=document.getElementById('svSubmitBtn'); if(b){ b.disabled=true; b.textContent='응답이 마감되었습니다'; }
+      const h=fm.querySelector('.hint'); if(h) h.textContent='설문이 종료되어 입력할 수 없습니다.';
+    }
     return;
   }
   const sel={}; /* scale/radio 선택값 저장: key -> value */
