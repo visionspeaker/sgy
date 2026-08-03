@@ -442,7 +442,6 @@
       </div>
       <div class="grid" style="margin-top:4px">
         <div class="tile" onclick="open_('https://vision153.notion.site/_250601-2026eda158ae8095999ac133933fd32a?pvs=4')"><div class="ic no"><i class="ti ti-news"></i></div><div class="nm">온라인 주보</div><div class="ds">이번 주 예배 순서와 광고</div></div>
-        <div class="tile" onclick="go('notice')"><div class="ic" style="background:#e4f0ff;color:#2f80ed"><i class="ti ti-speakerphone"></i></div><div class="nm">공지사항</div><div class="ds">중고등부 소식·알림</div></div>
         <div class="tile" onclick="open_('https://www.instagram.com/stgc153')"><div class="ic ig"><i class="ti ti-brand-instagram"></i></div><div class="nm">인스타그램</div><div class="ds">@stgc153 소식과 사진</div></div>
         <div class="tile" onclick="open_('https://band.us/n/acaebbS821711')"><div class="ic bd"><i class="ti ti-users-group"></i></div><div class="nm">중고등부 밴드</div><div class="ds">공지·소통 커뮤니티</div></div>
         <div class="tile" onclick="go('attend')"><div class="ic" style="background:#ffe5e5;color:#ef4444"><i class="ti ti-calendar-check"></i></div><div class="nm">출석체크 도장깨기</div><div class="ds">매일 출석하고 도장 받기</div></div>
@@ -522,6 +521,7 @@
     </section>
 
     <section class="screen" id="s-notice">
+      <div class="dlBack" onclick="go('archive')"><i class="ti ti-arrow-left"></i> 아카이브</div>
       <div class="sec-t">공지사항</div>
       <button class="writeBtn" id="noticeWriteBtn"><i class="ti ti-pencil"></i> 공지 작성 (관리자)</button>
       <div id="noticeList"><div class="loq">공지를 불러오는 중…</div></div>
@@ -759,6 +759,11 @@
       <div class="tile tileRow" id="arcDeeplink" onclick="go('deeplink')" style="margin-top:14px">
         <div class="ic" style="background:#e7f0ff;color:#2f6fed"><i class="ti ti-link"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">딥링크 모음</div><div class="ds">메뉴별 바로가기 주소 복사</div></div>
+        <i class="ti ti-chevron-right" style="color:var(--tx3);font-size:20px"></i>
+      </div>
+      <div class="tile tileRow" id="arcNotice" onclick="go('notice')">
+        <div class="ic" style="background:#e4f0ff;color:#2f80ed"><i class="ti ti-speakerphone"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">공지사항</div><div class="ds">중고등부 소식·알림</div></div>
         <i class="ti ti-chevron-right" style="color:var(--tx3);font-size:20px"></i>
       </div>
     </section>
