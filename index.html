@@ -1885,6 +1885,7 @@ if('serviceWorker' in navigator){
     const c=document.getElementById('bkCode'); if(c)c.value=build();
   }
   window.__renderBackup=render;
+  render();
   const copyBtn=document.getElementById('bkCopy');
   if(copyBtn) copyBtn.addEventListener('click',function(){
     const ta=document.getElementById('bkCode'); const msg=document.getElementById('bkCopyMsg');
