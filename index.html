@@ -1966,8 +1966,8 @@ if('serviceWorker' in navigator){
 /* ===== 신급 교육 신청 ===== */
 (function(){
   const sec=document.getElementById('s-grade'); if(!sec)return;
-  /* TODO: 신청 접수 백엔드 미확정. 8/23 오픈 전에 반드시 연결할 것 (구글폼 또는 Apps Script) */
-  const GRADE_API='';
+  /* 입회원서(응답) 시트의 '신급교육신청' 탭에 기록하는 Apps Script 웹앱 (개인계정 소유) */
+  const GRADE_API='https://script.google.com/macros/s/AKfycbzXb79Jpcks_rYXZBPX0g-6vO2sThZo93tO66Thl-hw0op7RqJtzk97LdLFBCl7mKZTxg/exec';
   const state=window.__gradeState||'before';
   let pick='';
   const opts=sec.querySelectorAll('.grOpt');
