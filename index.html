@@ -28,8 +28,9 @@
 <meta name="description" content="송탄영광교회 중고등부 공식 앱 — 설교 팟캐스트와 유튜브 영상을 한 곳에서.">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#7c6cff">
-<link rel="apple-touch-icon" href="sgy_logo.png">
-<link rel="icon" href="sgy_logo.png" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png" sizes="192x192">
+<link rel="icon" href="icon-512.png" sizes="512x512">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="SGY">
@@ -269,6 +270,21 @@
   .svSubmit{width:100%;border:none;border-radius:12px;background:var(--gold);color:#fff;font-size:16px;font-weight:800;padding:15px;margin-top:18px;cursor:pointer}
   .svSubmit:disabled{opacity:.6}
   .svErr{color:#e2574c;font-size:12px;text-align:center;margin-top:10px;min-height:14px}
+  .bkNote{display:flex;gap:10px;align-items:flex-start;background:#fff3df;border:1px solid #f4dfb4;border-radius:12px;padding:12px 13px;margin-top:8px}
+  .bkNote i{color:#a07a2e;font-size:20px;flex:none;margin-top:1px}
+  .bkNote .bt{font-size:13.5px;font-weight:800;color:#7a5a12}
+  .bkNote .bp{font-size:12px;color:#a07a2e;line-height:1.55;margin-top:3px}
+  .bkCard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 15px;margin-top:11px}
+  .bkT{font-size:14px;font-weight:700;color:var(--tx)}
+  .bkSum{font-size:12px;color:var(--tx2);margin-top:6px;line-height:1.55}
+  .bkCode{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:10px 11px;margin-top:10px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;line-height:1.55;color:var(--tx2);background:#f7f6fc;min-height:78px;resize:vertical;outline:none;word-break:break-all}
+  .bkIn{background:#fff;color:var(--tx)}
+  .bkIn:focus{border-color:var(--primary)}
+  .bkBtn{width:100%;border:none;border-radius:11px;background:var(--primary);color:#fff;font-size:14.5px;font-weight:800;padding:13px;margin-top:10px;font-family:inherit;cursor:pointer}
+  .bkBtn.ghost{background:#eef0f4;color:var(--tx2)}
+  .bkBtn:active{transform:scale(.99)}
+  .bkHint{font-size:11.5px;color:var(--tx3);line-height:1.55;margin-top:8px}
+  .bkMsg{font-size:12.5px;text-align:center;margin-top:9px;min-height:16px;line-height:1.5}
   .svLockBanner{display:flex;gap:10px;align-items:flex-start;background:#fbeccb;border:1px solid #f0dca8;border-radius:12px;padding:12px 13px;margin-top:8px}
   .svLockBanner i{color:#a07a2e;font-size:20px;flex:none;margin-top:1px}
   .svLockBanner .lt{font-size:14px;font-weight:800;color:#7a5a12}
@@ -491,7 +507,12 @@
         <div class="giveAcct"><span id="acctNo">7942-21-89862</span><button class="copyBtn" id="copyAcct"><i class="ti ti-copy"></i>복사</button></div>
       </div>
 
-      <div class="tile tileRow" style="margin-top:12px" onclick="go('archive')">
+      <div class="tile tileRow" style="margin-top:12px" onclick="go('backup')">
+        <div class="ic" style="background:#efecff;color:var(--primary)"><i class="ti ti-shield-lock"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">내 도장 기록 백업</div><div class="ds">앱 지우기 전 꼭 저장하세요</div></div>
+        <i class="ti ti-chevron-right" style="color:var(--tx3);font-size:20px"></i>
+      </div>
+      <div class="tile tileRow" style="margin-top:10px" onclick="go('archive')">
         <div class="ic" style="background:#eef0f4;color:var(--tx2)"><i class="ti ti-archive"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">아카이브</div><div class="ds">지난 행사·자료 보관함</div></div>
       </div>
@@ -775,6 +796,32 @@
       <div id="dlList"></div>
     </section>
 
+    <section class="screen" id="s-backup">
+      <div class="dlBack" onclick="go('more')"><i class="ti ti-arrow-left"></i> 더보기</div>
+      <div class="sec-t">내 도장 기록 백업 · 복원</div>
+      <div class="bkNote">
+        <i class="ti ti-alert-circle"></i>
+        <div>
+          <div class="bt">앱을 지우면 도장 기록이 사라져요</div>
+          <div class="bp">홈 화면에서 앱을 지우기 전에 아래 코드를 꼭 저장해 두세요. 새로 설치한 뒤 코드를 붙여넣으면 그대로 되살아납니다.</div>
+        </div>
+      </div>
+      <div class="bkCard">
+        <div class="bkT">1 · 백업 코드 만들기</div>
+        <div class="bkSum" id="bkSum">불러오는 중…</div>
+        <textarea class="bkCode" id="bkCode" readonly></textarea>
+        <button class="bkBtn" id="bkCopy">코드 복사하기</button>
+        <div class="bkHint">복사한 코드를 카카오톡 <b>나에게 보내기</b>나 메모장에 붙여넣어 보관하세요. 복사가 안 되면 코드를 길게 눌러 직접 복사해도 됩니다.</div>
+        <div class="bkMsg" id="bkCopyMsg"></div>
+      </div>
+      <div class="bkCard">
+        <div class="bkT">2 · 코드로 복원하기</div>
+        <textarea class="bkCode bkIn" id="bkIn" placeholder="저장해 둔 코드를 붙여넣으세요"></textarea>
+        <button class="bkBtn ghost" id="bkRestore">복원하기</button>
+        <div class="bkMsg" id="bkMsg"></div>
+      </div>
+    </section>
+
     <section class="screen" id="s-survey">
       <div class="sec-t">여름 수련회 설문</div>
       <div id="surveyClosed" class="svLockBanner" style="display:none">
@@ -956,6 +1003,7 @@ function afterActivate(s){
   if(s==='pod'){loadPodcast();}
   if(s==='attend'&&window.__renderAttend){window.__renderAttend();}
   if(s==='notice'){loadNotices();}
+  if(s==='backup'&&window.__renderBackup){window.__renderBackup();}
   if(s==='camp'){updateCampApply();}
   if(s==='pray'&&window.__renderPray){window.__renderPray();}
   if(s==='thanks'&&window.__renderThanks){window.__renderThanks();}
@@ -1742,7 +1790,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
 
 /* ===== 메뉴 딥링크 (URL 라우팅) ===== */
 (function(){
-  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks','deeplink'];
+  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks','deeplink','backup'];
   const EXT={
     bulletin:'https://vision153.notion.site/_250601-2026eda158ae8095999ac133933fd32a?pvs=4',
     map:'https://map.naver.com/p/search/송탄영광교회',
@@ -1811,6 +1859,59 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
+
+/* ===== 도장 기록 백업 · 복원 ===== */
+(function(){
+  const sec=document.getElementById('s-backup'); if(!sec)return;
+  const KEYS=['sgy_att_name','sgy_att_days','sgy_pray_stamp','sgy_thanks_stamp'];
+  const TAG='SGY1.';
+  function enc(s){const b=new TextEncoder().encode(s);let x='';for(let i=0;i<b.length;i++)x+=String.fromCharCode(b[i]);return btoa(x).replace(/=+$/,'');}
+  function dec(s){s=s.replace(/\s+/g,'');const bin=atob(s);const a=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);return new TextDecoder().decode(a);}
+  function ls(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+  function arr(k){try{const v=JSON.parse(ls(k)||'[]');return Array.isArray(v)?v:[];}catch(e){return [];}}
+  function build(){
+    const o={v:1,d:Date.now()};
+    KEYS.forEach(function(k){const v=ls(k);if(v!==null&&v!=='')o[k]=v;});
+    return TAG+enc(JSON.stringify(o));
+  }
+  function summary(){
+    const n=ls('sgy_att_name')||'';
+    const d=arr('sgy_att_days').length, p=arr('sgy_pray_stamp').length, t=arr('sgy_thanks_stamp').length;
+    if(!n&&!d&&!p&&!t) return '아직 저장된 기록이 없어요. 출석체크나 기도 도장을 찍으면 여기에 표시됩니다.';
+    return (n?('이름 '+n+' · '):'')+'출석 '+d+'일 · 중보기도 '+p+'개 · 감사기도 '+t+'개';
+  }
+  function render(){
+    const s=document.getElementById('bkSum'); if(s)s.textContent=summary();
+    const c=document.getElementById('bkCode'); if(c)c.value=build();
+  }
+  window.__renderBackup=render;
+  const copyBtn=document.getElementById('bkCopy');
+  if(copyBtn) copyBtn.addEventListener('click',function(){
+    const ta=document.getElementById('bkCode'); const msg=document.getElementById('bkCopyMsg');
+    let ok=false;
+    try{ ta.removeAttribute('readonly'); ta.focus(); ta.select(); ta.setSelectionRange(0,99999); ok=document.execCommand('copy'); ta.setAttribute('readonly','readonly'); }catch(e){}
+    if(!ok && navigator.clipboard){ navigator.clipboard.writeText(ta.value).then(function(){ msg.style.color='var(--primary)'; msg.textContent='복사되었습니다. 카톡·메모장에 붙여넣어 보관하세요.'; }).catch(function(){ msg.style.color='#e2574c'; msg.textContent='복사에 실패했어요. 코드를 길게 눌러 직접 복사해 주세요.'; }); return; }
+    msg.style.color = ok ? 'var(--primary)' : '#e2574c';
+    msg.textContent = ok ? '복사되었습니다. 카톡·메모장에 붙여넣어 보관하세요.' : '복사에 실패했어요. 코드를 길게 눌러 직접 복사해 주세요.';
+  });
+  const rBtn=document.getElementById('bkRestore');
+  if(rBtn) rBtn.addEventListener('click',function(){
+    const msg=document.getElementById('bkMsg'); const raw=(document.getElementById('bkIn').value||'').trim();
+    msg.style.color='#e2574c';
+    if(!raw){ msg.textContent='코드를 붙여넣어 주세요.'; return; }
+    let body=raw.replace(/\s+/g,'');
+    if(body.indexOf(TAG)===0) body=body.slice(TAG.length);
+    let o=null;
+    try{ o=JSON.parse(dec(body)); }catch(e){ o=null; }
+    if(!o||typeof o!=='object'||!o.v){ msg.textContent='코드를 알아볼 수 없어요. 전체를 빠짐없이 붙여넣었는지 확인해 주세요.'; return; }
+    let has=false; KEYS.forEach(function(k){ if(typeof o[k]==='string') has=true; });
+    if(!has){ msg.textContent='이 코드에는 저장된 기록이 없어요.'; return; }
+    if(!confirm('지금 기기에 저장된 도장 기록을 덮어씁니다. 복원할까요?')) return;
+    KEYS.forEach(function(k){ try{ if(typeof o[k]==='string') localStorage.setItem(k,o[k]); }catch(e){} });
+    msg.style.color='var(--primary)'; msg.textContent='복원되었습니다. 잠시 후 새로고침됩니다.';
+    setTimeout(function(){ location.reload(); },1200);
+  });
+})();
 
 /* ===== 2026 여름 수련회 설문 (구글폼 formResponse 제출) ===== */
 (function(){
