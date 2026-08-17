@@ -270,6 +270,36 @@
   .svSubmit{width:100%;border:none;border-radius:12px;background:var(--gold);color:#fff;font-size:16px;font-weight:800;padding:15px;margin-top:18px;cursor:pointer}
   .svSubmit:disabled{opacity:.6}
   .svErr{color:#e2574c;font-size:12px;text-align:center;margin-top:10px;min-height:14px}
+  .grHero{background:#2f8f5b;border-radius:16px;padding:15px 16px;color:#fff;margin-top:8px}
+  .grHero .gt{font-size:11px;font-weight:800;letter-spacing:.3px;opacity:.92}
+  .grHero .gh{font-size:18px;font-weight:800;margin-top:5px}
+  .grHero .gs{font-size:12px;opacity:.93;margin-top:6px}
+  .grInfo{display:flex;gap:10px;align-items:flex-start;background:#fff3df;border:1px solid #f4dfb4;border-radius:12px;padding:12px 13px;margin-top:10px}
+  .grInfo i{color:#a07a2e;font-size:20px;flex:none;margin-top:1px}
+  .grInfo .it{font-size:13px;font-weight:800;color:#7a5a12}
+  .grInfo .ip{font-size:12px;color:#a07a2e;line-height:1.6;margin-top:3px}
+  .grLock{display:flex;gap:10px;align-items:flex-start;background:#eef0f4;border:1px solid #e0e2e8;border-radius:12px;padding:12px 13px;margin-top:10px}
+  .grLock i{color:var(--tx2);font-size:20px;flex:none;margin-top:1px}
+  .grLock .lt{font-size:13.5px;font-weight:800;color:var(--tx)}
+  .grLock .lp{font-size:12px;color:var(--tx2);line-height:1.55;margin-top:3px}
+  .grQ{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 15px;margin-top:10px}
+  .grQ .qn{font-size:14px;font-weight:700;color:var(--tx)}
+  .grQ .qn .req{color:#e2574c;margin-left:3px}
+  .grQ .qh{font-size:11.5px;color:var(--tx3);margin-top:4px;line-height:1.5}
+  .grIn{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:14px;font-family:inherit;color:var(--tx);background:#fff;margin-top:10px;outline:none}
+  .grIn:focus{border-color:#2f8f5b}
+  .grOpt{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line);border-radius:11px;padding:11px 12px;margin-top:9px;cursor:pointer}
+  .grOpt .dot{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid #cdcbe0;margin-top:1px}
+  .grOpt .on1{font-size:14px;color:var(--tx)}
+  .grOpt .on2{font-size:11.5px;color:var(--tx2);margin-top:2px}
+  .grOpt.sel{border-color:#2f8f5b;background:#f2faf5}
+  .grOpt.sel .dot{border-color:#2f8f5b;background:radial-gradient(circle,#fff 32%,#2f8f5b 40%)}
+  .grBtn{width:100%;border:none;border-radius:12px;background:#2f8f5b;color:#fff;font-size:15.5px;font-weight:800;padding:15px;margin-top:16px;font-family:inherit;cursor:pointer}
+  .grBtn:disabled{background:#eeedf4;color:var(--tx3);cursor:default}
+  .grErr{color:#e2574c;font-size:12px;text-align:center;margin-top:10px;min-height:14px}
+  .grRO .grIn{background:#f5f4fa;color:#8b89a3;pointer-events:none}
+  .grRO .grOpt{background:#f5f4fa;color:#8b89a3;opacity:.75;pointer-events:none;cursor:default}
+  .grRO .grHero{opacity:.75}
   .bkNote{display:flex;gap:10px;align-items:flex-start;background:#fff3df;border:1px solid #f4dfb4;border-radius:12px;padding:12px 13px;margin-top:8px}
   .bkNote i{color:#a07a2e;font-size:20px;flex:none;margin-top:1px}
   .bkNote .bt{font-size:13.5px;font-weight:800;color:#7a5a12}
@@ -428,6 +458,11 @@
         <div class="sub">4층 소예배실 · 경기도 평택시 지산로 245-20</div>
         <i class="ti ti-building-church"></i>
       </div>
+      <div class="tile tileRow" id="homeGradeTile" style="margin-top:12px;display:none;background:#f2faf5;border-color:#cfe8da" onclick="go('grade')">
+        <div class="ic" style="background:#d9efe3;color:#2f8f5b;font-size:23px"><i class="ti ti-certificate"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">신급 교육 신청</div><div class="ds">학습 · 세례 · 입교 · 9/6까지</div></div>
+        <span style="flex:none;background:#2f8f5b;color:#fff;font-size:11.5px;font-weight:800;border-radius:999px;padding:5px 11px">신청중</span>
+      </div>
       <div class="tile tileRow campTile" id="homeCampTile" style="margin-top:12px" onclick="go('camp')">
         <div class="ic" style="background:#dff5e6;color:#16a34a;font-size:23px"><i class="ti ti-tent"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">여름 수련회(7/30~8/1) 진행중</div><div class="ds">주바라기 캠프 3차 · 대전 한남대학교</div></div>
@@ -549,6 +584,7 @@
     </section>
 
     <section class="screen" id="s-camp">
+      <div class="dlBack" onclick="go('archive')"><i class="ti ti-arrow-left"></i> 아카이브</div>
       <div class="sec-t">여름 수련회</div>
       <div class="camp-hero">
         <div class="ct">중고등부 · 2026 SUMMER CAMP</div>
@@ -708,6 +744,7 @@
     </section>
 
     <section class="screen" id="s-pray">
+      <div class="dlBack" onclick="go('archive')"><i class="ti ti-arrow-left"></i> 아카이브</div>
       <div class="sec-t">중보기도 · <span id="prayDayT">18일차</span></div>
       <div class="prayCard">
         <div class="prayTitle">[2026 여름 수련회를 위한 30번 중보기도문]</div>
@@ -724,6 +761,7 @@
     </section>
 
     <section class="screen" id="s-thanks">
+      <div class="dlBack" onclick="go('archive')"><i class="ti ti-arrow-left"></i> 아카이브</div>
       <div class="sec-t">수련회 종료 감사 7일 기도</div>
       <div class="thanksHero">
         <div class="ct">2026 여름 수련회 · 종료 감사</div>
@@ -757,6 +795,11 @@
     <section class="screen" id="s-archive">
       <div class="sec-t">아카이브</div>
       <div class="archiveEmpty" id="archiveEmpty">보관된 항목이 없습니다.</div>
+      <div class="tile tileRow" id="arcGrade" onclick="go('grade')" style="display:none">
+        <div class="ic" style="background:#e3f0e8;color:#2f8f5b"><i class="ti ti-certificate"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">신급 교육 신청</div><div class="ds" id="arcGradeDs">8/23(주일) 오픈 예정</div></div>
+        <span class="archiveBadge" id="arcGradeBadge" style="background:#e3f0e8;color:#2f6b4c">예정</span>
+      </div>
       <div class="tile tileRow" id="arcCamp" onclick="go('camp')" style="display:none">
         <div class="ic" style="background:#efe7ff;color:var(--primary)"><i class="ti ti-tent"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">2026 여름 수련회</div><div class="ds">주바라기 캠프 3차 · 2026/07/30~08/01</div></div>
@@ -796,6 +839,44 @@
       <div id="dlList"></div>
     </section>
 
+    <section class="screen" id="s-grade">
+      <div class="dlBack" onclick="go('archive')"><i class="ti ti-arrow-left"></i> 아카이브</div>
+      <div class="sec-t">신급 교육 신청</div>
+      <div id="gradeForm">
+        <div class="grHero">
+          <div class="gt">2026 하반기 신급 교육 신청</div>
+          <div class="gh">학습 · 세례 · 입교</div>
+          <div class="gs">신청기간 8/23(주일) ~ 9/6(주일)</div>
+        </div>
+        <div class="grLock" id="gradeLock" style="display:none">
+          <i class="ti ti-lock" id="gradeLockIc"></i>
+          <div><div class="lt" id="gradeLockT">아직 신청 기간이 아니에요</div><div class="lp" id="gradeLockP">8/23(주일)부터 신청할 수 있어요. 내용은 미리 확인해 두세요.</div></div>
+        </div>
+        <div class="grInfo">
+          <i class="ti ti-info-circle"></i>
+          <div><div class="it">신청 자격</div><div class="ip">교회 출석 6개월 이상<br>만 14세 이상</div></div>
+        </div>
+        <div class="grQ">
+          <div class="qn">이름 <span class="req">*</span></div>
+          <input class="grIn" id="gr_name" type="text" placeholder="이름을 입력하세요" autocomplete="off">
+        </div>
+        <div class="grQ" id="gradeOpts">
+          <div class="qn">교육 과정 <span class="req">*</span></div>
+          <div class="qh">교육 기간 8주</div>
+          <div class="grOpt" data-v="학습"><span class="dot"></span><div><div class="on1">학습</div><div class="on2">교육을 처음 받아요</div></div></div>
+          <div class="grOpt" data-v="세례"><span class="dot"></span><div><div class="on1">세례</div><div class="on2">학습 교육을 마쳤어요</div></div></div>
+          <div class="grOpt" data-v="입교"><span class="dot"></span><div><div class="on1">입교</div><div class="on2">유아세례를 받았어요</div></div></div>
+          <button class="grBtn" id="gradeSubmit">신청하기</button>
+          <div class="grErr" id="gradeErr"></div>
+        </div>
+      </div>
+      <div id="gradeDone" class="svDone" style="display:none">
+        <div class="ic"><i class="ti ti-check"></i></div>
+        <h3>신청이 접수되었습니다</h3>
+        <p>신청해 주셔서 감사합니다.<br>자세한 일정은 따로 안내해 드릴게요.</p>
+      </div>
+    </section>
+
     <section class="screen" id="s-backup">
       <div class="dlBack" onclick="go('more')"><i class="ti ti-arrow-left"></i> 더보기</div>
       <div class="sec-t">앱 데이터 백업 · 복원</div>
@@ -823,6 +904,7 @@
     </section>
 
     <section class="screen" id="s-survey">
+      <div class="dlBack" onclick="go('archive')"><i class="ti ti-arrow-left"></i> 아카이브</div>
       <div class="sec-t">여름 수련회 설문</div>
       <div id="surveyClosed" class="svLockBanner" style="display:none">
         <i class="ti ti-lock"></i>
@@ -996,6 +1078,7 @@ const PROXY="https://api.allorigins.win/raw?url=";
 let ytLoaded=false, podLoaded=false;
 
 const MAIN_TABS=['home','pod','vid','more'];
+window.__navFromHash=false; window.__firstNav=true;
 function afterActivate(s){
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.s===s));
   document.querySelector('main').scrollTop=0;
@@ -1007,7 +1090,14 @@ function afterActivate(s){
   if(s==='camp'){updateCampApply();}
   if(s==='pray'&&window.__renderPray){window.__renderPray();}
   if(s==='thanks'&&window.__renderThanks){window.__renderThanks();}
-  try{ history.replaceState(null,'','#'+s); }catch(e){}
+  /* 히스토리: 화면 이동마다 항목을 쌓아 브라우저 뒤로가기가 이전 화면으로 가게 한다.
+     단 hashchange(뒤로가기 등)로 들어온 경우와 첫 진입은 replace만 한다. */
+  try{
+    const h='#'+s;
+    if(window.__navFromHash || window.__firstNav || location.hash===h){ history.replaceState(null,'',h); }
+    else { history.pushState(null,'',h); }
+    window.__firstNav=false;
+  }catch(e){}
 }
 function go(s,dir){
   if(window.__resetSwipe)window.__resetSwipe();
@@ -1782,15 +1872,28 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
     const td=document.getElementById('arcThanksDs'); if(td) td.textContent='7일 기도 · 2026/08/01~08/07';
     const tb=document.getElementById('arcThanksBadge'); if(tb){ tb.textContent='종료'; tb.removeAttribute('style'); }
   }
+  /* 신급 교육 신청: 8/23 00:00 ~ 9/6 23:59 홈 노출, 그 밖엔 아카이브 */
+  const gradeOpen = now >= new Date(2026,7,23,0,0,0);
+  const gradeEnded = now >= new Date(2026,8,7,0,0,0);
+  const gradeLive = gradeOpen && !gradeEnded;
+  window.__gradeState = gradeEnded ? 'ended' : (gradeOpen ? 'open' : 'before');
+  const homeGrade=document.getElementById('homeGradeTile');
+  const arcGrade=document.getElementById('arcGrade');
+  if(homeGrade) homeGrade.style.display = gradeLive ? '' : 'none';
+  if(arcGrade) arcGrade.style.display = gradeLive ? 'none' : '';
+  if(gradeEnded){
+    const gd=document.getElementById('arcGradeDs'); if(gd) gd.textContent='신청 기간 2026/08/23~09/06';
+    const gb=document.getElementById('arcGradeBadge'); if(gb){ gb.textContent='종료'; gb.removeAttribute('style'); }
+  }
   /* 아카이브 빈 상태: 표시 중인 아카이브 항목이 하나도 없을 때만 노출 */
   const arcEmpty=document.getElementById('archiveEmpty');
-  const anyArc = (arcCamp && arcCamp.style.display!=='none') || (arcSurvey && arcSurvey.style.display!=='none') || (arcPray && arcPray.style.display!=='none') || (arcThanks && arcThanks.style.display!=='none');
+  const anyArc = (arcCamp && arcCamp.style.display!=='none') || (arcSurvey && arcSurvey.style.display!=='none') || (arcPray && arcPray.style.display!=='none') || (arcThanks && arcThanks.style.display!=='none') || (arcGrade && arcGrade.style.display!=='none');
   if(arcEmpty) arcEmpty.style.display = anyArc ? 'none' : '';
 })();
 
 /* ===== 메뉴 딥링크 (URL 라우팅) ===== */
 (function(){
-  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks','deeplink','backup'];
+  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks','deeplink','backup','grade'];
   const EXT={
     bulletin:'https://vision153.notion.site/_250601-2026eda158ae8095999ac133933fd32a?pvs=4',
     map:'https://map.naver.com/p/search/송탄영광교회',
@@ -1805,7 +1908,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
     k=k.toLowerCase();
     if(EXT[k]){ location.href=EXT[k]; return; }
     if(k==='compassion'){ go('more'); if(window.openCompassion)openCompassion(); return; }
-    if(ROUTES.indexOf(k)>=0) go(k);
+    if(ROUTES.indexOf(k)>=0){ window.__navFromHash=true; go(k); window.__navFromHash=false; }
   }
   window.addEventListener('hashchange',applyRoute);
   applyRoute();
@@ -1818,7 +1921,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   const groups=[
     ['메인',[['홈','home'],['설교 팟캐스트','pod'],['유튜브 영상','vid'],['더보기','more']]],
     ['여름 수련회',[['여름 수련회','camp'],['수련회 종료 감사 7일 기도','thanks'],['30번 중보기도','pray']]],
-    ['신앙·참여',[['공지사항','notice'],['출석체크 도장깨기','attend'],['입회원서','enroll'],['문의하기','contact']]],
+    ['신앙·참여',[['신급 교육 신청','grade'],['공지사항','notice'],['출석체크 도장깨기','attend'],['입회원서','enroll'],['문의하기','contact']]],
     ['정보·보관',[['연간계획','plan'],['보관함(아카이브)','archive']]],
     ['외부 링크',[['온라인 주보','bulletin'],['오시는 길','map'],['중고등부 유튜브','youtube'],['설교 팟캐스트(팟빵)','podbbang'],['인스타그램','insta'],['중고등부 밴드','band'],['해외 어린이 양육','compassion']]]
   ];
@@ -1859,6 +1962,74 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
+
+/* ===== 신급 교육 신청 ===== */
+(function(){
+  const sec=document.getElementById('s-grade'); if(!sec)return;
+  /* TODO: 신청 접수 백엔드 미확정. 8/23 오픈 전에 반드시 연결할 것 (구글폼 또는 Apps Script) */
+  const GRADE_API='';
+  const state=window.__gradeState||'before';
+  let pick='';
+  const opts=sec.querySelectorAll('.grOpt');
+  opts.forEach(function(o){
+    o.addEventListener('click',function(){
+      opts.forEach(function(x){x.classList.remove('sel');});
+      o.classList.add('sel'); pick=o.dataset.v;
+    });
+  });
+  const btn=document.getElementById('gradeSubmit');
+  const err=document.getElementById('gradeErr');
+  if(state!=='open'){
+    sec.classList.add('grRO');
+    const lock=document.getElementById('gradeLock'); if(lock) lock.style.display='flex';
+    if(state==='ended'){
+      document.getElementById('gradeLockT').textContent='신청이 마감되었습니다';
+      document.getElementById('gradeLockP').textContent='2026 하반기 신급 교육 신청 기간이 끝났습니다. 문의는 담당 선생님께 해주세요.';
+      btn.textContent='신청이 마감되었습니다';
+    } else {
+      btn.textContent='8/23(주일)부터 신청할 수 있어요';
+    }
+    btn.disabled=true;
+    return;
+  }
+  btn.addEventListener('click',function(){
+    err.textContent='';
+    const name=(document.getElementById('gr_name').value||'').trim();
+    if(!name){ err.textContent='이름을 입력해 주세요.'; return; }
+    if(!pick){ err.textContent='교육 과정을 선택해 주세요.'; return; }
+    if(!GRADE_API){ err.textContent='신청 접수 준비 중입니다. 잠시 후 다시 시도해 주세요.'; return; }
+    btn.disabled=true; btn.textContent='신청 중…';
+    const p=new URLSearchParams(); p.append('name',name); p.append('course',pick);
+    fetch(GRADE_API,{method:'POST',body:p})
+      .then(function(r){return r.json();})
+      .then(function(res){
+        if(res&&res.ok){ document.getElementById('gradeForm').style.display='none'; document.getElementById('gradeDone').style.display='block'; sec.parentNode.scrollTop=0; }
+        else { btn.disabled=false; btn.textContent='신청하기'; err.textContent=(res&&res.msg)||'신청에 실패했어요. 잠시 후 다시 시도해 주세요.'; }
+      })
+      .catch(function(){ btn.disabled=false; btn.textContent='신청하기'; err.textContent='신청에 실패했어요. 인터넷 연결을 확인해 주세요.'; });
+  });
+})();
+
+/* ===== 하위 화면: 뒤로가기 / 왼쪽 끝 스와이프 → 상위 화면 ===== */
+(function(){
+  const main=document.querySelector('main'); if(!main)return;
+  const PARENT={camp:'archive',pray:'archive',thanks:'archive',survey:'archive',grade:'archive',deeplink:'archive',notice:'archive',backup:'more',plan:'more',enroll:'more',contact:'more',attend:'home'};
+  window.__parentOf=function(s){ return PARENT[s]||''; };
+  let sx=0,sy=0,armed=false,cur='';
+  main.addEventListener('touchstart',function(e){
+    armed=false;
+    if(e.touches.length!==1)return;
+    const on=document.querySelector('.screen.on'); cur=on?on.id.replace('s-',''):'';
+    if(!PARENT[cur])return;
+    sx=e.touches[0].clientX; sy=e.touches[0].clientY;
+    armed = sx<=44;
+  },{passive:true});
+  main.addEventListener('touchend',function(e){
+    if(!armed)return; armed=false;
+    const t=e.changedTouches[0];
+    if((t.clientX-sx)>60 && Math.abs(t.clientY-sy)<55){ go(PARENT[cur]); }
+  },{passive:true});
+})();
 
 /* ===== 도장 기록 백업 · 복원 ===== */
 (function(){
