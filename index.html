@@ -349,6 +349,8 @@
   .contactInfo{text-align:center;margin:2px 0 16px}
   .contactInfo a{font-size:14px;color:var(--primary);font-weight:600;text-decoration:none}
   .cform label{display:block;font-size:13px;font-weight:700;color:var(--tx);margin:14px 0 6px}
+  .cform label .en{display:block;font-size:10.5px;font-weight:400;color:var(--tx3);margin-top:1px;line-height:1.4}
+  .cform .radioRow label .en{font-size:10px;margin-top:0}
   .cform input,.cform textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;font-family:inherit;color:var(--tx);background:var(--surface)}
   .cform textarea{min-height:120px;line-height:1.6;resize:vertical}
   .cform select{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;font-family:inherit;color:var(--tx);background:var(--surface);-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23a09eb8' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 12px center}
@@ -687,58 +689,58 @@
     <section class="screen" id="s-enroll">
       <div class="sec-t">입회원서 · 새친구 등록 신청</div>
       <div class="cform">
-        <label>성명 *</label>
-        <input id="enName" type="text" placeholder="이름을 입력하세요">
+        <label>성명 *<span class="en">Full name</span></label>
+        <input id="enName" type="text" placeholder="이름을 입력하세요 / Enter your name">
 
-        <label>성별 *</label>
+        <label>성별 *<span class="en">Gender</span></label>
         <div class="radioRow" id="enGender">
-          <label data-v="남">남</label>
-          <label data-v="여">여</label>
+          <label data-v="남">남<span class="en">Male</span></label>
+          <label data-v="여">여<span class="en">Female</span></label>
         </div>
 
-        <label>생년월일 *</label>
+        <label>생년월일 *<span class="en">Date of birth — year. month. day.</span></label>
         <input id="enBirth" type="date">
 
-        <label>주소 *</label>
-        <input id="enAddr" type="text" placeholder="주소를 입력하세요">
+        <label>주소 *<span class="en">Address</span></label>
+        <input id="enAddr" type="text" placeholder="주소를 입력하세요 / Enter your address">
 
-        <label>학교 / 학년 *</label>
-        <input id="enSchool" type="text" placeholder="예) 송탄고 1학년">
+        <label>학교 / 학년 *<span class="en">School / Grade</span></label>
+        <input id="enSchool" type="text" placeholder="송탄고 1학년 / Songtan HS, Grade 1">
 
-        <label>연락처 *</label>
-        <input id="enPhone" type="tel" placeholder="예) 010-0000-0000">
+        <label>연락처 *<span class="en">Phone number</span></label>
+        <input id="enPhone" type="tel" placeholder="010-0000-0000">
 
-        <label>보호자 성명 / 관계 / 연락처</label>
-        <input id="enGuardian" type="text" placeholder="예) 홍길동 / 부 / 010-0000-0000">
+        <label>보호자 성명 / 관계 / 연락처<span class="en">Guardian&#39;s name / relation / phone</span></label>
+        <input id="enGuardian" type="text" placeholder="홍길동 / 부 Father / 010-0000-0000">
 
-        <label>신급 *</label>
+        <label>신급 *<span class="en">Baptism status</span></label>
         <select id="enFaith">
-          <option value="">선택하세요</option>
-          <option value="유아세례">유아세례</option>
-          <option value="입교">입교</option>
-          <option value="학습">학습</option>
-          <option value="세례">세례</option>
-          <option value="모름/받은 적 없음">모름 / 받은 적 없음</option>
+          <option value="">선택하세요 / Select</option>
+          <option value="유아세례">유아세례 Infant baptism</option>
+          <option value="입교">입교 Confirmation</option>
+          <option value="학습">학습 Catechumen</option>
+          <option value="세례">세례 Baptism</option>
+          <option value="모름/받은 적 없음">모름 / 받은 적 없음 Not sure / none</option>
         </select>
 
-        <label>인도자</label>
-        <input id="enInviter" type="text" placeholder="나를 인도해 준 사람 (선택)">
+        <label>인도자<span class="en">Who invited you</span></label>
+        <input id="enInviter" type="text" placeholder="나를 인도해 준 사람 / Optional">
 
-        <label>기도제목</label>
-        <textarea id="enPrayer" class="short" placeholder="기도제목을 남겨주세요 (선택)"></textarea>
+        <label>기도제목<span class="en">Prayer request</span></label>
+        <textarea id="enPrayer" class="short" placeholder="기도제목을 남겨주세요 (선택)&#10;Share a prayer request (optional)"></textarea>
 
-        <label>희망 선물 종류 *</label>
-        <input id="enGift" type="text" placeholder="받고 싶은 선물은? 올리브영, 편의점, CJ상품권 등">
+        <label>희망 선물 종류 *<span class="en">Gift preference</span></label>
+        <input id="enGift" type="text" placeholder="올리브영, CJ상품권 / gift cards">
 
-        <label>기타 문의 및 건의 사항</label>
-        <textarea id="enEtc" class="short" placeholder="자유롭게 남겨주세요 (선택)"></textarea>
+        <label>기타 문의 및 건의 사항<span class="en">Other questions or suggestions</span></label>
+        <textarea id="enEtc" class="short" placeholder="자유롭게 남겨주세요 (선택)&#10;Anything else (optional)"></textarea>
 
         <label class="consent">
           <input type="checkbox" id="enConsent">
-          <span><b>개인정보(사진/영상) 수집·촬영 및 이용 동의 *</b><br>동의합니다. (졸업 후 청년부 등으로 정보는 이관될 수 있습니다. 단, 교회를 옮기는 경우 파기됩니다.)</span>
+          <span><b>개인정보(사진/영상) 수집·촬영 및 이용 동의 *</b><span class="en">Consent to collect and use personal data (photo/video)</span><br>동의합니다. (졸업 후 청년부 등으로 정보는 이관될 수 있습니다. 단, 교회를 옮기는 경우 파기됩니다.)<br><span class="en">I agree. (Information may be transferred to the young adult ministry after graduation, and is discarded if you move to another church.)</span></span>
         </label>
 
-        <button class="ctSend" id="enSend">제출하기</button>
+        <button class="ctSend" id="enSend">제출하기 Submit</button>
         <div class="ctStatus" id="enStatus"></div>
       </div>
     </section>
