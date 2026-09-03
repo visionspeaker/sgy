@@ -1089,6 +1089,7 @@ function afterActivate(s){
   if(s==='attend'&&window.__renderAttend){window.__renderAttend();}
   if(s==='notice'){loadNotices();}
   if(s==='backup'&&window.__renderBackup){window.__renderBackup();}
+  if(s==='deeplink'&&window.__renderDeeplinks){window.__renderDeeplinks();}
   if(s==='camp'){updateCampApply();}
   if(s==='pray'&&window.__renderPray){window.__renderPray();}
   if(s==='thanks'&&window.__renderThanks){window.__renderThanks();}
@@ -1912,6 +1913,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
     if(k==='compassion'){ go('more'); if(window.openCompassion)openCompassion(); return; }
     if(ROUTES.indexOf(k)>=0){ window.__navFromHash=true; go(k); window.__navFromHash=false; }
   }
+  window.__ROUTES=ROUTES; window.__EXT=EXT;
   window.addEventListener('hashchange',applyRoute);
   applyRoute();
 })();
@@ -1927,24 +1929,46 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
     ['정보·보관',[['연간계획','plan'],['보관함(아카이브)','archive']]],
     ['외부 링크',[['온라인 주보','bulletin'],['오시는 길','map'],['중고등부 유튜브','youtube'],['설교 팟캐스트(팟빵)','podbbang'],['인스타그램','insta'],['중고등부 밴드','band'],['해외 어린이 양육','compassion']]]
   ];
+  /* 자동 최신화 설정 — 목록에 일부러 넣지 않을 라우트 */
+  const SKIP={deeplink:1,survey:1};
+  /* 자동 추가될 때 쓸 한글 이름 (없으면 라우트 키를 그대로 표시) */
+  const AUTO_NAMES={backup:'앱 데이터 백업 · 복원',grade:'신급 교육 신청',survey:'2026 여름 수련회 설문'};
+
   function fallback(text){ try{ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity=0; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }catch(e){} }
-  groups.forEach(function(g){
-    const h=document.createElement('div'); h.className='dlGroup'; h.textContent=g[0]; wrap.appendChild(h);
-    g[1].forEach(function(it){
-      const url=BASE+'#'+it[1];
-      const row=document.createElement('div'); row.className='dlRow';
-      const t=document.createElement('div'); t.style.cssText='flex:1;min-width:0';
-      t.innerHTML='<div class="dlNm"></div><div class="dlUrl">#'+it[1]+'</div>';
-      t.querySelector('.dlNm').textContent=it[0];
-      const b=document.createElement('button'); b.className='dlCopy'; b.setAttribute('aria-label','복사'); b.innerHTML='<i class="ti ti-copy"></i>';
-      b.onclick=function(){
-        function ok(){ b.classList.add('done'); b.innerHTML='<i class="ti ti-check"></i>'; setTimeout(function(){b.classList.remove('done'); b.innerHTML='<i class="ti ti-copy"></i>';},1200); }
-        if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(ok).catch(function(){fallback(url);ok();}); }
-        else { fallback(url); ok(); }
-      };
-      row.appendChild(t); row.appendChild(b); wrap.appendChild(row);
+  function makeRow(name,key){
+    const url=BASE+'#'+key;
+    const row=document.createElement('div'); row.className='dlRow';
+    const t=document.createElement('div'); t.style.cssText='flex:1;min-width:0';
+    t.innerHTML='<div class="dlNm"></div><div class="dlUrl"></div>';
+    t.querySelector('.dlNm').textContent=name;
+    t.querySelector('.dlUrl').textContent='#'+key;
+    const b=document.createElement('button'); b.className='dlCopy'; b.setAttribute('aria-label','복사'); b.setAttribute('data-url',url); b.innerHTML='<i class="ti ti-copy"></i>';
+    b.onclick=function(){
+      function ok(){ b.classList.add('done'); b.innerHTML='<i class="ti ti-check"></i>'; setTimeout(function(){b.classList.remove('done'); b.innerHTML='<i class="ti ti-copy"></i>';},1200); }
+      if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(ok).catch(function(){fallback(url);ok();}); }
+      else { fallback(url); ok(); }
+    };
+    row.appendChild(t); row.appendChild(b);
+    return row;
+  }
+  function render(){
+    wrap.innerHTML='';                      /* 멱등: 열 때마다 처음부터 다시 그림 */
+    const used={};
+    groups.forEach(function(g){
+      const h=document.createElement('div'); h.className='dlGroup'; h.textContent=g[0]; wrap.appendChild(h);
+      g[1].forEach(function(it){ used[it[1]]=1; wrap.appendChild(makeRow(it[0],it[1])); });
     });
-  });
+    /* 메뉴(ROUTES·EXT)에 있는데 위 목록에 빠진 항목을 자동으로 덧붙인다 */
+    const all=[].concat(window.__ROUTES||[], Object.keys(window.__EXT||{}));
+    const missing=all.filter(function(k){ return !used[k] && !SKIP[k]; })
+                     .filter(function(k,i,a){ return a.indexOf(k)===i; });
+    if(missing.length){
+      const h=document.createElement('div'); h.className='dlGroup'; h.textContent='기타 (자동 추가)'; wrap.appendChild(h);
+      missing.forEach(function(k){ used[k]=1; wrap.appendChild(makeRow(AUTO_NAMES[k]||k,k)); });
+    }
+  }
+  window.__renderDeeplinks=render;
+  render();
 })();
 
 /* ===== 강제 새로고침 (SW 해제 + 캐시 삭제 + 캐시버스트 재로딩) ===== */
