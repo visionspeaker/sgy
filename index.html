@@ -253,7 +253,8 @@
   .svQ .qn{font-size:14px;font-weight:700;color:var(--tx);line-height:1.45}
   .svQ .qn .req{color:#e2574c;margin-left:3px}
   .svQ .qh{font-size:11.5px;color:var(--tx3);margin-top:4px;line-height:1.5}
-  .svIn,.svTa{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:14px;font-family:inherit;color:var(--tx);background:#fff;margin-top:11px;outline:none}
+  /* iOS는 입력칸 글자가 16px 미만이면 포커스 시 화면을 자동 확대한다 → 16px 유지 */
+  .svIn,.svTa{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:16px;font-family:inherit;color:var(--tx);background:#fff;margin-top:11px;outline:none}
   .svIn:focus,.svTa:focus{border-color:var(--primary)}
   .svTa{min-height:82px;resize:vertical;line-height:1.5}
   .svScale{display:flex;gap:6px;margin-top:12px}
@@ -264,7 +265,7 @@
   .svRadio.sel{border-color:var(--primary);background:var(--primary-soft)}
   .svRadio .dot{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid #cdcbe0}
   .svRadio.sel .dot{border-color:var(--primary);background:radial-gradient(circle,#fff 32%,var(--primary) 40%)}
-  .svEtc{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:9px 11px;font-size:13.5px;font-family:inherit;margin-top:8px;outline:none;display:none}
+  .svEtc{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:9px 11px;font-size:16px;font-family:inherit;margin-top:8px;outline:none;display:none}
   .svEtc.on{display:block}
   .svEtc:focus{border-color:var(--primary)}
   .svSubmit{width:100%;border:none;border-radius:12px;background:var(--gold);color:#fff;font-size:16px;font-weight:800;padding:15px;margin-top:18px;cursor:pointer}
@@ -286,7 +287,7 @@
   .grQ .qn{font-size:14px;font-weight:700;color:var(--tx)}
   .grQ .qn .req{color:#e2574c;margin-left:3px}
   .grQ .qh{font-size:11.5px;color:var(--tx3);margin-top:4px;line-height:1.5}
-  .grIn{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:14px;font-family:inherit;color:var(--tx);background:#fff;margin-top:10px;outline:none}
+  .grIn{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:16px;font-family:inherit;color:var(--tx);background:#fff;margin-top:10px;outline:none}
   .grIn:focus{border-color:#2f8f5b}
   .grOpt{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line);border-radius:11px;padding:11px 12px;margin-top:9px;cursor:pointer}
   .grOpt .dot{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid #cdcbe0;margin-top:1px}
@@ -351,9 +352,9 @@
   .cform label{display:block;font-size:13px;font-weight:700;color:var(--tx);margin:14px 0 6px}
   .cform label .en{display:block;font-size:10.5px;font-weight:400;color:var(--tx3);margin-top:1px;line-height:1.4}
   .cform .radioRow label .en{font-size:10px;margin-top:0}
-  .cform input,.cform textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;font-family:inherit;color:var(--tx);background:var(--surface)}
+  .cform input,.cform textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:16px;font-family:inherit;color:var(--tx);background:var(--surface)}
   .cform textarea{min-height:120px;line-height:1.6;resize:vertical}
-  .cform select{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;font-family:inherit;color:var(--tx);background:var(--surface);-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23a09eb8' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 12px center}
+  .cform select{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:16px;font-family:inherit;color:var(--tx);background:var(--surface);-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23a09eb8' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 12px center}
   .cform textarea.short{min-height:64px}
   .cform input[type=date]{min-width:0;max-width:100%;-webkit-appearance:none;appearance:none}
   .cform input[type=date]::-webkit-date-and-time-value{text-align:left}
@@ -378,7 +379,7 @@
   .ctPhotoRe{width:100%;display:flex;align-items:center;justify-content:center;gap:7px;border:1.5px dashed #cfc8f0;border-radius:12px;padding:11px;color:var(--primary);background:#faf9ff;font-weight:700;font-size:13px;font-family:inherit;cursor:pointer}
   #noticeModal{display:none;position:fixed;inset:0;z-index:100;background:rgba(20,18,45,.55);align-items:flex-end;justify-content:center}
   #noticeModal.on{display:flex}
-  #noticeModal textarea{width:100%;min-height:130px;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;font-family:inherit;line-height:1.6;resize:vertical;color:var(--tx);background:var(--bg);box-sizing:border-box}
+  #noticeModal textarea{width:100%;min-height:130px;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:16px;font-family:inherit;line-height:1.6;resize:vertical;color:var(--tx);background:var(--bg);box-sizing:border-box}
   .moreBtn{display:block;width:100%;margin:10px 0 2px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px;font-size:14px;font-weight:600;color:var(--primary);font-family:inherit;cursor:pointer}
   .moreBtn:active{transform:scale(.99)}
   .moreBtn i{font-size:16px;vertical-align:-3px;margin-left:2px}
