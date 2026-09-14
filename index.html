@@ -69,6 +69,14 @@
   .worship .big{font-size:21px;font-weight:800;margin-top:5px}
   .worship .sub{font-size:13px;opacity:.92;margin-top:3px}
   .worship i{position:absolute;right:-12px;bottom:-12px;font-size:90px;opacity:.2}
+  .worship .ntTop{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .worship .ntDate{font-size:11px;font-weight:700;opacity:.85;flex:none}
+  .worship .ntCap{font-size:11px;font-weight:700;opacity:.85;margin-top:12px;margin-bottom:5px}
+  .worship .ntList{font-size:13.5px;font-weight:500;line-height:1.75;position:relative;z-index:1}
+  .worship .ntBible{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.17);border-radius:12px;padding:10px 12px;margin-top:12px;position:relative;z-index:1}
+  .worship .ntBible i.bi{position:static;right:auto;bottom:auto;font-size:19px;opacity:.92;flex:none}
+  .worship .ntbC{font-size:10.5px;font-weight:600;opacity:.88}
+  .worship .ntbV{font-size:15.5px;font-weight:800;margin-top:1px}
   .feat{display:flex;gap:13px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:13px;margin-bottom:12px;cursor:pointer;align-items:center;box-shadow:0 2px 10px rgba(29,27,58,.04)}
   .feat:active{transform:scale(.98)}
   .feat .thumb{width:62px;height:62px;border-radius:12px;flex:none;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--primary)}
@@ -457,10 +465,14 @@
 
   <main>
     <section class="screen on" id="s-home">
-      <div class="worship" onclick="go('more')">
-        <div class="lbl">주일예배 안내</div>
-        <div class="big">매주 주일 오전 11시</div>
-        <div class="sub">4층 소예배실 · 경기도 평택시 지산로 245-20</div>
+      <div class="worship" id="homeNotice">
+        <div class="ntTop"><div class="lbl">NOTICE</div><div class="ntDate" id="ntDate"></div></div>
+        <div class="ntCap">주요 일정</div>
+        <div class="ntList" id="ntList">· 불러오는 중…</div>
+        <div class="ntBible" id="ntBible" style="display:none">
+          <i class="ti ti-book-2 bi"></i>
+          <div><div class="ntbC">오늘의 성경 읽기</div><div class="ntbV" id="ntBibleV"></div></div>
+        </div>
         <i class="ti ti-building-church"></i>
       </div>
       <div class="tile tileRow" id="homeGradeTile" style="margin-top:12px;display:none;background:#f2faf5;border-color:#cfe8da" onclick="go('grade')">
@@ -525,7 +537,7 @@
 
     <section class="screen" id="s-more">
       <div class="worship" style="background:linear-gradient(120deg,#5b8def,#7c6cff);margin-top:10px">
-        <div class="lbl">송탄영광교회 중고등부</div>
+        <div class="lbl">송탄영광교회 중고등부 4층 소예배실</div>
         <div class="big" style="font-size:18px">바른 길로 함께 가는 교회</div>
         <div class="sub">대한예수교장로회(합동)</div>
         <i class="ti ti-cross"></i>
@@ -1848,6 +1860,62 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
     }
   };
   window.__renderThanks();
+})();
+
+/* ===== 홈 NOTICE 카드 (주요 일정 + 오늘의 성경 읽기) ===== */
+(function(){
+  /* --- 성경 읽기: 평일=신약 순차 1장, 토=창세기 순차 1장, 주일=없음 --- */
+  var NT=[['마태복음',28],['마가복음',16],['누가복음',24],['요한복음',21],['사도행전',28],['로마서',16],['고린도전서',16],['고린도후서',13],['갈라디아서',6],['에베소서',6],['빌립보서',4],['골로새서',4],['데살로니가전서',5],['데살로니가후서',3],['디모데전서',6],['디모데후서',4],['디도서',3],['빌레몬서',1],['히브리서',13],['야고보서',5],['베드로전서',5],['베드로후서',3],['요한일서',5],['요한이서',1],['요한삼서',1],['유다서',1],['요한계시록',22]];
+  var NT_TOTAL=260, GEN_TOTAL=50;
+  /* ▼ 시작점(기준일) — 한 바퀴 돌고 다시 지정할 때 이 4줄만 고치면 됩니다 */
+  var WD_ANCHOR=new Date(2026,8,14), WD_ANCHOR_N=181;  /* 2026-09-14(월) = 골로새서 3장 = 신약 통산 181장 */
+  var SA_ANCHOR=new Date(2026,8,19), SA_ANCHOR_N=35;   /* 2026-09-19(토) = 창세기 35장 */
+  function d0(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate());}
+  function isSat(d){return d.getDay()===6;}
+  function isWd(d){var w=d.getDay();return w>=1&&w<=5;}
+  /* 기준일 다음날 ~ 대상일 사이의 해당 요일 수(대상일 포함). 과거면 음수 */
+  function step(anchor,target,pred){
+    var s=d0(anchor), e=d0(target), c=new Date(s), n=0, g=0;
+    if(e>s){ while(c.getTime()!==e.getTime()&&g++<20000){ c.setDate(c.getDate()+1); if(pred(c)) n++; } }
+    else if(e<s){ while(c.getTime()!==e.getTime()&&g++<20000){ if(pred(c)) n--; c.setDate(c.getDate()-1); } }
+    return n;
+  }
+  function wrap(n,total){ return ((n-1)%total+total)%total+1; }   /* 끝나면 처음으로 순환 */
+  function ntRef(n){ var r=wrap(n,NT_TOTAL); for(var k=0;k<NT.length;k++){ if(r<=NT[k][1]) return NT[k][0]+' '+r+'장'; r-=NT[k][1]; } return ''; }
+  function bibleFor(d){
+    if(isSat(d)) return '창세기 '+wrap(SA_ANCHOR_N+step(SA_ANCHOR,d,isSat),GEN_TOTAL)+'장';
+    if(isWd(d))  return ntRef(WD_ANCHOR_N+step(WD_ANCHOR,d,isWd));
+    return '';   /* 주일 */
+  }
+  window.__bibleFor=bibleFor;
+
+  /* --- 주요 일정: 구글시트('홈공지' 탭 A열) 읽기 전용 --- */
+  var NOTICE_LIST_API='https://script.google.com/macros/s/AKfycbzXb79Jpcks_rYXZBPX0g-6vO2sThZo93tO66Thl-hw0op7RqJtzk97LdLFBCl7mKZTxg/exec?action=notice';
+  var FALLBACK=['중고등부 예배 · 매주 주일 오전 11시','4층 소예배실에서 함께 드립니다'];
+  var DOW=['주일','월','화','수','목','금','토'];
+
+  function paint(items){
+    var list=document.getElementById('ntList');
+    if(!list) return;
+    var arr=(items&&items.length)?items:FALLBACK;
+    list.innerHTML=arr.slice(0,4).map(function(t){
+      return '· '+String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }).join('<br>');
+  }
+  function render(){
+    var now=new Date();
+    var dt=document.getElementById('ntDate');
+    if(dt) dt.textContent=(now.getMonth()+1)+'/'+now.getDate()+' ('+DOW[now.getDay()]+')';
+    var b=bibleFor(now), box=document.getElementById('ntBible'), bv=document.getElementById('ntBibleV');
+    if(box&&bv){ if(b){ bv.textContent=b; box.style.display=''; } else { box.style.display='none'; } }
+  }
+  render();
+  paint(null);
+  fetchT(NOTICE_LIST_API,9000).then(function(r){return r.json();}).then(function(j){
+    if(j&&j.ok&&j.items&&j.items.length) paint(j.items);
+  }).catch(function(){ /* 실패해도 성경 읽기는 그대로 표시 */ });
+  /* 날짜가 바뀌면 자동 갱신 */
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden) render(); });
 })();
 
 /* ===== 아카이브 날짜 로직 ===== */
