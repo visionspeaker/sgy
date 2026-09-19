@@ -508,7 +508,7 @@
         <div class="meta"><div class="k">중고등부 영상</div><div class="ti2">예배 · 찬양 · 행사 영상</div><div class="d">유튜브 채널 최신 영상 바로 보기</div></div>
       </div>
       <div class="grid" style="margin-top:4px">
-        <div class="tile" onclick="open_('https://vision153.notion.site/_250601-2026eda158ae8095999ac133933fd32a?pvs=4')"><div class="ic no"><i class="ti ti-news"></i></div><div class="nm">온라인 주보</div><div class="ds">이번 주 예배 순서와 광고</div></div>
+        <div class="tile" onclick="go('bulletin')"><div class="ic no"><i class="ti ti-news"></i></div><div class="nm">온라인 주보</div><div class="ds">이번 주 예배 순서와 광고</div></div>
         <div class="tile" onclick="open_('https://www.instagram.com/stgc153')"><div class="ic ig"><i class="ti ti-brand-instagram"></i></div><div class="nm">인스타그램</div><div class="ds">@stgc153 소식과 사진</div></div>
         <div class="tile" onclick="open_('https://band.us/n/acaebbS821711')"><div class="ic bd"><i class="ti ti-users-group"></i></div><div class="nm">중고등부 밴드</div><div class="ds">공지·소통 커뮤니티</div></div>
         <div class="tile" onclick="go('attend')"><div class="ic" style="background:#ffe5e5;color:#ef4444"><i class="ti ti-calendar-check"></i></div><div class="nm">출석체크 도장깨기</div><div class="ds">매일 출석하고 도장 받기</div></div>
@@ -580,6 +580,19 @@
       </div>
 
       <div class="hint" style="margin-top:24px">송탄영광교회 중고등부 공식 앱 · SGY 2.0<br>#송탄영광교회 #중고등부 #평택 #송탄</div>
+    </section>
+
+    <section class="screen" id="s-bulletin">
+      <div class="dlBack" onclick="go('home')"><i class="ti ti-arrow-left"></i> 홈</div>
+      <div class="sec-t">온라인 주보</div>
+      <div class="worship" style="background:linear-gradient(120deg,#5b8def,#7c6cff)">
+        <div class="lbl">송탄영광교회 중고등부</div>
+        <div class="big" style="font-size:19px">이번 주 온라인 주보</div>
+        <div class="sub">예배 순서 · 광고 · 이번 주 일정</div>
+        <i class="ti ti-news"></i>
+      </div>
+      <a class="campBtn" href="https://vision153.notion.site/_250601-2026eda158ae8095999ac133933fd32a?pvs=4" target="_blank" rel="noopener" style="margin-top:14px;text-decoration:none">온라인 주보 열기</a>
+      <div class="hint">주보는 노션(Notion) 페이지로 열립니다.<br>다 보신 뒤 뒤로가기를 누르면 앱으로 돌아옵니다.</div>
     </section>
 
     <section class="screen" id="s-attend">
@@ -1993,9 +2006,8 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
 
 /* ===== 메뉴 딥링크 (URL 라우팅) ===== */
 (function(){
-  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks','deeplink','backup','grade'];
+  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks','deeplink','backup','grade','bulletin'];
   const EXT={
-    bulletin:'https://vision153.notion.site/_250601-2026eda158ae8095999ac133933fd32a?pvs=4',
     map:'https://map.naver.com/p/search/송탄영광교회',
     youtube:'https://www.youtube.com/@sgy153',
     podbbang:'https://www.podbbang.com/channels/9230',
@@ -2023,8 +2035,8 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
     ['메인',[['홈','home'],['설교 팟캐스트','pod'],['유튜브 영상','vid'],['더보기','more']]],
     ['여름 수련회',[['여름 수련회','camp'],['수련회 종료 감사 7일 기도','thanks'],['30번 중보기도','pray']]],
     ['신앙·참여',[['신급 교육 신청','grade'],['공지사항','notice'],['출석체크 도장깨기','attend'],['입회원서','enroll'],['문의하기','contact']]],
-    ['정보·보관',[['연간계획','plan'],['보관함(아카이브)','archive']]],
-    ['외부 링크',[['온라인 주보','bulletin'],['오시는 길','map'],['중고등부 유튜브','youtube'],['설교 팟캐스트(팟빵)','podbbang'],['인스타그램','insta'],['중고등부 밴드','band'],['해외 어린이 양육','compassion']]]
+    ['정보·보관',[['온라인 주보','bulletin'],['연간계획','plan'],['보관함(아카이브)','archive']]],
+    ['외부 링크',[['오시는 길','map'],['중고등부 유튜브','youtube'],['설교 팟캐스트(팟빵)','podbbang'],['인스타그램','insta'],['중고등부 밴드','band'],['해외 어린이 양육','compassion']]]
   ];
   /* 자동 최신화 설정 — 목록에 일부러 넣지 않을 라우트 */
   const SKIP={deeplink:1,survey:1};
