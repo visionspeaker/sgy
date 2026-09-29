@@ -2012,7 +2012,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   };
   /* 외부링크 딥링크로 들어왔을 때 안내에 쓸 이름 */
   const EXT_NAME={bulletin:'온라인 주보',map:'오시는 길',youtube:'중고등부 유튜브',podbbang:'설교 팟캐스트',insta:'인스타그램',band:'중고등부 밴드'};
-  const EXT_DWELL=400;   /* 홈 화면을 잠깐 보여준 뒤 이동하기까지의 시간(ms) */
+  const EXT_DWELL=220;   /* 홈 화면을 잠깐 보여준 뒤 이동하기까지의 시간(ms) */
   /* '…로' / '…으로' 조사 선택 (받침 없거나 ㄹ이면 '로') */
   function ro(s){ const c=s.charCodeAt(s.length-1)-0xAC00; if(c<0||c>11171) return '로'; const j=c%28; return (j===0||j===8)?'로':'으로'; }
   function showExtGo(name){
@@ -2030,14 +2030,13 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
     k=k.toLowerCase();
     if(EXT[k]){
       const url=EXT[k];
-      /* 앱 주소에서 외부링크 해시를 지운다 — 같은 링크를 다시 눌러도 동작하고, 뒤로가기로 앱에 돌아올 수 있다 */
-      try{ history.replaceState(null,'','#home'); }catch(e){}
+      /* 앱 주소에서 외부링크 해시를 지운다 — 같은 링크를 다시 눌러도 동작한다.
+         그리고 같은 주소를 하나 더 쌓아 둔다 — 로딩 중 이동이 현재 항목을 덮어써도
+         바로 아래에 앱 홈이 남아 있어 뒤로가기로 돌아올 수 있다(로딩 완료를 기다릴 필요가 없다). */
+      try{ history.replaceState(null,'','#home'); history.pushState(null,'','#home'); }catch(e){}
       /* 홈 화면을 한 번 보여준 뒤 이동한다 — 앱에 들어왔다 넘어간다는 것이 드러나게 */
       showExtGo(EXT_NAME[k]||'외부 페이지');
-      /* 로딩이 끝난 뒤 이동해야 히스토리에 앱이 남는다(로딩 중 이동은 항목을 덮어씀) */
-      const jump=function(){ setTimeout(function(){ location.href=url; },EXT_DWELL); };
-      if(document.readyState==='complete'){ jump(); }
-      else { window.addEventListener('load',jump,{once:true}); }
+      setTimeout(function(){ location.href=url; },EXT_DWELL);
       return;
     }
     if(k==='compassion'){ go('more'); if(window.openCompassion)openCompassion(); return; }
