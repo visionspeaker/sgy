@@ -441,6 +441,32 @@
   .childDs{font-size:12px;color:var(--tx2);margin-top:2px}
   a{color:inherit;text-decoration:none}
   .dlBack{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--tx2);margin:16px 4px 0;cursor:pointer}
+  /* 헤더 → 업데이트 기록 */
+  .hdTap{cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .hdTap:active{opacity:.6}
+  .verChip{display:inline-block;background:#efeafd;color:var(--primary);font-size:9.5px;font-weight:800;border-radius:999px;padding:1.5px 6px;margin-left:3px;vertical-align:1px;letter-spacing:.2px}
+  /* 업데이트 기록(릴리스노트) */
+  .rlHero{background:linear-gradient(120deg,#5b8def,#7c6cff);border-radius:16px;padding:16px 17px;margin-top:8px;color:#fff;position:relative;overflow:hidden;box-shadow:0 8px 22px rgba(124,108,255,.24)}
+  .rlHero .k{font-size:10.5px;font-weight:700;letter-spacing:1.1px;opacity:.85}
+  .rlHero .t{font-size:20px;font-weight:800;margin-top:5px}
+  .rlHero .s{font-size:12.5px;opacity:.9;margin-top:3px}
+  .rlHero .em{position:absolute;right:-6px;bottom:-16px;font-size:74px;opacity:.18;line-height:1}
+  .rlMeta{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+  .rlMeta span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:11px;color:var(--tx2)}
+  .rlMeta b{color:var(--tx)}
+  .rlCard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 15px;margin-top:10px}
+  .rlCard .h{font-size:15.5px;font-weight:800;color:var(--tx)}
+  .rlTag{display:flex;align-items:center;gap:7px;margin-top:7px;flex-wrap:wrap}
+  .rlTag .bd{font-size:10px;font-weight:800;border-radius:6px;padding:2.5px 7px}
+  .rlTag .bdF{background:#e6f6f4;color:#0d9488}
+  .rlTag .bdI{background:#efeafd;color:var(--primary)}
+  .rlTag .bdX{background:#fff0f0;color:#e2574c}
+  .rlTag .v{font-size:11.5px;color:var(--tx2);font-weight:700}
+  .rlTag .d{font-size:11.5px;color:var(--tx3)}
+  .rlSec{font-size:11px;font-weight:800;color:#f59e0b;margin-top:11px}
+  .rlList{font-size:12.5px;color:var(--tx2);line-height:1.75;margin-top:3px}
+  .rlMore{display:block;width:100%;margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:12.5px;font-weight:700;color:var(--tx2);font-family:inherit;cursor:pointer}
+  .rlMore:active{transform:scale(.99)}
   /* 외부 링크 딥링크: 홈을 잠깐 보여준 뒤 이동한다는 안내 */
   .extGo{position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;background:rgba(241,240,251,.8);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);animation:extFade .1s ease}
   .extGoBox{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 24px;text-align:center;box-shadow:0 12px 30px rgba(29,27,58,.16)}
@@ -467,7 +493,7 @@
 <div id="app">
   <header>
     <img class="logo" src="sgy_logo.png" alt="SGY 2.0 로고">
-    <div><h1>송탄영광교회 중고등부</h1><p>SGY 2.0 · 공식 앱</p></div>
+    <div class="hdTap" onclick="go('release')" role="button" tabindex="0" aria-label="업데이트 기록 보기"><h1>송탄영광교회 중고등부</h1><p>SGY 2.0 · 공식 앱 <span class="verChip" id="verChip">v28</span></p></div>
   </header>
 
   <main>
@@ -588,6 +614,20 @@
       </div>
 
       <div class="hint" style="margin-top:24px">송탄영광교회 중고등부 공식 앱 · SGY 2.0<br>#송탄영광교회 #중고등부 #평택 #송탄</div>
+    </section>
+
+    <section class="screen" id="s-release">
+      <div class="dlBack" onclick="go('home')"><i class="ti ti-arrow-left"></i> 홈</div>
+      <div class="rlHero">
+        <div class="k">RELEASE NOTES</div>
+        <div class="t">SGY 2.0 업데이트 기록</div>
+        <div class="s">앱이 어떻게 바뀌어 왔는지 모아뒀어요</div>
+        <div class="em">📝</div>
+      </div>
+      <div class="rlMeta"><span><b>현재 버전</b> <span id="rlNow">v28</span></span><span id="rlDate">2026/09/29</span><span>기록 <span id="rlCnt">28</span>건</span></div>
+      <div id="rlList"></div>
+      <button class="rlMore" id="rlMore">이전 기록 더 보기 ▾</button>
+      <div class="hint">업데이트는 앱을 껐다 켜면 자동으로 적용됩니다.<br>바로 받고 싶으면 홈 아래 <b>새로고침</b>을 눌러주세요.</div>
     </section>
 
     <section class="screen" id="s-attend">
@@ -1123,6 +1163,7 @@ function afterActivate(s){
   if(s==='notice'){loadNotices();}
   if(s==='backup'&&window.__renderBackup){window.__renderBackup();}
   if(s==='deeplink'&&window.__renderDeeplinks){window.__renderDeeplinks();}
+  if(s==='release'&&window.__renderRelease){window.__renderRelease();}
   if(s==='camp'){updateCampApply();}
   if(s==='pray'&&window.__renderPray){window.__renderPray();}
   if(s==='thanks'&&window.__renderThanks){window.__renderThanks();}
@@ -1874,6 +1915,111 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   window.__renderThanks();
 })();
 
+/* ===== 업데이트 기록 (릴리스노트) =====
+   새 버전을 낼 때 RELEASES 맨 앞에 한 줄 추가하면 된다.
+   f=새로 생긴 것 / i=좋아진 것 / x=고친 것 (없으면 빈 배열)
+   헤더의 버전 칩은 맨 앞 항목에서 자동으로 가져온다. */
+(function(){
+  const RELEASES=[
+    {v:'v28',d:'2026/09/29',t:'바깥 링크 이동 정리',f:[],
+      i:['온라인 주보처럼 앱 밖으로 나가는 메뉴는 안내 화면을 잠깐 보여준 뒤 이동합니다','이동한 뒤 뒤로가기를 누르면 앱 홈으로 돌아옵니다'],
+      x:['같은 링크를 다시 눌렀을 때 열리지 않던 문제를 고쳤습니다']},
+    {v:'v27',d:'2026/09/22',t:'온라인 주보 바로 열기',f:[],
+      i:['온라인 주보를 누르면 중간 단계 없이 바로 열립니다'],x:[]},
+    {v:'v26',d:'2026/09/14',t:'홈 화면 공지 카드',
+      f:['홈 맨 위 NOTICE 카드에서 주요 일정과 오늘의 성경 읽기 범위를 알려줍니다','평일에는 신약, 토요일에는 창세기를 한 장씩 순서대로 안내합니다','더보기에 \'영광 커넥트\' 바로가기를 넣었습니다','더보기에 \'교사용 앱\'을 넣었습니다 (교사 로그인 필요)'],i:[],x:[]},
+    {v:'v25',d:'2026/09/10',t:'설교 듣기 · 입력칸 손봄',f:[],i:[],
+      x:['설교를 들을 때 재생 막대를 손으로 옮기면 한 번에 움직이도록 고쳤습니다','글자를 입력할 때 화면이 확대되며 흐트러지던 문제를 고쳤습니다']},
+    {v:'v24',d:'2026/09/03',t:'딥링크 모음 자동 최신화',f:[],
+      i:['새 메뉴가 생기면 딥링크 모음에 자동으로 추가됩니다','설교 탭 안내 문구를 정리했습니다'],x:[]},
+    {v:'v23',d:'2026/08/18',t:'입회원서 영문 병기',f:[],
+      i:['입회원서 질문과 보기에 영문을 함께 적어 영어권 학생도 쓸 수 있게 했습니다'],x:[]},
+    {v:'v22',d:'2026/08/17',t:'신급 교육 신청 · 데이터 백업',
+      f:['신급 교육(학습 · 세례 · 입교) 신청 화면이 생겼습니다','앱 데이터 백업 · 복원이 생겼습니다. 앱을 지우기 전에 도장 기록을 저장해 두세요'],
+      i:['앱 아이콘을 새로 만들었습니다','뒤로가기와 왼쪽 끝 스와이프로 이전 화면에 돌아갈 수 있습니다'],x:[]},
+    {v:'v21',d:'2026/08/03',t:'아카이브 표기 정리',f:[],
+      i:['지난 행사 카드에 \'종료\' 배지와 기간을 함께 적었습니다'],x:[]},
+    {v:'v20',d:'2026/08/02',t:'수련회 설문 마감',f:[],
+      i:['여름 수련회 설문 응답을 마감하고 내용만 볼 수 있게 했습니다'],x:[]},
+    {v:'v19',d:'2026/08/01',t:'딥링크 모음',
+      f:['각 화면으로 바로 가는 주소를 모아 볼 수 있는 화면이 생겼습니다'],i:[],x:[]},
+    {v:'v18',d:'2026/07/31',t:'수련회 종료 감사 7일 기도',
+      f:['수련회를 마치고 드리는 7일 기도 화면이 생겼습니다. 매일 기도하고 도장을 찍어요'],i:[],x:[]},
+    {v:'v17',d:'2026/07/29',t:'수련회 진행중 표시',f:[],
+      i:['수련회 기간에 홈에서 \'진행중\'으로 보이게 하고, 실시간 소식 링크를 넣었습니다'],x:[]},
+    {v:'v16',d:'2026/07/27',t:'여름 수련회 설문',
+      f:['수련회 소감을 남기는 설문 화면이 생겼습니다'],i:[],x:[]},
+    {v:'v15',d:'2026/07/26',t:'아카이브',
+      f:['지난 행사와 자료를 모아 보는 아카이브가 생겼습니다'],i:[],x:[]},
+    {v:'v14',d:'2026/07/22',t:'방문자 수 · 새로고침',
+      f:['화면 아래쪽에 방문자 수가 표시됩니다'],
+      i:['\'새로고침\' 버튼으로 최신 버전을 바로 받을 수 있습니다'],x:[]},
+    {v:'v13',d:'2026/07/20',t:'주소로 바로 열기',
+      f:['주소 뒤에 화면 이름을 붙이면 그 화면이 바로 열립니다'],i:[],x:[]},
+    {v:'v12',d:'2026/07/19',t:'수련회 신청 마감',f:[],
+      i:['신청을 마감하고 신청자 명단을 보여줍니다. 이름 가운데 글자는 가렸습니다'],x:[]},
+    {v:'v11',d:'2026/07/17',t:'연간계획',
+      f:['한 해 일정과 행사를 보는 연간계획 화면이 생겼습니다'],i:[],x:[]},
+    {v:'v10',d:'2026/07/16',t:'문의하기 사진 첨부',
+      f:['문의할 때 사진을 찍거나 골라서 함께 보낼 수 있습니다'],i:[],x:[]},
+    {v:'v9',d:'2026/07/15',t:'30번 중보기도',
+      f:['수련회를 위한 30번 중보기도 화면이 생겼습니다. 기도하고 도장을 찍어요'],i:[],x:[]},
+    {v:'v8',d:'2026/07/14',t:'입회원서',
+      f:['입회원서를 앱 안에서 바로 쓸 수 있게 됐습니다'],i:[],x:[]},
+    {v:'v7',d:'2026/07/12',t:'참가비 안내',f:[],
+      i:['수련회 참가비를 얼리버드와 일반으로 나눠 보여줍니다'],x:[]},
+    {v:'v6',d:'2026/07/01',t:'문의하기',
+      f:['궁금한 점을 남길 수 있는 문의하기 화면이 생겼습니다'],i:[],x:[]},
+    {v:'v5',d:'2026/06/26',t:'수련회 신청 안내',f:[],
+      i:['수련회 신청 오픈 일정과 참가비를 안내합니다'],x:[]},
+    {v:'v4',d:'2026/06/23',t:'여름 수련회',
+      f:['여름 수련회 안내 화면이 생겼습니다'],i:[],x:[]},
+    {v:'v3',d:'2026/06/22',t:'출석체크 · 공지사항',
+      f:['출석체크 도장깨기가 생겼습니다. 매일 출석하고 도장을 받아요','공지사항 화면이 생겼습니다'],i:[],x:[]},
+    {v:'v2',d:'2026/06/19',t:'입회원서 신청',
+      f:['입회원서(새친구 등록) 신청을 넣었습니다'],i:[],x:[]},
+    {v:'v1',d:'2026/06/17',t:'SGY 2.0 첫 공개',
+      f:['홈 · 설교 팟캐스트 · 영상 · 더보기 네 개 탭으로 시작했습니다','온라인 주보, 인스타그램, 밴드, 오시는 길, 연간계획, 해외 어린이 양육을 담았습니다'],i:[],x:[]}
+  ];
+  const FIRST=4;   /* 처음에 보여줄 개수 */
+  let open=false;
+
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function badge(r){
+    if(r.f&&r.f.length) return '<span class="bd bdF">새 기능</span>';
+    if(r.x&&r.x.length&&!(r.i&&r.i.length)) return '<span class="bd bdX">수정</span>';
+    return '<span class="bd bdI">개선</span>';
+  }
+  function block(title,arr){
+    if(!arr||!arr.length) return '';
+    return '<div class="rlSec">['+title+']</div><div class="rlList">'+arr.map(function(s){return '- '+esc(s);}).join('<br>')+'</div>';
+  }
+  function card(r){
+    return '<div class="rlCard"><div class="h">'+esc(r.t)+'</div>'
+      +'<div class="rlTag">'+badge(r)+'<span class="v">'+esc(r.v)+'</span><span class="d">'+esc(r.d)+'</span></div>'
+      +block('새로운 기능',r.f)+block('개선',r.i)+block('수정',r.x)+'</div>';
+  }
+  function render(){
+    const box=document.getElementById('rlList'); if(!box) return;
+    const list=open?RELEASES:RELEASES.slice(0,FIRST);
+    box.innerHTML=list.map(card).join('');
+    const btn=document.getElementById('rlMore');
+    if(btn){
+      if(RELEASES.length<=FIRST){ btn.style.display='none'; }
+      else { btn.style.display=''; btn.textContent=open?'접기 ▴':('이전 기록 더 보기 ▾ ('+(RELEASES.length-FIRST)+'건)'); }
+    }
+    const now=document.getElementById('rlNow'); if(now) now.textContent=RELEASES[0].v;
+    const dt=document.getElementById('rlDate'); if(dt) dt.textContent=RELEASES[0].d;
+    const cnt=document.getElementById('rlCnt'); if(cnt) cnt.textContent=RELEASES.length;
+  }
+  const btn=document.getElementById('rlMore');
+  if(btn) btn.addEventListener('click',function(){ open=!open; render(); if(!open){ const m=document.querySelector('main'); if(m) m.scrollTop=0; } });
+  const chip=document.getElementById('verChip'); if(chip) chip.textContent=RELEASES[0].v;
+  /* 화면 진입 때마다 접힌 상태로 다시 그린다 */
+  window.__renderRelease=function(){ open=false; render(); };
+  render();   /* 딥링크로 바로 들어와도 보이도록 즉시 1회 */
+})();
+
 /* ===== 홈 NOTICE 카드 (주요 일정 + 오늘의 성경 읽기) ===== */
 (function(){
   /* --- 성경 읽기: 평일=신약 순차 1장, 토=창세기 순차 1장, 주일=없음 --- */
@@ -2001,7 +2147,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
 
 /* ===== 메뉴 딥링크 (URL 라우팅) ===== */
 (function(){
-  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks','deeplink','backup','grade'];
+  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks','deeplink','backup','grade','release'];
   const EXT={
     bulletin:'https://vision153.notion.site/_250601-2026eda158ae8095999ac133933fd32a?pvs=4',
     map:'https://map.naver.com/p/search/송탄영광교회',
@@ -2055,7 +2201,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
     ['메인',[['홈','home'],['설교 팟캐스트','pod'],['유튜브 영상','vid'],['더보기','more']]],
     ['여름 수련회',[['여름 수련회','camp'],['수련회 종료 감사 7일 기도','thanks'],['30번 중보기도','pray']]],
     ['신앙·참여',[['신급 교육 신청','grade'],['공지사항','notice'],['출석체크 도장깨기','attend'],['입회원서','enroll'],['문의하기','contact']]],
-    ['정보·보관',[['연간계획','plan'],['보관함(아카이브)','archive']]],
+    ['정보·보관',[['연간계획','plan'],['보관함(아카이브)','archive'],['업데이트 기록','release']]],
     ['외부 링크',[['온라인 주보','bulletin'],['오시는 길','map'],['중고등부 유튜브','youtube'],['설교 팟캐스트(팟빵)','podbbang'],['인스타그램','insta'],['중고등부 밴드','band'],['해외 어린이 양육','compassion']]]
   ];
   /* 자동 최신화 설정 — 목록에 일부러 넣지 않을 라우트 */
@@ -2168,7 +2314,7 @@ if('serviceWorker' in navigator){
 /* ===== 하위 화면: 뒤로가기 / 왼쪽 끝 스와이프 → 상위 화면 ===== */
 (function(){
   const main=document.querySelector('main'); if(!main)return;
-  const PARENT={camp:'archive',pray:'archive',thanks:'archive',survey:'archive',grade:'archive',deeplink:'archive',notice:'archive',backup:'more',plan:'more',enroll:'more',contact:'more',attend:'home'};
+  const PARENT={camp:'archive',pray:'archive',thanks:'archive',survey:'archive',grade:'archive',deeplink:'archive',notice:'archive',backup:'more',plan:'more',enroll:'more',contact:'more',attend:'home',release:'home'};
   window.__parentOf=function(s){ return PARENT[s]||''; };
   let sx=0,sy=0,armed=false,cur='';
   main.addEventListener('touchstart',function(e){
