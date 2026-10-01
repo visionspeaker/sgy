@@ -446,6 +446,9 @@
   .hdTap:active{opacity:.6}
   .verChip{display:inline-block;background:#efeafd;color:var(--primary);font-size:9.5px;font-weight:800;border-radius:999px;padding:1.5px 6px;margin-left:3px;vertical-align:1px;letter-spacing:.2px}
   /* 업데이트 기록(릴리스노트) */
+  .rlBack{display:inline-flex;align-items:center;gap:6px;background:var(--primary);color:#fff;border-radius:999px;padding:9px 16px 9px 13px;margin:16px 2px 0;font-size:13.5px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(124,108,255,.3);-webkit-tap-highlight-color:transparent}
+  .rlBack:active{transform:scale(.98)}
+  .rlBack i{font-size:16px}
   .rlHero{background:linear-gradient(120deg,#5b8def,#7c6cff);border-radius:16px;padding:16px 17px;margin-top:8px;color:#fff;position:relative;overflow:hidden;box-shadow:0 8px 22px rgba(124,108,255,.24)}
   .rlHero .k{font-size:10.5px;font-weight:700;letter-spacing:1.1px;opacity:.85}
   .rlHero .t{font-size:20px;font-weight:800;margin-top:5px}
@@ -491,7 +494,7 @@
 <div id="app">
   <header>
     <img class="logo" src="sgy_logo.png" alt="SGY 2.0 로고">
-    <div class="hdTap" onclick="go('release')" role="button" tabindex="0" aria-label="업데이트 기록 보기"><h1>송탄영광교회 중고등부</h1><p>SGY 2.0 · 공식 앱 <span class="verChip" id="verChip">v28</span></p></div>
+    <div class="hdTap" onclick="toggleRelease()" role="button" tabindex="0" aria-label="업데이트 기록 보기"><h1>송탄영광교회 중고등부</h1><p>SGY 2.0 · 공식 앱 <span class="verChip" id="verChip">v28</span></p></div>
   </header>
 
   <main>
@@ -615,7 +618,7 @@
     </section>
 
     <section class="screen" id="s-release">
-      <div class="dlBack" onclick="go('home')"><i class="ti ti-arrow-left"></i> 홈</div>
+      <div class="rlBack" onclick="go('home')"><i class="ti ti-arrow-left"></i> 홈으로 돌아가기</div>
       <div class="rlHero">
         <div class="k">RELEASE NOTES</div>
         <div class="t">SGY 2.0 업데이트 기록</div>
@@ -1207,6 +1210,12 @@ function updateCampApply(){
   b.onclick=function(){ go('contact'); };
 }
 function open_(u){window.open(u,'_blank');}
+/* 상단 헤더: 누르면 업데이트 기록, 거기서 다시 누르면 홈 */
+function toggleRelease(){
+  const a=document.querySelector('.screen.on');
+  const cur=a?a.id.replace('s-',''):'';
+  go(cur==='release'?'home':'release');
+}
 
 const YT_KEY="AIzaSyANbAU2nkj6wT5SRC2wZqQUlHb2HqC8b8I";
 let ytPageToken=null, ytLoadingMore=false, ytSeen={};
