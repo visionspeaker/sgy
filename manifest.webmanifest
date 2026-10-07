@@ -1,7 +1,7 @@
 {
   "name": "송탄영광교회 중고등부",
   "short_name": "SGY",
-  "description": "송탄영광교회 중고등부 공식 앱 — 설교 팟쿼스트와 유튜브 영상을 한 곳에서.",
+  "description": "송탄영광교회 중고등부 공식 앱 — 설교 팟캐스트와 유튜브 영상을 한 곳에서.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
