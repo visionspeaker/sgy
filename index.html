@@ -528,6 +528,11 @@
         <div style="flex:1;min-width:0"><div class="nm">신급 교육 신청</div><div class="ds">학습 · 세례 · 입교 · 9/6까지</div></div>
         <span style="flex:none;background:#2f8f5b;color:#fff;font-size:11.5px;font-weight:800;border-radius:999px;padding:5px 11px">신청중</span>
       </div>
+      <div class="tile tileRow" id="homeMinistryTile" style="margin-top:12px;display:none;background:#fdf4ec;border-color:#f3d9c2" onclick="go('ministry')">
+        <div class="ic" style="background:#fbeadb;color:#d9772b;font-size:23px"><i class="ti ti-heart-handshake"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">2027 중고등부 사역 신청</div><div class="ds">찬양팀 · 임원 · 방송팀 · SNS 기자 · 헬퍼</div></div>
+        <span style="flex:none;background:#d9772b;color:#fff;font-size:11.5px;font-weight:800;border-radius:999px;padding:5px 11px">신청중</span>
+      </div>
       <div class="tile tileRow campTile" id="homeCampTile" style="margin-top:12px" onclick="go('camp')">
         <div class="ic" style="background:#dff5e6;color:#16a34a;font-size:23px"><i class="ti ti-tent"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">여름 수련회(7/30~8/1) 진행중</div><div class="ds">주바라기 캠프 3차 · 대전 한남대학교</div></div>
@@ -993,8 +998,9 @@
           <div class="qh">하고 싶은 자리를 모두 골라주세요</div>
           <div class="mnGl"><b>찬양팀</b><span>여러 개 선택</span></div>
           <div class="mnChips" data-g="praise"><span class="mnCh">싱어</span><span class="mnCh">리더</span><span class="mnCh">율동</span><span class="mnCh">신디</span><span class="mnCh">드럼</span><span class="mnCh">베이스</span><span class="mnCh">일렉</span><span class="mnCh">기타</span></div>
+          <div class="mnGl"><b>임원</b><span>하나만 선택</span></div>
+          <div class="mnChips" data-g="officer"><span class="mnCh">회장</span><span class="mnCh">부회장</span><span class="mnCh">총무</span><span class="mnCh">서기</span></div>
           <div style="height:6px"></div>
-          <div class="grOpt" data-v="임원"><span class="dot">✓</span><div><div class="on1">임원</div><div class="on2">회장 · 부회장 · 총무 · 서기</div></div></div>
           <div class="grOpt" data-v="방송팀"><span class="dot">✓</span><div><div class="on1">방송팀</div><div class="on2">음향·영상·자막을 맡아요</div></div></div>
           <div class="grOpt" data-v="SNS 기자"><span class="dot">✓</span><div><div class="on1">SNS 기자</div><div class="on2">사진·소식을 기록해요</div></div></div>
           <div class="grOpt" data-v="헬퍼"><span class="dot">✓</span><div><div class="on1">헬퍼</div><div class="on2">예배·행사 준비를 도와요</div></div></div>
@@ -2200,10 +2206,15 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
     const gd=document.getElementById('arcGradeDs'); if(gd) gd.textContent='신청 기간 2026/08/23~09/06';
     const gb=document.getElementById('arcGradeBadge'); if(gb){ gb.textContent='종료'; gb.removeAttribute('style'); }
   }
-  /* 2027 사역 신청: 10/11 00:00 ~ 11/29 23:59 신청 (지금은 아카이브에만, 홈 카드는 나중에 공개) */
+  /* 2027 사역 신청: 10/11 00:00 ~ 11/29 23:59 홈 노출·신청, 그 밖엔 아카이브 */
   const minOpen = now >= new Date(2026,9,11,0,0,0);
   const minEnded = now >= new Date(2026,10,30,0,0,0);
   window.__ministryState = minEnded ? 'ended' : (minOpen ? 'open' : 'before');
+  const minLive = minOpen && !minEnded;
+  const homeMin=document.getElementById('homeMinistryTile');
+  const arcMin=document.getElementById('arcMinistry');
+  if(homeMin) homeMin.style.display = minLive ? '' : 'none';
+  if(arcMin) arcMin.style.display = minLive ? 'none' : '';
   const mb=document.getElementById('arcMinistryBadge');
   if(mb){
     if(minEnded){ mb.textContent='종료'; mb.removeAttribute('style'); }
@@ -2211,7 +2222,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   }
   /* 아카이브 빈 상태: 표시 중인 아카이브 항목이 하나도 없을 때만 노출 */
   const arcEmpty=document.getElementById('archiveEmpty');
-  const anyArc = (arcCamp && arcCamp.style.display!=='none') || (arcSurvey && arcSurvey.style.display!=='none') || (arcPray && arcPray.style.display!=='none') || (arcThanks && arcThanks.style.display!=='none') || (arcGrade && arcGrade.style.display!=='none') || !!document.getElementById('arcMinistry');
+  const anyArc = (arcCamp && arcCamp.style.display!=='none') || (arcSurvey && arcSurvey.style.display!=='none') || (arcPray && arcPray.style.display!=='none') || (arcThanks && arcThanks.style.display!=='none') || (arcGrade && arcGrade.style.display!=='none') || (arcMin && arcMin.style.display!=='none');
   if(arcEmpty) arcEmpty.style.display = anyArc ? 'none' : '';
 })();
 
@@ -2389,15 +2400,16 @@ if('serviceWorker' in navigator){
   const state=window.__ministryState||'before';
   const sum=document.getElementById('ministrySum');
   function picked(g){ return Array.prototype.map.call(sec.querySelectorAll('.mnChips[data-g="'+g+'"] .mnCh.on'),function(c){return c.textContent;}); }
-  function opts(){ return Array.prototype.map.call(sec.querySelectorAll('.grOpt.sel'),function(o){return o.dataset.v;}); }
-  function officer(){ return opts().filter(function(v){return v==='임원';}); }
-  function etc(){ return opts().filter(function(v){return v!=='임원';}); }
+  function etc(){ return Array.prototype.map.call(sec.querySelectorAll('.grOpt.sel'),function(o){return o.dataset.v;}); }
   function upd(){
-    const a=picked('praise').map(function(s){return '찬양팀 '+s;}).concat(opts());
+    const a=picked('praise').map(function(s){return '찬양팀 '+s;}).concat(picked('officer').map(function(s){return '임원 '+s;}),etc());
     sum.textContent=a.length?'선택: '+a.join(', '):'아직 고른 사역이 없어요';
   }
   sec.querySelectorAll('.mnCh').forEach(function(c){
     c.addEventListener('click',function(){
+      if(c.parentNode.dataset.g==='officer'&&!c.classList.contains('on')){
+        c.parentNode.querySelectorAll('.mnCh.on').forEach(function(x){x.classList.remove('on');});
+      }
       c.classList.toggle('on'); upd();
     });
   });
@@ -2420,7 +2432,7 @@ if('serviceWorker' in navigator){
   btn.addEventListener('click',function(){
     err.textContent='';
     const name=(document.getElementById('mn_name').value||'').trim();
-    const praise=picked('praise'), off=officer(), ex=etc();
+    const praise=picked('praise'), off=picked('officer'), ex=etc();
     if(!name){ err.textContent='이름을 입력해 주세요.'; return; }
     if(!praise.length&&!off.length&&!ex.length){ err.textContent='지원할 사역을 하나 이상 골라주세요.'; return; }
     btn.disabled=true; btn.textContent='신청 중…';
