@@ -309,6 +309,20 @@
   .grRO .grIn{background:#f5f4fa;color:#8b89a3;pointer-events:none}
   .grRO .grOpt{background:#f5f4fa;color:#8b89a3;opacity:.75;pointer-events:none;cursor:default}
   .grRO .grHero{opacity:.75}
+  /* 사역 신청: 신급 교육 스타일(gr*) 재사용 + 주황 */
+  #s-ministry .grHero,#s-ministry .grBtn:not(:disabled){background:#d9772b}
+  #s-ministry .grIn:focus{border-color:#d9772b}
+  #s-ministry .grOpt.sel{border-color:#d9772b;background:#fdf4ec}
+  #s-ministry .grOpt .dot{border-radius:5px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;box-sizing:border-box}
+  #s-ministry .grOpt.sel .dot{border-color:#d9772b;background:#d9772b}
+  .mnGl{display:flex;align-items:baseline;gap:6px;margin-top:14px}
+  .mnGl b{font-size:13.5px;color:var(--tx)}
+  .mnGl span{font-size:11px;color:var(--tx3)}
+  .mnChips{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+  .mnCh{font-size:13px;text-align:center;border:1px solid var(--line);background:#fff;color:var(--tx);border-radius:10px;padding:9px 0;cursor:pointer;user-select:none;-webkit-user-select:none}
+  .mnCh.on{background:#fdf4ec;border-color:#d9772b;color:#9a4f12;font-weight:700}
+  .mnSum{font-size:12px;color:#9a4f12;background:#fdf4ec;border-radius:10px;padding:9px 11px;margin-top:14px;line-height:1.5}
+  .grRO .mnCh{background:#f5f4fa;color:#8b89a3;opacity:.75;pointer-events:none}
   .bkNote{display:flex;gap:10px;align-items:flex-start;background:#fff3df;border:1px solid #f4dfb4;border-radius:12px;padding:12px 13px;margin-top:8px}
   .bkNote i{color:#a07a2e;font-size:20px;flex:none;margin-top:1px}
   .bkNote .bt{font-size:13.5px;font-weight:800;color:#7a5a12}
@@ -870,6 +884,11 @@
     <section class="screen" id="s-archive">
       <div class="sec-t">아카이브</div>
       <div class="archiveEmpty" id="archiveEmpty">보관된 항목이 없습니다.</div>
+      <div class="tile tileRow" id="arcMinistry" onclick="go('ministry')">
+        <div class="ic" style="background:#fbeadb;color:#d9772b"><i class="ti ti-hand-love-you"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">사역 신청</div><div class="ds" id="arcMinistryDs">신청 기간 2026/10/11~11/29</div></div>
+        <span class="archiveBadge" id="arcMinistryBadge" style="background:#fbeadb;color:#9a4f12">예정</span>
+      </div>
       <div class="tile tileRow" id="arcGrade" onclick="go('grade')" style="display:none">
         <div class="ic" style="background:#e3f0e8;color:#2f8f5b"><i class="ti ti-certificate"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">신급 교육 신청</div><div class="ds" id="arcGradeDs">8/23(주일) 오픈 예정</div></div>
@@ -949,6 +968,46 @@
         <div class="ic"><i class="ti ti-check"></i></div>
         <h3>신청이 접수되었습니다</h3>
         <p>신청해 주셔서 감사합니다.<br>자세한 일정은 따로 안내해 드릴게요.</p>
+      </div>
+    </section>
+
+    <section class="screen" id="s-ministry">
+      <div class="dlBack" onclick="go('archive')"><i class="ti ti-arrow-left"></i> 아카이브</div>
+      <div class="sec-t">사역 신청</div>
+      <div id="ministryForm">
+        <div class="grHero">
+          <div class="gt">2027 중고등부 사역 신청</div>
+          <div class="gh">함께 섬길 자리를 골라주세요</div>
+          <div class="gs">신청기간 10/11(주일) ~ 11/29(주일)</div>
+        </div>
+        <div class="grLock" id="ministryLock" style="display:none">
+          <i class="ti ti-lock"></i>
+          <div><div class="lt" id="ministryLockT">아직 신청 기간이 아니에요</div><div class="lp" id="ministryLockP">10/11(주일)부터 신청할 수 있어요. 내용은 미리 확인해 두세요.</div></div>
+        </div>
+        <div class="grQ">
+          <div class="qn">이름 <span class="req">*</span></div>
+          <input class="grIn" id="mn_name" type="text" placeholder="이름을 입력하세요" autocomplete="off" maxlength="20">
+        </div>
+        <div class="grQ">
+          <div class="qn">지원 사역 <span class="req">*</span></div>
+          <div class="qh">하고 싶은 자리를 모두 골라주세요</div>
+          <div class="mnGl"><b>찬양팀</b><span>여러 개 선택</span></div>
+          <div class="mnChips" data-g="praise"><span class="mnCh">싱어</span><span class="mnCh">리더</span><span class="mnCh">율동</span><span class="mnCh">신디</span><span class="mnCh">드럼</span><span class="mnCh">베이스</span><span class="mnCh">일렉</span><span class="mnCh">기타</span></div>
+          <div class="mnGl"><b>임원</b><span>하나만 선택</span></div>
+          <div class="mnChips" data-g="officer"><span class="mnCh">회장</span><span class="mnCh">부회장</span><span class="mnCh">총무</span><span class="mnCh">서기</span></div>
+          <div class="mnGl"><b>그 밖의 사역</b></div>
+          <div class="grOpt" data-v="방송팀"><span class="dot">✓</span><div><div class="on1">방송팀</div><div class="on2">음향·영상·자막을 맡아요</div></div></div>
+          <div class="grOpt" data-v="SNS 기자"><span class="dot">✓</span><div><div class="on1">SNS 기자</div><div class="on2">사진·소식을 기록해요</div></div></div>
+          <div class="grOpt" data-v="헬퍼"><span class="dot">✓</span><div><div class="on1">헬퍼</div><div class="on2">예배·행사 준비를 도와요</div></div></div>
+          <div class="mnSum" id="ministrySum">아직 고른 사역이 없어요</div>
+          <button class="grBtn" id="ministrySubmit">신청하기</button>
+          <div class="grErr" id="ministryErr"></div>
+        </div>
+      </div>
+      <div id="ministryDone" class="svDone" style="display:none">
+        <div class="ic"><i class="ti ti-check"></i></div>
+        <h3>신청이 접수되었습니다</h3>
+        <p>함께 섬겨 주어 고마워요.<br>자세한 내용은 따로 안내해 드릴게요.</p>
       </div>
     </section>
 
@@ -2142,15 +2201,24 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
     const gd=document.getElementById('arcGradeDs'); if(gd) gd.textContent='신청 기간 2026/08/23~09/06';
     const gb=document.getElementById('arcGradeBadge'); if(gb){ gb.textContent='종료'; gb.removeAttribute('style'); }
   }
+  /* 2027 사역 신청: 10/11 00:00 ~ 11/29 23:59 신청 (지금은 아카이브에만, 홈 카드는 나중에 공개) */
+  const minOpen = now >= new Date(2026,9,11,0,0,0);
+  const minEnded = now >= new Date(2026,10,30,0,0,0);
+  window.__ministryState = minEnded ? 'ended' : (minOpen ? 'open' : 'before');
+  const mb=document.getElementById('arcMinistryBadge');
+  if(mb){
+    if(minEnded){ mb.textContent='종료'; mb.removeAttribute('style'); }
+    else if(minOpen){ mb.textContent='신청중'; }
+  }
   /* 아카이브 빈 상태: 표시 중인 아카이브 항목이 하나도 없을 때만 노출 */
   const arcEmpty=document.getElementById('archiveEmpty');
-  const anyArc = (arcCamp && arcCamp.style.display!=='none') || (arcSurvey && arcSurvey.style.display!=='none') || (arcPray && arcPray.style.display!=='none') || (arcThanks && arcThanks.style.display!=='none') || (arcGrade && arcGrade.style.display!=='none');
+  const anyArc = (arcCamp && arcCamp.style.display!=='none') || (arcSurvey && arcSurvey.style.display!=='none') || (arcPray && arcPray.style.display!=='none') || (arcThanks && arcThanks.style.display!=='none') || (arcGrade && arcGrade.style.display!=='none') || !!document.getElementById('arcMinistry');
   if(arcEmpty) arcEmpty.style.display = anyArc ? 'none' : '';
 })();
 
 /* ===== 메뉴 딥링크 (URL 라우팅) ===== */
 (function(){
-  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks','deeplink','backup','grade','release'];
+  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks','deeplink','backup','grade','release','ministry'];
   const EXT={
     bulletin:'https://vision153.notion.site/_250601-2026eda158ae8095999ac133933fd32a?pvs=4',
     map:'https://map.naver.com/p/search/송탄영광교회',
@@ -2203,14 +2271,14 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   const groups=[
     ['메인',[['홈','home'],['설교 팟캐스트','pod'],['유튜브 영상','vid'],['더보기','more']]],
     ['여름 수련회',[['여름 수련회','camp'],['수련회 종료 감사 7일 기도','thanks'],['30번 중보기도','pray']]],
-    ['신앙·참여',[['신급 교육 신청','grade'],['공지사항','notice'],['출석체크 도장깨기','attend'],['입회원서','enroll'],['문의하기','contact']]],
+    ['신앙·참여',[['사역 신청','ministry'],['신급 교육 신청','grade'],['공지사항','notice'],['출석체크 도장깨기','attend'],['입회원서','enroll'],['문의하기','contact']]],
     ['정보·보관',[['연간계획','plan'],['보관함(아카이브)','archive'],['업데이트 기록','release']]],
     ['외부 링크',[['온라인 주보','bulletin'],['오시는 길','map'],['중고등부 유튜브','youtube'],['설교 팟캐스트(팟빵)','podbbang'],['인스타그램','insta'],['중고등부 밴드','band'],['해외 어린이 양육','compassion']]]
   ];
   /* 자동 최신화 설정 — 목록에 일부러 넣지 않을 라우트 */
   const SKIP={deeplink:1,survey:1};
   /* 자동 추가될 때 쓸 한글 이름 (없으면 라우트 키를 그대로 표시) */
-  const AUTO_NAMES={backup:'앱 데이터 백업 · 복원',grade:'신급 교육 신청',survey:'2026 여름 수련회 설문'};
+  const AUTO_NAMES={backup:'앱 데이터 백업 · 복원',grade:'신급 교육 신청',ministry:'2027 사역 신청',survey:'2026 여름 수련회 설문'};
 
   function fallback(text){ try{ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity=0; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }catch(e){} }
   function makeRow(name,key){
@@ -2314,10 +2382,67 @@ if('serviceWorker' in navigator){
   });
 })();
 
+/* ===== 2027 사역 신청 ===== */
+(function(){
+  const sec=document.getElementById('s-ministry'); if(!sec)return;
+  /* 신급 교육과 같은 Apps Script 웹앱 → 입회원서(응답) 시트 '사역신청' 탭 */
+  const MIN_API='https://script.google.com/macros/s/AKfycbzXb79Jpcks_rYXZBPX0g-6vO2sThZo93tO66Thl-hw0op7RqJtzk97LdLFBCl7mKZTxg/exec';
+  const state=window.__ministryState||'before';
+  const sum=document.getElementById('ministrySum');
+  function picked(g){ return Array.prototype.map.call(sec.querySelectorAll('.mnChips[data-g="'+g+'"] .mnCh.on'),function(c){return c.textContent;}); }
+  function etc(){ return Array.prototype.map.call(sec.querySelectorAll('.grOpt.sel'),function(o){return o.dataset.v;}); }
+  function upd(){
+    const a=picked('praise').map(function(s){return '찬양팀 '+s;}).concat(picked('officer').map(function(s){return '임원 '+s;}),etc());
+    sum.textContent=a.length?'선택: '+a.join(', '):'아직 고른 사역이 없어요';
+  }
+  sec.querySelectorAll('.mnCh').forEach(function(c){
+    c.addEventListener('click',function(){
+      if(c.parentNode.dataset.g==='officer'&&!c.classList.contains('on')){
+        c.parentNode.querySelectorAll('.mnCh.on').forEach(function(x){x.classList.remove('on');});
+      }
+      c.classList.toggle('on'); upd();
+    });
+  });
+  sec.querySelectorAll('.grOpt').forEach(function(o){ o.addEventListener('click',function(){ o.classList.toggle('sel'); upd(); }); });
+  const btn=document.getElementById('ministrySubmit');
+  const err=document.getElementById('ministryErr');
+  if(state!=='open'){
+    sec.classList.add('grRO');
+    const lock=document.getElementById('ministryLock'); if(lock) lock.style.display='flex';
+    if(state==='ended'){
+      document.getElementById('ministryLockT').textContent='신청이 마감되었습니다';
+      document.getElementById('ministryLockP').textContent='2027 중고등부 사역 신청 기간이 끝났습니다. 문의는 담당 선생님께 해주세요.';
+      btn.textContent='신청이 마감되었습니다';
+    } else {
+      btn.textContent='10/11(주일)부터 신청할 수 있어요';
+    }
+    btn.disabled=true;
+    return;
+  }
+  btn.addEventListener('click',function(){
+    err.textContent='';
+    const name=(document.getElementById('mn_name').value||'').trim();
+    const praise=picked('praise'), officer=picked('officer'), ex=etc();
+    if(!name){ err.textContent='이름을 입력해 주세요.'; return; }
+    if(!praise.length&&!officer.length&&!ex.length){ err.textContent='지원할 사역을 하나 이상 골라주세요.'; return; }
+    btn.disabled=true; btn.textContent='신청 중…';
+    const p=new URLSearchParams();
+    p.append('kind','ministry'); p.append('name',name);
+    p.append('praise',praise.join(',')); p.append('officer',officer.join(',')); p.append('etc',ex.join(','));
+    fetch(MIN_API,{method:'POST',body:p})
+      .then(function(r){return r.json();})
+      .then(function(res){
+        if(res&&res.ok){ document.getElementById('ministryForm').style.display='none'; document.getElementById('ministryDone').style.display='block'; sec.parentNode.scrollTop=0; }
+        else { btn.disabled=false; btn.textContent='신청하기'; err.textContent=(res&&res.msg)||'신청에 실패했어요. 잠시 후 다시 시도해 주세요.'; }
+      })
+      .catch(function(){ btn.disabled=false; btn.textContent='신청하기'; err.textContent='신청에 실패했어요. 인터넷 연결을 확인해 주세요.'; });
+  });
+})();
+
 /* ===== 하위 화면: 뒤로가기 / 왼쪽 끝 스와이프 → 상위 화면 ===== */
 (function(){
   const main=document.querySelector('main'); if(!main)return;
-  const PARENT={camp:'archive',pray:'archive',thanks:'archive',survey:'archive',grade:'archive',deeplink:'archive',notice:'archive',backup:'more',plan:'more',enroll:'more',contact:'more',attend:'home',release:'home'};
+  const PARENT={camp:'archive',pray:'archive',thanks:'archive',survey:'archive',grade:'archive',ministry:'archive',deeplink:'archive',notice:'archive',backup:'more',plan:'more',enroll:'more',contact:'more',attend:'home',release:'home'};
   window.__parentOf=function(s){ return PARENT[s]||''; };
   let sx=0,sy=0,armed=false,cur='';
   main.addEventListener('touchstart',function(e){
