@@ -977,7 +977,7 @@
     </section>
 
     <section class="screen" id="s-ministry">
-      <div class="dlBack" onclick="go('archive')"><i class="ti ti-arrow-left"></i> 아카이브</div>
+      <div class="dlBack" id="ministryBack" onclick="go('archive')"><i class="ti ti-arrow-left"></i> 아카이브</div>
       <div class="sec-t">사역 신청</div>
       <div id="ministryForm">
         <div class="grHero">
@@ -2213,6 +2213,9 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   window.__ministryState = minEnded ? 'ended' : (minOpen ? 'open' : 'before');
   /* 10/10부터 홈에 미리 노출(신청은 10/11 0:00부터), 11/30부터 아카이브 */
   const minLive = !minEnded;
+  /* 홈에 있는 동안엔 '← 아카이브' 숨기고, 스와이프 뒤로가기는 홈으로 */
+  window.__ministryHome = minLive;
+  const mbk=document.getElementById('ministryBack'); if(mbk) mbk.style.display = minLive ? 'none' : '';
   if(!minOpen){ const hb=document.getElementById('homeMinistryBadge'); if(hb) hb.textContent='10/11 오픈'; }
   const homeMin=document.getElementById('homeMinistryTile');
   const arcMin=document.getElementById('arcMinistry');
@@ -2455,7 +2458,7 @@ if('serviceWorker' in navigator){
 /* ===== 하위 화면: 뒤로가기 / 왼쪽 끝 스와이프 → 상위 화면 ===== */
 (function(){
   const main=document.querySelector('main'); if(!main)return;
-  const PARENT={camp:'archive',pray:'archive',thanks:'archive',survey:'archive',grade:'archive',ministry:'archive',deeplink:'archive',notice:'archive',backup:'more',plan:'more',enroll:'more',contact:'more',attend:'home',release:'home'};
+  const PARENT={camp:'archive',pray:'archive',thanks:'archive',survey:'archive',grade:'archive',ministry:(window.__ministryHome?'home':'archive'),deeplink:'archive',notice:'archive',backup:'more',plan:'more',enroll:'more',contact:'more',attend:'home',release:'home'};
   window.__parentOf=function(s){ return PARENT[s]||''; };
   let sx=0,sy=0,armed=false,cur='';
   main.addEventListener('touchstart',function(e){
