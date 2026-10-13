@@ -1005,6 +1005,7 @@
           <div class="grOpt" data-v="SNS 기자"><span class="dot">✓</span><div><div class="on1">SNS 기자</div><div class="on2">사진·소식을 기록해요</div></div></div>
           <div class="grOpt" data-v="성가대"><span class="dot">✓</span><div><div class="on1">성가대</div><div class="on2">예배 때 특송으로 섬겨요</div></div></div>
           <div class="grOpt" data-v="헬퍼"><span class="dot">✓</span><div><div class="on1">헬퍼</div><div class="on2">예배·행사 준비를 도와요</div></div></div>
+          <div class="grOpt" data-v="보조교사"><span class="dot">✓</span><div><div class="on1">보조교사</div><div class="on2">고3, 졸업예정자만 가능해요.</div></div></div>
           <div class="mnSum" id="ministrySum">아직 고른 사역이 없어요</div>
           <button class="grBtn" id="ministrySubmit">신청하기</button>
           <div class="grErr" id="ministryErr"></div>
@@ -1992,6 +1993,9 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
    헤더의 버전 칩은 맨 앞 항목에서 자동으로 가져온다. */
 (function(){
   const RELEASES=[
+    {v:'v29',d:'2026/10/11',t:'2027 사역 신청',
+      f:['홈에서 2027 중고등부 사역 신청을 할 수 있습니다 (10/11~11/29)','찬양팀(싱어·리더·율동·신디·드럼·베이스·기타·일렉), 임원(회장·부회장·총무·서기), 방송팀, SNS 기자, 성가대, 헬퍼, 보조교사 중에서 고를 수 있습니다'],
+      i:['화면 맨 아래 저작권 표기를 두 줄로 정리했습니다'],x:[]},
     {v:'v28',d:'2026/09/29',t:'바깥 링크 이동 정리',f:[],
       i:['온라인 주보처럼 앱 밖으로 나가는 메뉴는 안내 화면을 잠깐 보여준 뒤 이동합니다','이동한 뒤 뒤로가기를 누르면 앱 홈으로 돌아옵니다'],
       x:['같은 링크를 다시 눌렀을 때 열리지 않던 문제를 고쳤습니다']},
