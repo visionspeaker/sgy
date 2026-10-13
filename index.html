@@ -450,6 +450,47 @@
   #cmpModal.on{display:flex}
   .childCard{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px;margin-top:10px;cursor:pointer}
   .childCard:active{transform:scale(.99)}
+  /* ===== 해외 어린이 양육 (앱 안) ===== */
+  .cpTabs{display:flex;gap:6px;margin-top:10px}
+  .cpTabs button{flex:1;border:1px solid var(--line);background:#fff;color:var(--tx2);border-radius:10px;padding:9px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer}
+  .cpTabs button.on{background:#f59e0b;border-color:#f59e0b;color:#fff}
+  .cpHero{display:flex;gap:13px;align-items:center;background:linear-gradient(120deg,#f59e0b,#f7b733);color:#fff;border-radius:16px;padding:14px 15px;margin-top:10px}
+  .cpAv{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.35);flex:none;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:30px}
+  .cpAv img{width:100%;height:100%;object-fit:cover}
+  .cpHero .nm{font-size:19px;font-weight:800}
+  .cpHero .ds{font-size:12.5px;opacity:.95;margin-top:3px;line-height:1.5}
+  .cpCard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin-top:10px}
+  .cpKv{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:13px;color:var(--tx)}
+  .cpKv b{color:var(--tx3);font-weight:600}
+  .cpChip{display:inline-block;font-size:12px;background:#fff3df;color:#9a5b00;border-radius:999px;padding:4px 10px;margin:6px 5px 0 0}
+  .cpSrc{font-size:11px;color:var(--tx3);text-align:center;margin-top:8px}
+  .cpH{display:flex;align-items:baseline;justify-content:space-between;margin-top:18px}
+  .cpH b{font-size:15px;color:var(--tx)}
+  .cpH span{font-size:12px;color:#f59e0b;font-weight:700}
+  .cpUpBtn{display:block;width:100%;border:1.5px dashed #f2c46b;background:#fffaf0;color:#9a5b00;border-radius:12px;text-align:center;font-size:13.5px;font-weight:700;padding:12px;margin-top:10px;font-family:inherit;cursor:pointer}
+  .cpLt{display:flex;gap:11px;align-items:center;cursor:pointer}
+  .cpTh{width:52px;height:64px;border-radius:8px;background:#fbf6ea center/cover no-repeat;border:1px solid #eadfc6;flex:none}
+  .cpLt .t{font-size:14.5px;font-weight:700;color:var(--tx)}
+  .cpLt .s{font-size:12px;color:var(--tx3);margin-top:3px}
+  .cpEmpty{text-align:center;color:var(--tx3);font-size:13px;padding:18px 0}
+  .cpBack{font-size:13px;color:var(--tx2);font-weight:700;margin-top:6px;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+  .cpImg{display:block;width:100%;border-radius:10px;margin-top:8px;background:#fbf6ea;min-height:120px}
+  .cpTr{font-size:13.5px;line-height:1.65;color:var(--tx);white-space:pre-wrap;margin-top:10px}
+  .cpCm{display:flex;gap:9px;margin-top:10px}
+  .cpCm .a{width:30px;height:30px;border-radius:50%;background:#efecff;color:#6c5ce7;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
+  .cpCm .n{font-size:11.5px;color:var(--tx3);margin-bottom:3px}
+  .cpCm .b{background:#f5f4fa;border-radius:10px;padding:8px 10px;font-size:13.5px;line-height:1.5;color:var(--tx);white-space:pre-wrap;word-break:break-word}
+  .cpX{border:none;background:none;color:#e2574c;font-size:12px;font-family:inherit;cursor:pointer;padding:2px 4px;margin-left:4px}
+  .cpIn{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:16px;font-family:inherit;color:var(--tx);background:#fff;margin-top:8px;outline:none}
+  .cpIn:focus{border-color:#f59e0b}
+  textarea.cpIn{min-height:76px;resize:vertical;line-height:1.5}
+  .cpBtn{width:100%;border:none;border-radius:12px;background:#f59e0b;color:#fff;font-size:15px;font-weight:800;padding:13px;margin-top:10px;font-family:inherit;cursor:pointer}
+  .cpBtn:disabled{background:#eeedf4;color:var(--tx3)}
+  .cpErr{color:#e2574c;font-size:12px;text-align:center;margin-top:8px;min-height:14px}
+  .cpPrev{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .cpPrev img{width:64px;height:78px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
+  .cpAdm{font-size:11.5px;color:#9a5b00;background:#fff3df;border-radius:8px;padding:6px 10px;margin-top:10px;display:flex;justify-content:space-between;align-items:center}
+  .cpAdm button{border:none;background:none;color:#9a5b00;font-weight:700;font-family:inherit;font-size:11.5px;cursor:pointer}
   .childIc{width:42px;height:42px;border-radius:12px;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;flex:none}
   .childNm{font-size:14.5px;font-weight:600;color:var(--tx)}
   .childDs{font-size:12px;color:var(--tx2);margin-top:2px}
@@ -601,7 +642,7 @@
         <div class="tile" onclick="go('plan')"><div class="ic no"><i class="ti ti-calendar-event"></i></div><div class="nm">연간계획</div><div class="ds">한 해 일정과 행사</div></div>
         <div class="tile" onclick="open_('https://www.youtube.com/@sgy153')"><div class="ic yt"><i class="ti ti-brand-youtube"></i></div><div class="nm">중고등부 유튜브</div><div class="ds">전체 영상 보기</div></div>
         <div class="tile" onclick="open_('https://www.podbbang.com/channels/9230')"><div class="ic pc"><i class="ti ti-brand-apple-podcast"></i></div><div class="nm">설교 팟캐스트</div><div class="ds">전체 설교 보관함</div></div>
-        <div class="tile" onclick="openCompassion()"><div class="ic" style="background:#fff3df;color:#f59e0b"><i class="ti ti-mood-kid"></i></div><div class="nm">해외 어린이 양육</div><div class="ds">살마 · 헤수스 후원</div></div>
+        <div class="tile" onclick="go('cp')"><div class="ic" style="background:#fff3df;color:#f59e0b"><i class="ti ti-mood-kid"></i></div><div class="nm">해외 어린이 양육</div><div class="ds">살마 · 헤수스 · 편지</div></div>
         <div class="tile" onclick="go('enroll')"><div class="ic fo"><i class="ti ti-clipboard-text"></i></div><div class="nm">입회원서</div><div class="ds">새친구 등록 신청</div></div>
       </div>
       <div class="giveCard" style="margin-top:11px">
@@ -1018,6 +1059,34 @@
       </div>
     </section>
 
+    <section class="screen" id="s-cp">
+      <div class="dlBack" onclick="go('more')"><i class="ti ti-arrow-left"></i> 더보기</div>
+      <div class="sec-t">해외 어린이 양육</div>
+      <div class="cpTabs" id="cpTabs"><button type="button" data-c="salma" class="on">살마</button><button type="button" data-c="jesus">헤수스</button></div>
+      <div id="cpMain">
+        <div class="cpHero"><div class="cpAv" id="cpAv"><i class="ti ti-mood-kid"></i></div><div><div class="nm" id="cpName">불러오는 중…</div><div class="ds" id="cpSub"></div></div></div>
+        <div class="cpCard" id="cpInfo"><div class="cpEmpty">어린이 정보를 불러오는 중…</div></div>
+        <div class="cpSrc">정보 출처: 한국컴패션 · 하루 몇 번 자동 갱신</div>
+        <div class="cpH"><b id="cpLtTitle">보낸 편지</b><span id="cpLtCnt"></span></div>
+        <div class="cpAdm" id="cpAdm" style="display:none"><span><i class="ti ti-lock-open"></i> 담당자 모드</span><button type="button" id="cpLogout">해제</button></div>
+        <button class="cpUpBtn" type="button" id="cpUpOpen"><i class="ti ti-camera-plus"></i> 편지 사진 올리기 <span style="font-weight:500;font-size:11.5px">(담당자)</span></button>
+        <div class="cpCard" id="cpUp" style="display:none">
+          <div id="cpPwBox"><div style="font-size:13.5px;font-weight:700">담당자 비밀번호</div><div style="display:flex;gap:6px;align-items:center"><input class="cpIn" id="cpPw" type="password" autocomplete="off" placeholder="비밀번호" style="flex:1"><button class="cpBtn" type="button" id="cpPwGo" style="width:auto;margin-top:8px;padding:10px 14px;font-size:13.5px">확인</button></div><div style="font-size:11.5px;color:var(--tx3);margin-top:5px">확인하면 답장 삭제도 할 수 있어요</div><div class="cpErr" id="cpPwErr"></div></div>
+          <div style="font-size:13.5px;font-weight:700;margin-top:10px">편지 제목</div>
+          <input class="cpIn" id="cpTitle" type="text" maxlength="40" placeholder="예) 2026년 10월 편지">
+          <div style="font-size:13.5px;font-weight:700;margin-top:10px">편지 사진 <span style="font-weight:500;font-size:11.5px;color:var(--tx3)">최대 6장</span></div>
+          <input class="cpIn" id="cpFile" type="file" accept="image/*" multiple>
+          <div class="cpPrev" id="cpPrev"></div>
+          <div style="font-size:13.5px;font-weight:700;margin-top:10px">번역문 <span style="font-weight:500;font-size:11.5px;color:var(--tx3)">선택</span></div>
+          <textarea class="cpIn" id="cpTrans" maxlength="3000" placeholder="편지에 붙어 온 한글 번역을 적어주세요"></textarea>
+          <button class="cpBtn" type="button" id="cpUpGo">올리기</button>
+          <div class="cpErr" id="cpUpErr"></div>
+        </div>
+        <div id="cpList"></div>
+      </div>
+      <div id="cpDetail" style="display:none"></div>
+    </section>
+
     <section class="screen" id="s-backup">
       <div class="dlBack" onclick="go('more')"><i class="ti ti-arrow-left"></i> 더보기</div>
       <div class="sec-t">앱 데이터 백업 · 복원</div>
@@ -1230,6 +1299,7 @@ function afterActivate(s){
   if(s==='backup'&&window.__renderBackup){window.__renderBackup();}
   if(s==='deeplink'&&window.__renderDeeplinks){window.__renderDeeplinks();}
   if(s==='release'&&window.__renderRelease){window.__renderRelease();}
+  if(s==='cp'&&window.__renderCp){window.__renderCp();}
   if(s==='camp'){updateCampApply();}
   if(s==='pray'&&window.__renderPray){window.__renderPray();}
   if(s==='thanks'&&window.__renderThanks){window.__renderThanks();}
@@ -1512,7 +1582,7 @@ function closeInstall(){ document.getElementById('instModal').classList.remove('
 document.getElementById('instDismiss').onclick=function(){ try{localStorage.setItem('sgy_inst','1');}catch(e){} closeInstall(); };
 document.getElementById('instModal').addEventListener('click',function(e){ if(e.target===this) closeInstall(); });
 
-function openCompassion(){document.getElementById('cmpModal').classList.add('on');}
+function openCompassion(){go('cp');}
 function closeCompassion(){document.getElementById('cmpModal').classList.remove('on');}
 document.getElementById('cmpModal').addEventListener('click',function(e){if(e.target===this)closeCompassion();});
 document.getElementById('copyAcct').onclick=function(){
@@ -1993,6 +2063,8 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
    헤더의 버전 칩은 맨 앞 항목에서 자동으로 가져온다. */
 (function(){
   const RELEASES=[
+    {v:'v30',d:'2026/10/13',t:'해외 어린이 양육 편지함',
+      f:['더보기 → 해외 어린이 양육에서 살마·헤수스의 정보를 앱 안에서 바로 볼 수 있습니다','어린이가 보낸 편지 사진과 번역문을 볼 수 있습니다','편지마다 답장을 남길 수 있습니다'],i:[],x:[]},
     {v:'v29',d:'2026/10/11',t:'2027 사역 신청',
       f:['홈에서 2027 중고등부 사역 신청을 할 수 있습니다 (10/11~11/29)','찬양팀(싱어·리더·율동·신디·드럼·베이스·기타·일렉), 임원(회장·부회장·총무·서기), 방송팀, SNS 기자, 성가대, 헬퍼, 보조교사 중에서 고를 수 있습니다'],
       i:['화면 맨 아래 저작권 표기를 두 줄로 정리했습니다','홈·더보기 위쪽 카드의 교회·십자가 그림을 세로 가운데로 맞췄습니다'],x:[]},
@@ -2238,7 +2310,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
 
 /* ===== 메뉴 딥링크 (URL 라우팅) ===== */
 (function(){
-  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks','deeplink','backup','grade','release','ministry'];
+  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks','deeplink','backup','grade','release','ministry','cp'];
   const EXT={
     bulletin:'https://vision153.notion.site/_250601-2026eda158ae8095999ac133933fd32a?pvs=4',
     map:'https://map.naver.com/p/search/송탄영광교회',
@@ -2276,7 +2348,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
       setTimeout(function(){ location.href=url; },EXT_DWELL);
       return;
     }
-    if(k==='compassion'){ go('more'); if(window.openCompassion)openCompassion(); return; }
+    if(k==='compassion'){ window.__navFromHash=true; go('cp'); window.__navFromHash=false; return; }
     if(ROUTES.indexOf(k)>=0){ window.__navFromHash=true; go(k); window.__navFromHash=false; }
   }
   window.__ROUTES=ROUTES; window.__EXT=EXT;
@@ -2291,9 +2363,9 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   const groups=[
     ['메인',[['홈','home'],['설교 팟캐스트','pod'],['유튜브 영상','vid'],['더보기','more']]],
     ['여름 수련회',[['여름 수련회','camp'],['수련회 종료 감사 7일 기도','thanks'],['30번 중보기도','pray']]],
-    ['신앙·참여',[['사역 신청','ministry'],['신급 교육 신청','grade'],['공지사항','notice'],['출석체크 도장깨기','attend'],['입회원서','enroll'],['문의하기','contact']]],
+    ['신앙·참여',[['사역 신청','ministry'],['해외 어린이 양육','compassion'],['신급 교육 신청','grade'],['공지사항','notice'],['출석체크 도장깨기','attend'],['입회원서','enroll'],['문의하기','contact']]],
     ['정보·보관',[['연간계획','plan'],['보관함(아카이브)','archive'],['업데이트 기록','release']]],
-    ['외부 링크',[['온라인 주보','bulletin'],['오시는 길','map'],['중고등부 유튜브','youtube'],['설교 팟캐스트(팟빵)','podbbang'],['인스타그램','insta'],['중고등부 밴드','band'],['해외 어린이 양육','compassion']]]
+    ['외부 링크',[['온라인 주보','bulletin'],['오시는 길','map'],['중고등부 유튜브','youtube'],['설교 팟캐스트(팟빵)','podbbang'],['인스타그램','insta'],['중고등부 밴드','band']]]
   ];
   /* 자동 최신화 설정 — 목록에 일부러 넣지 않을 라우트 */
   const SKIP={deeplink:1,survey:1};
@@ -2459,10 +2531,173 @@ if('serviceWorker' in navigator){
   });
 })();
 
+/* ===== 해외 어린이 양육 (앱 안): 컴패션 정보 + 편지 사진 + 답장 댓글 ===== */
+(function(){
+  const sec=document.getElementById('s-cp'); if(!sec)return;
+  /* 신급 교육·사역 신청과 같은 Apps Script 웹앱 (입회원서 시트 '양육편지'·'양육답장' 탭, 사진은 개인계정 드라이브) */
+  const API='https://script.google.com/macros/s/AKfycbzXb79Jpcks_rYXZBPX0g-6vO2sThZo93tO66Thl-hw0op7RqJtzk97LdLFBCl7mKZTxg/exec';
+  const NAMES={salma:'살마',jesus:'헤수스'};
+  const PWKEY='sgy_cp_pw';   /* 담당자 비밀번호: 이 기기에서 앱을 닫을 때까지만 기억 */
+  let child='salma', letters=[], cur=null, files=[];
+  const $=function(id){return document.getElementById(id);};
+  const esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
+  const img=function(id,w){return 'https://drive.google.com/thumbnail?id='+encodeURIComponent(id)+'&sz=w'+(w||1600);};
+  const pw=function(){ try{return sessionStorage.getItem(PWKEY)||'';}catch(e){return '';} };
+  const setPw=function(v){ try{ v?sessionStorage.setItem(PWKEY,v):sessionStorage.removeItem(PWKEY); }catch(e){} };
+  const fmt=function(iso){ const d=new Date(iso); return isNaN(d)?'':(d.getMonth()+1)+'/'+d.getDate(); };
+  function get(q){ return fetch(API+'?'+q+'&cb='+Date.now()).then(function(r){return r.json();}); }
+  function post(o){ const p=new URLSearchParams(); Object.keys(o).forEach(function(k){p.append(k,o[k]);}); return fetch(API,{method:'POST',body:p}).then(function(r){return r.json();}); }
+
+  function adminUi(){ const on=!!pw(); $('cpAdm').style.display=on?'flex':'none'; $('cpPwBox').style.display=on?'none':''; }
+
+  function loadInfo(){
+    const c=child;
+    $('cpName').textContent=NAMES[c]; $('cpSub').textContent='불러오는 중…';
+    $('cpAv').innerHTML='<i class="ti ti-mood-kid"></i>';
+    get('action=cp_child&child='+c).then(function(r){
+      if(c!==child) return;
+      if(!r||!r.ok){ $('cpSub').textContent='정보를 불러오지 못했어요'; $('cpInfo').innerHTML='<div class="cpEmpty">잠시 후 다시 열어 주세요.</div>'; return; }
+      const f=r.info;
+      $('cpName').textContent=f.name||NAMES[c];
+      $('cpSub').innerHTML=esc([f.country,f.age?f.age+'세':''].filter(String).join(' · '))+(f.days?'<br>함께한 지 '+esc(f.days)+'일':'');
+      if(f.photo){ const im=new Image(); im.alt=''; im.onload=function(){ if(c===child){ $('cpAv').innerHTML=''; $('cpAv').appendChild(im); } }; im.src=f.photo; }
+      const kv=[['생일',f.birthday],['학교',f.school],['좋아하는 과목',f.subjects],['가족',f.family],['어린이센터',f.center]].filter(function(x){return x[1];});
+      $('cpInfo').innerHTML='<div class="cpKv">'+kv.map(function(x){return '<b>'+esc(x[0])+'</b><span>'+esc(x[1])+'</span>';}).join('')+'</div>'+
+        (f.likes?'<div style="margin-top:4px">'+f.likes.split(',').map(function(s){return '<span class="cpChip">'+esc(s.trim())+'</span>';}).join('')+'</div>':'');
+    }).catch(function(){ if(c===child) $('cpSub').textContent='정보를 불러오지 못했어요'; });
+  }
+
+  function loadLetters(){
+    const c=child;
+    $('cpLtTitle').textContent=NAMES[c]+'가 보낸 편지'; $('cpLtCnt').textContent='';
+    $('cpList').innerHTML='<div class="cpEmpty">편지를 불러오는 중…</div>';
+    return get('action=cp_letters&child='+c).then(function(r){
+      if(c!==child) return;
+      letters=(r&&r.ok)?r.letters:[];
+      $('cpLtCnt').textContent=letters.length?letters.length+'통':'';
+      if(!r||!r.ok){ $('cpList').innerHTML='<div class="cpEmpty">편지를 불러오지 못했어요.</div>'; return; }
+      if(!letters.length){ $('cpList').innerHTML='<div class="cpEmpty">아직 올라온 편지가 없어요.</div>'; return; }
+      $('cpList').innerHTML=letters.map(function(l,i){
+        return '<div class="cpCard cpLt" data-i="'+i+'"><div class="cpTh" style="background-image:url(\''+img(l.photos[0],200)+'\')"></div>'+
+          '<div style="flex:1;min-width:0"><div class="t">'+esc(l.title)+'</div><div class="s">사진 '+l.photos.length+'장 · 답장 '+l.comments.length+'개 · '+fmt(l.at)+' 올림</div></div><i class="ti ti-chevron-right" style="color:var(--tx3)"></i></div>';
+      }).join('');
+    }).catch(function(){ if(c===child) $('cpList').innerHTML='<div class="cpEmpty">편지를 불러오지 못했어요.</div>'; });
+  }
+
+  function showList(){ cur=null; $('cpDetail').style.display='none'; $('cpMain').style.display=''; $('cpTabs').style.display=''; }
+  function showDetail(l){
+    cur=l; $('cpMain').style.display='none'; $('cpTabs').style.display='none';
+    const adm=!!pw();
+    let h='<div class="cpBack" id="cpBackList"><i class="ti ti-arrow-left"></i> '+esc(NAMES[child])+' 편지함</div>'+
+      '<div class="sec-t" style="margin-top:6px">'+esc(l.title)+'</div>'+
+      '<div class="cpCard">'+l.photos.map(function(id){return '<a href="'+img(id,2400)+'" target="_blank" rel="noopener"><img class="cpImg" loading="lazy" alt="편지 사진" src="'+img(id,1200)+'"></a>';}).join('')+
+      (l.translation?'<div class="cpTr">'+esc(l.translation)+'</div>':'')+
+      '<div style="font-size:11.5px;color:var(--tx3);margin-top:8px">사진을 누르면 크게 볼 수 있어요</div></div>'+
+      '<div class="cpH"><b>답장 '+l.comments.length+'</b></div>';
+    h+=l.comments.length?l.comments.map(function(c){
+      return '<div class="cpCm"><div class="a">'+esc(c.name.slice(0,1))+'</div><div style="flex:1;min-width:0"><div class="n">'+esc(c.name)+' · '+fmt(c.at)+(adm?'<button class="cpX" data-del="'+esc(c.id)+'">삭제</button>':'')+'</div><div class="b">'+esc(c.text)+'</div></div></div>';
+    }).join(''):'<div class="cpEmpty">첫 답장을 남겨 주세요.</div>';
+    h+='<div class="cpCard"><input class="cpIn" id="cpCmName" type="text" maxlength="20" placeholder="이름" style="margin-top:0">'+
+      '<textarea class="cpIn" id="cpCmText" maxlength="500" placeholder="'+esc(NAMES[child])+'에게 답장 쓰기"></textarea>'+
+      '<button class="cpBtn" type="button" id="cpCmGo">답장 등록</button><div class="cpErr" id="cpCmErr"></div>'+
+      '<div style="font-size:11.5px;color:var(--tx3);margin-top:6px;line-height:1.5">답장은 앱에서 함께 보는 글이에요. 실제 편지는 담당 선생님이 모아서 컴패션으로 보내요.</div></div>';
+    if(adm) h+='<button class="cpUpBtn" type="button" id="cpDelLetter" style="border-color:#f3b3ad;background:#fff6f5;color:#c0392b">이 편지 삭제 (담당자)</button>';
+    $('cpDetail').innerHTML=h; $('cpDetail').style.display='';
+    try{ $('cpCmName').value=localStorage.getItem('sgy_att_name')||''; }catch(e){}
+    sec.parentNode.scrollTop=0;
+  }
+  function refreshDetail(){ const id=cur&&cur.id; return loadLetters().then(function(){ const l=letters.filter(function(x){return x.id===id;})[0]; if(l) showDetail(l); else showList(); }); }
+
+  /* 사진 줄이기: 긴 쪽 1600px, JPEG 0.82 */
+  function shrink(file){
+    return new Promise(function(ok,no){
+      const fr=new FileReader();
+      fr.onload=function(){ const im=new Image(); im.onload=function(){
+        const M=1600, s=Math.min(1,M/Math.max(im.width,im.height)); const c=document.createElement('canvas');
+        c.width=Math.round(im.width*s); c.height=Math.round(im.height*s);
+        c.getContext('2d').drawImage(im,0,0,c.width,c.height); ok(c.toDataURL('image/jpeg',0.82)); };
+        im.onerror=no; im.src=fr.result; };
+      fr.onerror=no; fr.readAsDataURL(file);
+    });
+  }
+
+  $('cpTabs').addEventListener('click',function(e){
+    const b=e.target.closest('button'); if(!b||b.dataset.c===child) return;
+    child=b.dataset.c; sec.querySelectorAll('#cpTabs button').forEach(function(x){x.classList.toggle('on',x===b);});
+    showList(); loadInfo(); loadLetters();
+  });
+  $('cpList').addEventListener('click',function(e){ const c=e.target.closest('.cpLt'); if(c) showDetail(letters[Number(c.dataset.i)]); });
+  $('cpUpOpen').addEventListener('click',function(){
+    const box=$('cpUp'); const open=box.style.display==='none'; box.style.display=open?'':'none';
+    if(open&&!$('cpTitle').value){ const d=new Date(); $('cpTitle').value=d.getFullYear()+'년 '+(d.getMonth()+1)+'월 편지'; }
+    adminUi();
+  });
+  $('cpLogout').addEventListener('click',function(){ setPw(''); adminUi(); });
+  $('cpPwGo').addEventListener('click',function(){
+    const b=this, v=$('cpPw').value.trim(), err=$('cpPwErr'); err.textContent='';
+    if(!v){ err.textContent='비밀번호를 입력해 주세요.'; return; }
+    b.disabled=true;
+    post({kind:'cp_check',pw:v}).then(function(r){ b.disabled=false;
+      if(r&&r.ok){ setPw(v); $('cpPw').value=''; adminUi(); } else err.textContent=(r&&r.msg)||'확인하지 못했어요.';
+    }).catch(function(){ b.disabled=false; err.textContent='확인하지 못했어요. 인터넷 연결을 확인해 주세요.'; });
+  });
+  $('cpFile').addEventListener('change',function(){
+    files=Array.prototype.slice.call(this.files||[],0,6);
+    $('cpPrev').innerHTML=files.map(function(f){return '<img alt="" src="'+URL.createObjectURL(f)+'">';}).join('');
+    $('cpUpErr').textContent=(this.files&&this.files.length>6)?'사진은 6장까지만 올라가요.':'';
+  });
+  $('cpUpGo').addEventListener('click',function(){
+    const btn=this, err=$('cpUpErr'); err.textContent='';
+    const p=pw()||$('cpPw').value.trim(), title=$('cpTitle').value.trim();
+    if(!p){ err.textContent='담당자 비밀번호를 입력해 주세요.'; return; }
+    if(!title){ err.textContent='편지 제목을 적어주세요.'; return; }
+    if(!files.length){ err.textContent='편지 사진을 골라주세요.'; return; }
+    btn.disabled=true; btn.textContent='사진 줄이는 중…';
+    Promise.all(files.map(shrink)).then(function(imgs){
+      btn.textContent='올리는 중…';
+      return post({kind:'cp_letter',pw:p,child:child,title:title,translation:$('cpTrans').value.trim(),images:JSON.stringify(imgs)});
+    }).then(function(r){
+      btn.disabled=false; btn.textContent='올리기';
+      if(!r||!r.ok){ err.textContent=(r&&r.msg)||'올리지 못했어요.'; if(r&&/비밀번호/.test(r.msg||'')) setPw(''); adminUi(); return; }
+      setPw(p); adminUi(); files=[]; $('cpFile').value=''; $('cpPrev').innerHTML=''; $('cpTrans').value=''; $('cpTitle').value=''; $('cpUp').style.display='none';
+      loadLetters();
+    }).catch(function(){ btn.disabled=false; btn.textContent='올리기'; err.textContent='올리지 못했어요. 인터넷 연결을 확인해 주세요.'; });
+  });
+  $('cpDetail').addEventListener('click',function(e){
+    const t=e.target;
+    if(t.closest('#cpBackList')){ showList(); return; }
+    if(t.id==='cpCmGo'){
+      const err=$('cpCmErr'); err.textContent='';
+      const name=$('cpCmName').value.trim(), text=$('cpCmText').value.trim();
+      if(!name){ err.textContent='이름을 적어주세요.'; return; }
+      if(!text){ err.textContent='답장 내용을 적어주세요.'; return; }
+      t.disabled=true; t.textContent='등록 중…';
+      post({kind:'cp_comment',letter:cur.id,name:name,text:text}).then(function(r){
+        if(!r||!r.ok){ t.disabled=false; t.textContent='답장 등록'; err.textContent=(r&&r.msg)||'등록하지 못했어요.'; return; }
+        refreshDetail();
+      }).catch(function(){ t.disabled=false; t.textContent='답장 등록'; err.textContent='등록하지 못했어요. 인터넷 연결을 확인해 주세요.'; });
+      return;
+    }
+    const del=t.dataset&&t.dataset.del;
+    if(del||t.id==='cpDelLetter'){
+      const isL=t.id==='cpDelLetter';
+      if(!confirm(isL?'이 편지와 답장을 모두 삭제할까요?':'이 답장을 삭제할까요?')) return;
+      post({kind:'cp_del',pw:pw(),type:isL?'letter':'comment',id:isL?cur.id:del}).then(function(r){
+        if(!r||!r.ok){ alert((r&&r.msg)||'삭제하지 못했어요.'); if(r&&/비밀번호/.test(r.msg||'')){ setPw(''); adminUi(); showDetail(cur); } return; }
+        if(isL){ showList(); loadLetters(); } else refreshDetail();
+      });
+    }
+  });
+
+  let loaded='';
+  window.__renderCp=function(){ adminUi(); if(loaded!==child){ loaded=child; loadInfo(); loadLetters(); } else if(!cur){ loadLetters(); } };
+  if(sec.classList.contains('on')) window.__renderCp();
+})();
+
 /* ===== 하위 화면: 뒤로가기 / 왼쪽 끝 스와이프 → 상위 화면 ===== */
 (function(){
   const main=document.querySelector('main'); if(!main)return;
-  const PARENT={camp:'archive',pray:'archive',thanks:'archive',survey:'archive',grade:'archive',ministry:(window.__ministryHome?'home':'archive'),deeplink:'archive',notice:'archive',backup:'more',plan:'more',enroll:'more',contact:'more',attend:'home',release:'home'};
+  const PARENT={camp:'archive',pray:'archive',thanks:'archive',survey:'archive',grade:'archive',ministry:(window.__ministryHome?'home':'archive'),deeplink:'archive',notice:'archive',backup:'more',cp:'more',plan:'more',enroll:'more',contact:'more',attend:'home',release:'home'};
   window.__parentOf=function(s){ return PARENT[s]||''; };
   let sx=0,sy=0,armed=false,cur='';
   main.addEventListener('touchstart',function(e){
