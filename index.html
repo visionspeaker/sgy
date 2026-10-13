@@ -2065,7 +2065,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
 (function(){
   const RELEASES=[
     {v:'v30',d:'2026/10/13',t:'해외 어린이 양육 편지함',
-      f:['더보기 → 해외 어린이 양육에서 살마·헤수스의 정보를 앱 안에서 바로 볼 수 있습니다','어린이가 보낸 편지 사진과 번역문을 볼 수 있습니다','편지마다 답장을 남길 수 있습니다','컴패션에 새 편지가 오면 매주 앱으로 옮겨 옵니다'],i:['어린이 사진을 크게 보여 줍니다'],x:[]},
+      f:['더보기 → 해외 어린이 양육에서 살마·헤수스의 정보를 앱 안에서 바로 볼 수 있습니다','어린이가 보낸 편지 사진과 번역문을 볼 수 있습니다','편지마다 답장을 남길 수 있습니다','컴패션에 새 편지가 오면 매주 앱으로 옮겨 옵니다','편지마다 달린 답장을 한 번에 복사할 수 있습니다'],i:['어린이 사진을 크게 보여 줍니다'],x:[]},
     {v:'v29',d:'2026/10/11',t:'2027 사역 신청',
       f:['홈에서 2027 중고등부 사역 신청을 할 수 있습니다 (10/11~11/29)','찬양팀(싱어·리더·율동·신디·드럼·베이스·기타·일렉), 임원(회장·부회장·총무·서기), 방송팀, SNS 기자, 성가대, 헬퍼, 보조교사 중에서 고를 수 있습니다'],
       i:['화면 맨 아래 저작권 표기를 두 줄로 정리했습니다','홈·더보기 위쪽 카드의 교회·십자가 그림을 세로 가운데로 맞췄습니다'],x:[]},
@@ -2594,7 +2594,7 @@ if('serviceWorker' in navigator){
       '<div class="cpCard">'+l.photos.map(function(id){return '<a href="'+img(id,2400)+'" target="_blank" rel="noopener"><img class="cpImg" loading="lazy" alt="편지 사진" src="'+img(id,1200)+'"></a>';}).join('')+
       (l.translation?'<div class="cpTr">'+esc(l.translation)+'</div>':'')+
       '<div style="font-size:11.5px;color:var(--tx3);margin-top:8px">사진을 누르면 크게 볼 수 있어요</div></div>'+
-      '<div class="cpH"><b>답장 '+l.comments.length+'</b></div>';
+      '<div class="cpH"><b>답장 '+l.comments.length+'</b>'+(l.comments.length?'<button type="button" id="cpCopyAll" style="border:1px solid #f2c46b;background:#fffaf0;color:#9a5b00;border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer"><i class="ti ti-copy"></i> 답장 모두 복사</button>':'')+'</div>';
     h+=l.comments.length?l.comments.map(function(c){
       return '<div class="cpCm"><div class="a">'+esc(c.name.slice(0,1))+'</div><div style="flex:1;min-width:0"><div class="n">'+esc(c.name)+' · '+fmt(c.at)+(adm?'<button class="cpX" data-del="'+esc(c.id)+'">삭제</button>':'')+'</div><div class="b">'+esc(c.text)+'</div></div></div>';
     }).join(''):'<div class="cpEmpty">첫 답장을 남겨 주세요.</div>';
@@ -2667,6 +2667,14 @@ if('serviceWorker' in navigator){
   $('cpDetail').addEventListener('click',function(e){
     const t=e.target;
     if(t.closest('#cpBackList')){ showList(); return; }
+    if(t.closest('#cpCopyAll')){
+      const txt='['+NAMES[child]+'에게 · '+cur.title+' 답장 '+cur.comments.length+'개]\n\n'+cur.comments.map(function(c){return c.name+': '+c.text;}).join('\n\n');
+      const done=function(){ const b=$('cpCopyAll'); if(b){ b.innerHTML='<i class="ti ti-check"></i> 복사했어요'; setTimeout(function(){ if($('cpCopyAll')) $('cpCopyAll').innerHTML='<i class="ti ti-copy"></i> 답장 모두 복사'; },1800); } };
+      const ta=document.createElement('textarea'); ta.value=txt; ta.setAttribute('readonly',''); ta.style.cssText='position:fixed;top:0;left:0;opacity:0'; document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,txt.length);
+      let ok=false; try{ ok=document.execCommand('copy'); }catch(e){} ta.remove();
+      if(ok) done(); else if(navigator.clipboard) navigator.clipboard.writeText(txt).then(done,function(){ alert('복사하지 못했어요. 답장을 길게 눌러 복사해 주세요.'); });
+      return;
+    }
     if(t.id==='cpCmGo'){
       const err=$('cpCmErr'); err.textContent='';
       const name=$('cpCmName').value.trim(), text=$('cpCmText').value.trim();
