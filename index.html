@@ -2662,7 +2662,8 @@ if('serviceWorker' in navigator){
   });
 
   let loaded='';
-  window.__renderCp=function(){ adminUi(); if(loaded!==child){ loaded=child; loadInfo(); loadLetters(); } else if(!cur){ loadLetters(); } };
+  /* 화면에 들어올 때마다 첫 화면(어린이 정보 + 편지 목록)으로 — 보던 편지에 머물지 않음 */
+  window.__renderCp=function(){ adminUi(); showList(); if(loaded!==child){ loaded=child; loadInfo(); } loadLetters(); };
   if(sec.classList.contains('on')) window.__renderCp();
 })();
 
