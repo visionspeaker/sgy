@@ -575,6 +575,11 @@
         <div style="flex:1;min-width:0"><div class="nm">2027 중고등부 사역 신청</div><div class="ds">찬양팀 · 임원 · 방송팀 · SNS 기자 · 성가대 · 헬퍼</div></div>
         <span id="homeMinistryBadge" style="flex:none;background:#d9772b;color:#fff;font-size:11.5px;font-weight:800;border-radius:999px;padding:5px 11px">신청중</span>
       </div>
+      <div class="tile tileRow" id="homeCpTile" style="margin-top:12px;display:none;background:#fff8e8;border-color:#f6dfa6" onclick="go('cp')">
+        <div class="ic" style="background:#fff0cc;color:#e09200;font-size:23px"><i class="ti ti-mail-heart"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">컴패션 어린이 양육</div><div class="ds">편지가 도착했어요! 답장을 적어 주세요.</div></div>
+        <span style="flex:none;background:#f59e0b;color:#fff;font-size:11.5px;font-weight:800;border-radius:999px;padding:5px 11px">새 편지</span>
+      </div>
       <div class="tile tileRow campTile" id="homeCampTile" style="margin-top:12px" onclick="go('camp')">
         <div class="ic" style="background:#dff5e6;color:#16a34a;font-size:23px"><i class="ti ti-tent"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">여름 수련회(7/30~8/1) 진행중</div><div class="ds">주바라기 캠프 3차 · 대전 한남대학교</div></div>
@@ -1070,20 +1075,12 @@
         <div class="cpSrc">정보 출처: 한국컴패션 · 사진을 누르면 크게 볼 수 있어요</div>
         <div class="cpH"><b id="cpLtTitle">보낸 편지</b><span id="cpLtCnt"></span></div>
         <div class="cpAdm" id="cpAdm" style="display:none"><span><i class="ti ti-lock-open"></i> 담당자 모드</span><button type="button" id="cpLogout">해제</button></div>
-        <button class="cpUpBtn" type="button" id="cpUpOpen"><i class="ti ti-camera-plus"></i> 편지 사진 올리기 <span style="font-weight:500;font-size:11.5px">(담당자)</span></button>
-        <div class="cpCard" id="cpUp" style="display:none">
-          <div id="cpPwBox"><div style="font-size:13.5px;font-weight:700">담당자 비밀번호</div><div style="display:flex;gap:6px;align-items:center"><input class="cpIn" id="cpPw" type="password" autocomplete="off" placeholder="비밀번호" style="flex:1"><button class="cpBtn" type="button" id="cpPwGo" style="width:auto;margin-top:8px;padding:10px 14px;font-size:13.5px">확인</button></div><div style="font-size:11.5px;color:var(--tx3);margin-top:5px">확인하면 답장 삭제도 할 수 있어요</div><div class="cpErr" id="cpPwErr"></div></div>
-          <div style="font-size:13.5px;font-weight:700;margin-top:10px">편지 제목</div>
-          <input class="cpIn" id="cpTitle" type="text" maxlength="40" placeholder="예) 2026년 10월 편지">
-          <div style="font-size:13.5px;font-weight:700;margin-top:10px">편지 사진 <span style="font-weight:500;font-size:11.5px;color:var(--tx3)">최대 6장</span></div>
-          <input class="cpIn" id="cpFile" type="file" accept="image/*" multiple>
-          <div class="cpPrev" id="cpPrev"></div>
-          <div style="font-size:13.5px;font-weight:700;margin-top:10px">번역문 <span style="font-weight:500;font-size:11.5px;color:var(--tx3)">선택</span></div>
-          <textarea class="cpIn" id="cpTrans" maxlength="3000" placeholder="편지에 붙어 온 한글 번역을 적어주세요"></textarea>
-          <button class="cpBtn" type="button" id="cpUpGo">올리기</button>
-          <div class="cpErr" id="cpUpErr"></div>
-        </div>
+        <div style="font-size:12px;color:var(--tx3);margin-top:4px">컴패션에 새 편지가 오면 매주 금요일에 자동으로 올라와요</div>
         <div id="cpList"></div>
+        <div style="text-align:center;margin-top:16px"><button type="button" id="cpUpOpen" style="border:none;background:none;color:var(--tx3);font-size:12px;font-family:inherit;cursor:pointer"><i class="ti ti-lock"></i> 담당자 로그인 <span style="opacity:.8">(답장 정리용)</span></button></div>
+        <div class="cpCard" id="cpUp" style="display:none">
+          <div id="cpPwBox"><div style="font-size:13.5px;font-weight:700">담당자 비밀번호</div><div style="display:flex;gap:6px;align-items:center"><input class="cpIn" id="cpPw" type="password" autocomplete="off" placeholder="비밀번호" style="flex:1"><button class="cpBtn" type="button" id="cpPwGo" style="width:auto;margin-top:8px;padding:10px 14px;font-size:13.5px">확인</button></div><div style="font-size:11.5px;color:var(--tx3);margin-top:5px">확인하면 답장을 지울 수 있어요</div><div class="cpErr" id="cpPwErr"></div></div>
+        </div>
       </div>
       <div id="cpDetail" style="display:none"></div>
     </section>
@@ -2065,7 +2062,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
 (function(){
   const RELEASES=[
     {v:'v30',d:'2026/10/13',t:'해외 어린이 양육 편지함',
-      f:['더보기 → 해외 어린이 양육에서 살마·헤수스의 정보를 앱 안에서 바로 볼 수 있습니다','어린이가 보낸 편지 사진과 번역문을 볼 수 있습니다','편지마다 답장을 남길 수 있습니다','컴패션에 새 편지가 오면 매주 앱으로 옮겨 옵니다','편지마다 달린 답장을 한 번에 복사할 수 있습니다'],i:['어린이 사진을 크게 보여 줍니다'],x:[]},
+      f:['더보기 → 해외 어린이 양육에서 살마·헤수스의 정보를 앱 안에서 바로 볼 수 있습니다','어린이가 보낸 편지 사진과 번역문을 볼 수 있습니다','편지마다 답장을 남길 수 있습니다','컴패션에 새 편지가 오면 매주 앱으로 옮겨 옵니다','편지마다 달린 답장을 한 번에 복사할 수 있습니다','새 편지가 오면 홈 화면에 며칠 동안 알려 줍니다'],i:['어린이 사진을 크게 보여 줍니다'],x:[]},
     {v:'v29',d:'2026/10/11',t:'2027 사역 신청',
       f:['홈에서 2027 중고등부 사역 신청을 할 수 있습니다 (10/11~11/29)','찬양팀(싱어·리더·율동·신디·드럼·베이스·기타·일렉), 임원(회장·부회장·총무·서기), 방송팀, SNS 기자, 성가대, 헬퍼, 보조교사 중에서 고를 수 있습니다'],
       i:['화면 맨 아래 저작권 표기를 두 줄로 정리했습니다','홈·더보기 위쪽 카드의 교회·십자가 그림을 세로 가운데로 맞췄습니다'],x:[]},
@@ -2220,12 +2217,17 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
     if(box&&bv){ if(b){ bv.textContent=b; box.style.display=''; } else { box.style.display='none'; } }
   }
   render();
+  /* 컴패션 '새 편지' 홈 카드: 서버가 알려준 날짜(cpUntil)까지만 노출, 지나면 사라짐(아카이브 없음) */
+  function cpHome(until){ var el=document.getElementById('homeCpTile'); if(!el) return; var u=until?new Date(until):null; el.style.display=(u&&!isNaN(u)&&new Date()<u)?'':'none'; }
+  try{ cpHome(localStorage.getItem('sgy_cp_until')||''); }catch(e){}
   /* 이전에 받아둔 일정이 있으면 바로 표시(깜빡임 방지), 없으면 비워둔 채 기다린다 */
   var cached=readCache();
   var ntListEl=document.getElementById('ntList');
   if(cached) paint(cached); else if(ntListEl) ntListEl.innerHTML='';
   fetchT(NOTICE_LIST_API,9000).then(function(r){return r.json();}).then(function(j){
     if(!(j&&j.ok)) throw 0;
+    cpHome(j.cpUntil||'');
+    try{ localStorage.setItem('sgy_cp_until', j.cpUntil||''); }catch(e){}
     var items=(j.items&&j.items.length)?j.items:null;
     paint(items);          /* 시트가 비어 있으면 기본 문구 */
     writeCache(items);
@@ -2549,7 +2551,7 @@ if('serviceWorker' in navigator){
   function get(q){ return fetch(API+'?'+q+'&cb='+Date.now()).then(function(r){return r.json();}); }
   function post(o){ const p=new URLSearchParams(); Object.keys(o).forEach(function(k){p.append(k,o[k]);}); return fetch(API,{method:'POST',body:p}).then(function(r){return r.json();}); }
 
-  function adminUi(){ const on=!!pw(); $('cpAdm').style.display=on?'flex':'none'; $('cpPwBox').style.display=on?'none':''; }
+  function adminUi(){ const on=!!pw(); $('cpAdm').style.display=on?'flex':'none'; $('cpPwBox').style.display=on?'none':''; if(on) $('cpUp').style.display='none'; $('cpUpOpen').style.display=on?'none':''; }
 
   function loadInfo(){
     const c=child;
@@ -2609,30 +2611,13 @@ if('serviceWorker' in navigator){
   }
   function refreshDetail(){ const id=cur&&cur.id; return loadLetters().then(function(){ const l=letters.filter(function(x){return x.id===id;})[0]; if(l) showDetail(l); else showList(); }); }
 
-  /* 사진 줄이기: 긴 쪽 1600px, JPEG 0.82 */
-  function shrink(file){
-    return new Promise(function(ok,no){
-      const fr=new FileReader();
-      fr.onload=function(){ const im=new Image(); im.onload=function(){
-        const M=1600, s=Math.min(1,M/Math.max(im.width,im.height)); const c=document.createElement('canvas');
-        c.width=Math.round(im.width*s); c.height=Math.round(im.height*s);
-        c.getContext('2d').drawImage(im,0,0,c.width,c.height); ok(c.toDataURL('image/jpeg',0.82)); };
-        im.onerror=no; im.src=fr.result; };
-      fr.onerror=no; fr.readAsDataURL(file);
-    });
-  }
-
   $('cpTabs').addEventListener('click',function(e){
     const b=e.target.closest('button'); if(!b||b.dataset.c===child) return;
     child=b.dataset.c; sec.querySelectorAll('#cpTabs button').forEach(function(x){x.classList.toggle('on',x===b);});
     showList(); loadInfo(); loadLetters();
   });
   $('cpList').addEventListener('click',function(e){ const c=e.target.closest('.cpLt'); if(c) showDetail(letters[Number(c.dataset.i)]); });
-  $('cpUpOpen').addEventListener('click',function(){
-    const box=$('cpUp'); const open=box.style.display==='none'; box.style.display=open?'':'none';
-    if(open&&!$('cpTitle').value){ const d=new Date(); $('cpTitle').value=d.getFullYear()+'년 '+(d.getMonth()+1)+'월 편지'; }
-    adminUi();
-  });
+  $('cpUpOpen').addEventListener('click',function(){ const box=$('cpUp'); box.style.display=box.style.display==='none'?'':'none'; adminUi(); });
   $('cpLogout').addEventListener('click',function(){ setPw(''); adminUi(); });
   $('cpPwGo').addEventListener('click',function(){
     const b=this, v=$('cpPw').value.trim(), err=$('cpPwErr'); err.textContent='';
@@ -2641,28 +2626,6 @@ if('serviceWorker' in navigator){
     post({kind:'cp_check',pw:v}).then(function(r){ b.disabled=false;
       if(r&&r.ok){ setPw(v); $('cpPw').value=''; adminUi(); } else err.textContent=(r&&r.msg)||'확인하지 못했어요.';
     }).catch(function(){ b.disabled=false; err.textContent='확인하지 못했어요. 인터넷 연결을 확인해 주세요.'; });
-  });
-  $('cpFile').addEventListener('change',function(){
-    files=Array.prototype.slice.call(this.files||[],0,6);
-    $('cpPrev').innerHTML=files.map(function(f){return '<img alt="" src="'+URL.createObjectURL(f)+'">';}).join('');
-    $('cpUpErr').textContent=(this.files&&this.files.length>6)?'사진은 6장까지만 올라가요.':'';
-  });
-  $('cpUpGo').addEventListener('click',function(){
-    const btn=this, err=$('cpUpErr'); err.textContent='';
-    const p=pw()||$('cpPw').value.trim(), title=$('cpTitle').value.trim();
-    if(!p){ err.textContent='담당자 비밀번호를 입력해 주세요.'; return; }
-    if(!title){ err.textContent='편지 제목을 적어주세요.'; return; }
-    if(!files.length){ err.textContent='편지 사진을 골라주세요.'; return; }
-    btn.disabled=true; btn.textContent='사진 줄이는 중…';
-    Promise.all(files.map(shrink)).then(function(imgs){
-      btn.textContent='올리는 중…';
-      return post({kind:'cp_letter',pw:p,child:child,title:title,translation:$('cpTrans').value.trim(),images:JSON.stringify(imgs)});
-    }).then(function(r){
-      btn.disabled=false; btn.textContent='올리기';
-      if(!r||!r.ok){ err.textContent=(r&&r.msg)||'올리지 못했어요.'; if(r&&/비밀번호/.test(r.msg||'')) setPw(''); adminUi(); return; }
-      setPw(p); adminUi(); files=[]; $('cpFile').value=''; $('cpPrev').innerHTML=''; $('cpTrans').value=''; $('cpTitle').value=''; $('cpUp').style.display='none';
-      loadLetters();
-    }).catch(function(){ btn.disabled=false; btn.textContent='올리기'; err.textContent='올리지 못했어요. 인터넷 연결을 확인해 주세요.'; });
   });
   $('cpDetail').addEventListener('click',function(e){
     const t=e.target;
