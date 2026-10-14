@@ -482,6 +482,15 @@
   .cpCm .n{font-size:11.5px;color:var(--tx3);margin-bottom:3px}
   .cpCm .b{background:#f5f4fa;border-radius:10px;padding:8px 10px;font-size:13.5px;line-height:1.5;color:var(--tx);white-space:pre-wrap;word-break:break-word}
   #s-cp{touch-action:manipulation}   /* 두 번 탭 확대 끔(손가락 벌려 확대는 그대로) */
+  .cpSlideWrap{position:relative;margin-top:2px}
+  .cpSlides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-radius:10px;align-items:flex-start}
+  .cpSlides::-webkit-scrollbar{display:none}
+  .cpSlides>a{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always}
+  .cpSlides .cpImg{margin-top:0}
+  .cpPg{position:absolute;top:8px;right:8px;font-size:11px;font-weight:700;color:#fff;background:rgba(0,0,0,.45);border-radius:999px;padding:2px 8px;pointer-events:none}
+  .cpDots{display:flex;justify-content:center;gap:6px;margin-top:8px}
+  .cpDots i{width:6px;height:6px;border-radius:50%;background:#dcdae8}
+  .cpDots i.on{background:#f59e0b;width:16px;border-radius:999px}
   .cpCm.cpTap{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:9px 8px 9px 10px;cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform .08s;-webkit-tap-highlight-color:transparent}
   .cpCm.cpTap:active{transform:scale(.985)}
   .cpCm.cpTap .b{background:none;padding:0;margin-top:1px}
@@ -2594,9 +2603,13 @@ if('serviceWorker' in navigator){
     h+= inline
       ? '<div class="cpH" style="margin-top:20px"><b>최근 도착한 편지'+(isNew?'<span class="cpNew">NEW</span>':'')+'</b><span style="color:var(--tx3);font-weight:500">'+esc(l.title.replace(/ 편지$/,''))+'</span></div>'
       : '<div class="sec-t" style="margin-top:6px">'+esc(l.title)+'</div>';
-    h+='<div class="cpCard">'+l.photos.map(function(id){return '<a href="'+img(id,2400)+'" target="_blank" rel="noopener"><img class="cpImg" loading="lazy" alt="편지 사진" src="'+img(id,1200)+'"></a>';}).join('')+
+    /* 편지 사진: 한 장씩 보이고 옆으로 넘겨 다음 장 (2장째는 보통 빈 양식) */
+    const n=l.photos.length;
+    h+='<div class="cpCard"><div class="cpSlideWrap"><div class="cpSlides">'+l.photos.map(function(id,i){return '<a href="'+img(id,2400)+'" target="_blank" rel="noopener"><img class="cpImg" loading="'+(i?'lazy':'eager')+'" alt="편지 사진 '+(i+1)+'" src="'+img(id,1200)+'"></a>';}).join('')+'</div>'+
+      (n>1?'<span class="cpPg">1 / '+n+'</span>':'')+'</div>'+
+      (n>1?'<div class="cpDots">'+l.photos.map(function(_,i){return '<i'+(i?'':' class="on"')+'></i>';}).join('')+'</div>':'')+
       (l.translation?'<div class="cpTr">'+esc(l.translation)+'</div>':'')+
-      '<div style="font-size:11.5px;color:var(--tx3);margin-top:8px">사진을 누르면 크게 볼 수 있어요</div></div>'+
+      '<div style="font-size:11.5px;color:var(--tx3);margin-top:8px">'+(n>1?'옆으로 넘기면 다음 장 · ':'')+'사진을 누르면 크게 볼 수 있어요</div></div>'+
       '<div class="cpH"><b>답장 '+l.comments.length+'</b>'+(l.comments.length?'<button type="button" class="cpCopyAll" style="border:1px solid #f2c46b;background:#fffaf0;color:#9a5b00;border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer"><i class="ti ti-copy"></i> 답장 모두 복사</button>':'')+'</div>';
     h+=l.comments.length?l.comments.map(function(c){
       return '<div class="cpCm cpTap" data-like="'+esc(c.id)+'"><div class="a">'+esc(c.name.slice(0,1))+'</div><div style="flex:1;min-width:0"><div class="n">'+esc(c.name)+' · '+fmt(c.at)+(adm?'<button type="button" class="cpX" data-del="'+esc(c.id)+'">삭제</button>':'')+'</div><div class="b">'+esc(c.text)+'</div></div>'+
@@ -2670,6 +2683,12 @@ if('serviceWorker' in navigator){
       if(r&&r.ok){ setPw(v); $('cpPw').value=''; adminUi(); } else err.textContent=(r&&r.msg)||'확인하지 못했어요.';
     }).catch(function(){ b.disabled=false; err.textContent='확인하지 못했어요. 인터넷 연결을 확인해 주세요.'; });
   });
+  sec.addEventListener('scroll',function(e){
+    const s=e.target; if(!s.classList||!s.classList.contains('cpSlides')) return;
+    const i=Math.round(s.scrollLeft/Math.max(1,s.clientWidth)), wrap=s.parentNode, card=wrap.parentNode;
+    const pg=wrap.querySelector('.cpPg'); if(pg) pg.textContent=(i+1)+' / '+s.children.length;
+    card.querySelectorAll('.cpDots i').forEach(function(d,k){ d.classList.toggle('on',k===i); });
+  },true);
   sec.addEventListener('click',function(e){
     const t=e.target;
     if(t.closest('#cpBackList')){ showList(); sec.parentNode.scrollTop=0; return; }
