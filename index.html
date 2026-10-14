@@ -482,6 +482,15 @@
   .cpCm .n{font-size:11.5px;color:var(--tx3);margin-bottom:3px}
   .cpCm .b{background:#f5f4fa;border-radius:10px;padding:8px 10px;font-size:13.5px;line-height:1.5;color:var(--tx);white-space:pre-wrap;word-break:break-word}
   #s-cp{touch-action:manipulation}   /* 두 번 탭 확대 끔(손가락 벌려 확대는 그대로) */
+  .cpCm.cpTap{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:9px 8px 9px 10px;cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform .08s;-webkit-tap-highlight-color:transparent}
+  .cpCm.cpTap:active{transform:scale(.985)}
+  .cpCm.cpTap .b{background:none;padding:0;margin-top:1px}
+  .cpHeart{flex:none;align-self:center;display:flex;flex-direction:column;align-items:center;gap:1px;color:#c9c7d6;font-size:11.5px;font-weight:800;min-width:34px}
+  .cpHeart i{font-size:21px;transition:transform .15s}
+  .cpHeart.on{color:#e2574c}
+  .cpHeart.pop i{transform:scale(1.35)}
+  .cpHint{font-size:11px;color:var(--tx3);text-align:center;margin-top:6px}
+  .cpNew{font-size:10.5px;font-weight:800;color:#fff;background:#2f6fed;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:2px}
   .cpLike{touch-action:manipulation;user-select:none;-webkit-user-select:none;display:inline-flex;align-items:center;gap:4px;border:none;background:none;color:#c9c7d6;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;padding:4px 6px 0 2px;-webkit-tap-highlight-color:transparent}
   .cpLike i{font-size:16px;transition:transform .15s}
   .cpLike.on{color:#e2574c}
@@ -1078,10 +1087,11 @@
         <div class="cpHero"><div class="cpAv" id="cpAv"><i class="ti ti-mood-kid"></i></div><div class="cpCap"><div class="nm" id="cpName">불러오는 중…</div><div class="ds" id="cpSub"></div></div></div>
         <div class="cpCard" id="cpInfo"><div class="cpEmpty">어린이 정보를 불러오는 중…</div></div>
         <div class="cpSrc">정보 출처: 한국컴패션 · 사진을 누르면 크게 볼 수 있어요</div>
-        <div class="cpH"><b id="cpLtTitle">보낸 편지</b><span id="cpLtCnt"></span></div>
         <div class="cpAdm" id="cpAdm" style="display:none"><span><i class="ti ti-lock-open"></i> 담당자 모드</span><button type="button" id="cpLogout">해제</button></div>
-        <div style="font-size:12px;color:var(--tx3);margin-top:4px">컴패션에 새 편지가 오면 매주 금요일에 자동으로 올라와요</div>
+        <div id="cpLatest"></div>
+        <div id="cpPastH" style="display:none"><div class="cpH" style="margin-top:22px"><b>지난 편지</b><span id="cpLtCnt"></span></div></div>
         <div id="cpList"></div>
+        <div style="font-size:12px;color:var(--tx3);margin-top:12px;text-align:center">컴패션에 새 편지가 오면 매주 금요일에 자동으로 올라와요</div>
         <div style="text-align:center;margin-top:16px"><button type="button" id="cpUpOpen" style="border:none;background:none;color:var(--tx3);font-size:12px;font-family:inherit;cursor:pointer"><i class="ti ti-lock"></i> 담당자 로그인 <span style="opacity:.8">(답장 정리용)</span></button></div>
         <div class="cpCard" id="cpUp" style="display:none">
           <div id="cpPwBox"><div style="font-size:13.5px;font-weight:700">담당자 비밀번호</div><div style="display:flex;gap:6px;align-items:center"><input class="cpIn" id="cpPw" type="password" autocomplete="off" placeholder="비밀번호" style="flex:1"><button class="cpBtn" type="button" id="cpPwGo" style="width:auto;margin-top:8px;padding:10px 14px;font-size:13.5px">확인</button></div><div style="font-size:11.5px;color:var(--tx3);margin-top:5px">확인하면 답장을 지울 수 있어요</div><div class="cpErr" id="cpPwErr"></div></div>
@@ -2067,7 +2077,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
 (function(){
   const RELEASES=[
     {v:'v30',d:'2026/10/13',t:'해외 어린이 양육 편지함',
-      f:['더보기 → 해외 어린이 양육에서 살마·헤수스의 정보를 앱 안에서 바로 볼 수 있습니다','어린이가 보낸 편지 사진과 번역문을 볼 수 있습니다','편지마다 답장을 남길 수 있습니다','컴패션에 새 편지가 오면 매주 앱으로 옮겨 옵니다','편지마다 달린 답장을 한 번에 복사할 수 있습니다','새 편지가 오면 홈 화면에 며칠 동안 알려 줍니다','마음에 드는 답장에 하트를 누를 수 있습니다'],i:['어린이 사진을 크게 보여 줍니다','들어가면 가장 최근에 온 편지가 바로 열립니다'],x:[]},
+      f:['더보기 → 해외 어린이 양육에서 살마·헤수스의 정보를 앱 안에서 바로 볼 수 있습니다','어린이가 보낸 편지 사진과 번역문을 볼 수 있습니다','편지마다 답장을 남길 수 있습니다','컴패션에 새 편지가 오면 매주 앱으로 옮겨 옵니다','편지마다 달린 답장을 한 번에 복사할 수 있습니다','새 편지가 오면 홈 화면에 며칠 동안 알려 줍니다','마음에 드는 답장에 하트를 누를 수 있습니다'],i:['어린이 사진을 크게 보여 줍니다','어린이 소개 바로 아래에 가장 최근 편지가 펼쳐지고, 지난 편지는 아래 목록으로 볼 수 있습니다','답장 카드 아무 데나 누르면 하트가 올라갑니다'],x:[]},
     {v:'v29',d:'2026/10/11',t:'2027 사역 신청',
       f:['홈에서 2027 중고등부 사역 신청을 할 수 있습니다 (10/11~11/29)','찬양팀(싱어·리더·율동·신디·드럼·베이스·기타·일렉), 임원(회장·부회장·총무·서기), 방송팀, SNS 기자, 성가대, 헬퍼, 보조교사 중에서 고를 수 있습니다'],
       i:['화면 맨 아래 저작권 표기를 두 줄로 정리했습니다','홈·더보기 위쪽 카드의 교회·십자가 그림을 세로 가운데로 맞췄습니다'],x:[]},
@@ -2546,7 +2556,7 @@ if('serviceWorker' in navigator){
   const API='https://script.google.com/macros/s/AKfycbzXb79Jpcks_rYXZBPX0g-6vO2sThZo93tO66Thl-hw0op7RqJtzk97LdLFBCl7mKZTxg/exec';
   const NAMES={salma:'살마',jesus:'헤수스'};
   const PWKEY='sgy_cp_pw';   /* 담당자 비밀번호: 이 기기에서 앱을 닫을 때까지만 기억 */
-  let child='salma', letters=[], cur=null, files=[];
+  let child='salma', letters=[], cur=null;
   const $=function(id){return document.getElementById(id);};
   const esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
   const img=function(id,w){return 'https://drive.google.com/thumbnail?id='+encodeURIComponent(id)+'&sz=w'+(w||1600);};
@@ -2575,65 +2585,79 @@ if('serviceWorker' in navigator){
     }).catch(function(){ if(c===child) $('cpSub').textContent='정보를 불러오지 못했어요'; });
   }
 
+  /* ---- 편지 한 통 그리기: 사진 · 번역문 · 답장(카드 아무 데나 누르면 하트) · 답장 쓰기 ---- */
+  function newUntil(){ try{ const u=new Date(localStorage.getItem('sgy_cp_until')||''); return isNaN(u)?null:u; }catch(e){ return null; } }
+  function letterHtml(l, inline){
+    const adm=!!pw();
+    const isNew=inline && (function(){ const u=newUntil(); return u && new Date()<u; })();
+    let h='<div class="cpLetter" data-id="'+esc(l.id)+'">';
+    h+= inline
+      ? '<div class="cpH" style="margin-top:20px"><b>최근 도착한 편지'+(isNew?'<span class="cpNew">NEW</span>':'')+'</b><span style="color:var(--tx3);font-weight:500">'+esc(l.title.replace(/ 편지$/,''))+'</span></div>'
+      : '<div class="sec-t" style="margin-top:6px">'+esc(l.title)+'</div>';
+    h+='<div class="cpCard">'+l.photos.map(function(id){return '<a href="'+img(id,2400)+'" target="_blank" rel="noopener"><img class="cpImg" loading="lazy" alt="편지 사진" src="'+img(id,1200)+'"></a>';}).join('')+
+      (l.translation?'<div class="cpTr">'+esc(l.translation)+'</div>':'')+
+      '<div style="font-size:11.5px;color:var(--tx3);margin-top:8px">사진을 누르면 크게 볼 수 있어요</div></div>'+
+      '<div class="cpH"><b>답장 '+l.comments.length+'</b>'+(l.comments.length?'<button type="button" class="cpCopyAll" style="border:1px solid #f2c46b;background:#fffaf0;color:#9a5b00;border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer"><i class="ti ti-copy"></i> 답장 모두 복사</button>':'')+'</div>';
+    h+=l.comments.length?l.comments.map(function(c){
+      return '<div class="cpCm cpTap" data-like="'+esc(c.id)+'"><div class="a">'+esc(c.name.slice(0,1))+'</div><div style="flex:1;min-width:0"><div class="n">'+esc(c.name)+' · '+fmt(c.at)+(adm?'<button type="button" class="cpX" data-del="'+esc(c.id)+'">삭제</button>':'')+'</div><div class="b">'+esc(c.text)+'</div></div>'+
+        '<div class="cpHeart'+((c.likes||0)?' on':'')+'"><i class="ti ti-heart-filled"></i><span>'+(c.likes||0)+'</span></div></div>';
+    }).join('')+'<div class="cpHint">답장을 누르면 하트가 올라가요 · 여러 번 눌러도 돼요</div>':'<div class="cpEmpty">첫 답장을 남겨 주세요.</div>';
+    h+='<div class="cpCard"><input class="cpIn cpCmName" type="text" maxlength="20" placeholder="이름" style="margin-top:0">'+
+      '<textarea class="cpIn cpCmText" maxlength="500" placeholder="'+esc(NAMES[child])+'에게 답장 쓰기"></textarea>'+
+      '<button class="cpBtn cpCmGo" type="button">답장 등록</button><div class="cpErr cpCmErr"></div>'+
+      '<div style="font-size:11.5px;color:var(--tx3);margin-top:6px;line-height:1.5">답장은 앱에서 함께 보는 글이에요. 실제 편지는 담당 선생님이 모아서 컴패션으로 보내요.</div></div>';
+    if(adm) h+='<button class="cpUpBtn cpDelLetter" type="button" style="border-color:#f3b3ad;background:#fff6f5;color:#c0392b">이 편지 삭제 (담당자)</button>';
+    return h+'</div>';
+  }
+  function fillName(box){ try{ const v=localStorage.getItem('sgy_att_name')||''; box.querySelectorAll('.cpCmName').forEach(function(i){ if(!i.value) i.value=v; }); }catch(e){} }
+
+  /* 최근 편지는 소개 바로 아래에 펼치고, 나머지는 '지난 편지' 카드로 */
   function loadLetters(pre){
     const c=child;
-    $('cpLtTitle').textContent=NAMES[c]+'가 보낸 편지'; $('cpLtCnt').textContent='';
-    $('cpList').innerHTML='<div class="cpEmpty">편지를 불러오는 중…</div>';
+    $('cpLatest').innerHTML='<div class="cpEmpty" style="margin-top:16px">편지를 불러오는 중…</div>'; $('cpList').innerHTML=''; $('cpPastH').style.display='none';
     return (pre?Promise.resolve(pre):get('action=cp_letters&child='+c)).then(function(r){
       if(c!==child) return;
       letters=(r&&r.ok)?r.letters:[];
-      $('cpLtCnt').textContent=letters.length?letters.length+'통':'';
-      if(!r||!r.ok){ $('cpList').innerHTML='<div class="cpEmpty">편지를 불러오지 못했어요.</div>'; return; }
-      if(!letters.length){ $('cpList').innerHTML='<div class="cpEmpty">아직 올라온 편지가 없어요.</div>'; return; }
-      $('cpList').innerHTML=letters.map(function(l,i){
-        return '<div class="cpCard cpLt" data-i="'+i+'"><div class="cpTh" style="background-image:url(\''+img(l.photos[0],200)+'\')"></div>'+
-          '<div style="flex:1;min-width:0"><div class="t">'+esc(l.title)+'</div><div class="s">사진 '+l.photos.length+'장 · 답장 '+l.comments.length+'개 · '+fmt(l.at)+' 올림</div></div><i class="ti ti-chevron-right" style="color:var(--tx3)"></i></div>';
+      if(!r||!r.ok){ $('cpLatest').innerHTML='<div class="cpEmpty" style="margin-top:16px">편지를 불러오지 못했어요.</div>'; return; }
+      if(!letters.length){ $('cpLatest').innerHTML='<div class="cpEmpty" style="margin-top:16px">아직 올라온 편지가 없어요.</div>'; return; }
+      $('cpLatest').innerHTML=letterHtml(letters[0],true); fillName($('cpLatest'));
+      const past=letters.slice(1);
+      $('cpPastH').style.display=past.length?'':'none'; $('cpLtCnt').textContent=past.length?past.length+'통':'';
+      $('cpList').innerHTML=past.map(function(l,i){
+        return '<div class="cpCard cpLt" data-i="'+(i+1)+'"><div class="cpTh" style="background-image:url(\''+img(l.photos[0],200)+'\')"></div>'+
+          '<div style="flex:1;min-width:0"><div class="t">'+esc(l.title)+'</div><div class="s">사진 '+l.photos.length+'장 · 답장 '+l.comments.length+'개</div></div><i class="ti ti-chevron-right" style="color:var(--tx3)"></i></div>';
       }).join('');
-    }).catch(function(){ if(c===child) $('cpList').innerHTML='<div class="cpEmpty">편지를 불러오지 못했어요.</div>'; });
+    }).catch(function(){ if(c===child) $('cpLatest').innerHTML='<div class="cpEmpty" style="margin-top:16px">편지를 불러오지 못했어요.</div>'; });
   }
 
   function showList(){ cur=null; $('cpDetail').style.display='none'; $('cpMain').style.display=''; $('cpTabs').style.display=''; }
   function showDetail(l){
     cur=l; $('cpMain').style.display='none'; $('cpTabs').style.display='none';
-    const adm=!!pw();
-    let h='<div class="cpBack" id="cpBackList"><i class="ti ti-arrow-left"></i> '+esc(NAMES[child])+' 편지함</div>'+
-      '<div class="sec-t" style="margin-top:6px">'+esc(l.title)+'</div>'+
-      '<div class="cpCard">'+l.photos.map(function(id){return '<a href="'+img(id,2400)+'" target="_blank" rel="noopener"><img class="cpImg" loading="lazy" alt="편지 사진" src="'+img(id,1200)+'"></a>';}).join('')+
-      (l.translation?'<div class="cpTr">'+esc(l.translation)+'</div>':'')+
-      '<div style="font-size:11.5px;color:var(--tx3);margin-top:8px">사진을 누르면 크게 볼 수 있어요</div></div>'+
-      '<div class="cpH"><b>답장 '+l.comments.length+'</b>'+(l.comments.length?'<button type="button" id="cpCopyAll" style="border:1px solid #f2c46b;background:#fffaf0;color:#9a5b00;border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer"><i class="ti ti-copy"></i> 답장 모두 복사</button>':'')+'</div>';
-    h+=l.comments.length?l.comments.map(function(c){
-      return '<div class="cpCm"><div class="a">'+esc(c.name.slice(0,1))+'</div><div style="flex:1;min-width:0"><div class="n">'+esc(c.name)+' · '+fmt(c.at)+(adm?'<button class="cpX" data-del="'+esc(c.id)+'">삭제</button>':'')+'</div><div class="b">'+esc(c.text)+'</div><button type="button" class="cpLike'+((c.likes||0)?' on':'')+'" data-like="'+esc(c.id)+'"><i class="ti ti-heart-filled"></i><span>'+(c.likes||0)+'</span></button></div></div>';
-    }).join(''):'<div class="cpEmpty">첫 답장을 남겨 주세요.</div>';
-    h+='<div class="cpCard"><input class="cpIn" id="cpCmName" type="text" maxlength="20" placeholder="이름" style="margin-top:0">'+
-      '<textarea class="cpIn" id="cpCmText" maxlength="500" placeholder="'+esc(NAMES[child])+'에게 답장 쓰기"></textarea>'+
-      '<button class="cpBtn" type="button" id="cpCmGo">답장 등록</button><div class="cpErr" id="cpCmErr"></div>'+
-      '<div style="font-size:11.5px;color:var(--tx3);margin-top:6px;line-height:1.5">답장은 앱에서 함께 보는 글이에요. 실제 편지는 담당 선생님이 모아서 컴패션으로 보내요.</div></div>';
-    if(adm) h+='<button class="cpUpBtn" type="button" id="cpDelLetter" style="border-color:#f3b3ad;background:#fff6f5;color:#c0392b">이 편지 삭제 (담당자)</button>';
-    $('cpDetail').innerHTML=h; $('cpDetail').style.display='';
-    try{ $('cpCmName').value=localStorage.getItem('sgy_att_name')||''; }catch(e){}
+    $('cpDetail').innerHTML='<div class="cpBack" id="cpBackList"><i class="ti ti-arrow-left"></i> '+esc(NAMES[child])+' 편지 처음으로</div>'+letterHtml(l,false);
+    $('cpDetail').style.display=''; fillName($('cpDetail'));
     sec.parentNode.scrollTop=0;
   }
   /* 하트: 누를 때마다 바로 +1(여러 번 가능), 0.7초 모아서 서버에 한 번에 보냄 */
   const likeQ={}, likeT={};
-  function like(btn){
-    const id=btn.dataset.like, c=cur&&cur.comments.filter(function(x){return x.id===id;})[0]; if(!c) return;
+  function like(card, l){
+    const id=card.dataset.like, c=l&&l.comments.filter(function(x){return x.id===id;})[0]; if(!c) return;
     c.likes=(c.likes||0)+1; likeQ[id]=(likeQ[id]||0)+1;
-    btn.classList.add('on','pop'); btn.querySelector('span').textContent=c.likes; setTimeout(function(){btn.classList.remove('pop');},150);
+    const h=card.querySelector('.cpHeart'); h.classList.add('on','pop'); h.querySelector('span').textContent=c.likes; setTimeout(function(){h.classList.remove('pop');},150);
     clearTimeout(likeT[id]);
     likeT[id]=setTimeout(function(){
       const n=likeQ[id]; likeQ[id]=0; if(!n) return;
       post({kind:'cp_like',id:id,n:n}).then(function(r){
-        if(r&&r.ok){ c.likes=r.likes+(likeQ[id]||0); const b=document.querySelector('#cpDetail .cpLike[data-like="'+id+'"]'); if(b) b.querySelector('span').textContent=c.likes; }
+        if(r&&r.ok){ c.likes=r.likes+(likeQ[id]||0); sec.querySelectorAll('.cpTap[data-like="'+id+'"] .cpHeart span').forEach(function(s){ s.textContent=c.likes; }); }
       }).catch(function(){});
     },700);
   }
-  function refreshDetail(){ const id=cur&&cur.id; return loadLetters().then(function(){ const l=letters.filter(function(x){return x.id===id;})[0]; if(l) showDetail(l); else showList(); }); }
+  /* 답장·삭제 뒤 다시 그리기: 지난 편지를 보고 있었으면 그 편지로, 아니면 첫 화면으로 */
+  function refresh(){ const id=cur&&cur.id; return loadLetters().then(function(){ if(!id) return; const l=letters.filter(function(x){return x.id===id;})[0]; if(l) showDetail(l); else showList(); }); }
 
   $('cpTabs').addEventListener('click',function(e){
     const b=e.target.closest('button'); if(!b||b.dataset.c===child) return;
     child=b.dataset.c; sec.querySelectorAll('#cpTabs button').forEach(function(x){x.classList.toggle('on',x===b);});
-    showList(); loadInfo(); loadLetters();
+    showList(); loaded=child; loadInfo(); loadLetters();
   });
   $('cpList').addEventListener('click',function(e){ const c=e.target.closest('.cpLt'); if(c) showDetail(letters[Number(c.dataset.i)]); });
   $('cpUpOpen').addEventListener('click',function(){ const box=$('cpUp'); box.style.display=box.style.display==='none'?'':'none'; adminUi(); });
@@ -2646,62 +2670,61 @@ if('serviceWorker' in navigator){
       if(r&&r.ok){ setPw(v); $('cpPw').value=''; adminUi(); } else err.textContent=(r&&r.msg)||'확인하지 못했어요.';
     }).catch(function(){ b.disabled=false; err.textContent='확인하지 못했어요. 인터넷 연결을 확인해 주세요.'; });
   });
-  $('cpDetail').addEventListener('click',function(e){
+  sec.addEventListener('click',function(e){
     const t=e.target;
-    if(t.closest('#cpBackList')){ showList(); return; }
-    const lk=t.closest('.cpLike');
-    if(lk){ like(lk); return; }
-    if(t.closest('#cpCopyAll')){
-      const txt='['+NAMES[child]+'에게 · '+cur.title+' 답장 '+cur.comments.length+'개]\n\n'+cur.comments.map(function(c){return c.name+': '+c.text;}).join('\n\n');
-      const done=function(){ const b=$('cpCopyAll'); if(b){ b.innerHTML='<i class="ti ti-check"></i> 복사했어요'; setTimeout(function(){ if($('cpCopyAll')) $('cpCopyAll').innerHTML='<i class="ti ti-copy"></i> 답장 모두 복사'; },1800); } };
+    if(t.closest('#cpBackList')){ showList(); sec.parentNode.scrollTop=0; return; }
+    const box=t.closest('.cpLetter'); if(!box) return;
+    const l=letters.filter(function(x){return x.id===box.dataset.id;})[0]; if(!l) return;
+    if(t.closest('.cpCopyAll')){
+      const btn=t.closest('.cpCopyAll');
+      const txt='['+NAMES[child]+'에게 · '+l.title+' 답장 '+l.comments.length+'개]\n\n'+l.comments.map(function(c){return c.name+': '+c.text;}).join('\n\n');
+      const done=function(){ btn.innerHTML='<i class="ti ti-check"></i> 복사했어요'; setTimeout(function(){ btn.innerHTML='<i class="ti ti-copy"></i> 답장 모두 복사'; },1800); };
       const ta=document.createElement('textarea'); ta.value=txt; ta.setAttribute('readonly',''); ta.style.cssText='position:fixed;top:0;left:0;opacity:0'; document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,txt.length);
       let ok=false; try{ ok=document.execCommand('copy'); }catch(e){} ta.remove();
-      if(ok) done(); else if(navigator.clipboard) navigator.clipboard.writeText(txt).then(done,function(){ alert('복사하지 못했어요. 답장을 길게 눌러 복사해 주세요.'); });
+      if(ok) done(); else if(navigator.clipboard) navigator.clipboard.writeText(txt).then(done,function(){ alert('복사하지 못했어요.'); });
       return;
     }
-    if(t.id==='cpCmGo'){
-      const err=$('cpCmErr'); err.textContent='';
-      const name=$('cpCmName').value.trim(), text=$('cpCmText').value.trim();
+    const del=t.closest('.cpX');
+    if(del||t.closest('.cpDelLetter')){
+      const isL=!del;
+      if(!confirm(isL?'이 편지와 답장을 모두 삭제할까요?':'이 답장을 삭제할까요?')) return;
+      post({kind:'cp_del',pw:pw(),type:isL?'letter':'comment',id:isL?l.id:del.dataset.del}).then(function(r){
+        if(!r||!r.ok){ alert((r&&r.msg)||'삭제하지 못했어요.'); if(r&&/비밀번호/.test(r.msg||'')){ setPw(''); adminUi(); } return; }
+        if(isL){ showList(); loadLetters(); } else refresh();
+      });
+      return;
+    }
+    const tap=t.closest('.cpTap'); if(tap){ like(tap,l); return; }
+    const go=t.closest('.cpCmGo');
+    if(go){
+      const err=box.querySelector('.cpCmErr'); err.textContent='';
+      const name=box.querySelector('.cpCmName').value.trim(), text=box.querySelector('.cpCmText').value.trim();
       if(!name){ err.textContent='이름을 적어주세요.'; return; }
       if(!text){ err.textContent='답장 내용을 적어주세요.'; return; }
-      t.disabled=true; t.textContent='등록 중…';
-      post({kind:'cp_comment',letter:cur.id,name:name,text:text}).then(function(r){
-        if(!r||!r.ok){ t.disabled=false; t.textContent='답장 등록'; err.textContent=(r&&r.msg)||'등록하지 못했어요.'; return; }
-        refreshDetail();
-      }).catch(function(){ t.disabled=false; t.textContent='답장 등록'; err.textContent='등록하지 못했어요. 인터넷 연결을 확인해 주세요.'; });
-      return;
-    }
-    const del=t.dataset&&t.dataset.del;
-    if(del||t.id==='cpDelLetter'){
-      const isL=t.id==='cpDelLetter';
-      if(!confirm(isL?'이 편지와 답장을 모두 삭제할까요?':'이 답장을 삭제할까요?')) return;
-      post({kind:'cp_del',pw:pw(),type:isL?'letter':'comment',id:isL?cur.id:del}).then(function(r){
-        if(!r||!r.ok){ alert((r&&r.msg)||'삭제하지 못했어요.'); if(r&&/비밀번호/.test(r.msg||'')){ setPw(''); adminUi(); showDetail(cur); } return; }
-        if(isL){ showList(); loadLetters(); } else refreshDetail();
-      });
+      go.disabled=true; go.textContent='등록 중…';
+      post({kind:'cp_comment',letter:l.id,name:name,text:text}).then(function(r){
+        if(!r||!r.ok){ go.disabled=false; go.textContent='답장 등록'; err.textContent=(r&&r.msg)||'등록하지 못했어요.'; return; }
+        refresh();
+      }).catch(function(){ go.disabled=false; go.textContent='답장 등록'; err.textContent='등록하지 못했어요. 인터넷 연결을 확인해 주세요.'; });
     }
   });
 
   let loaded='';
-  /* 화면에 들어올 때마다 첫 화면(어린이 정보 + 편지 목록)으로 — 보던 편지에 머물지 않음 */
   function setChild(c){
     child=c; sec.querySelectorAll('#cpTabs button').forEach(function(x){x.classList.toggle('on',x.dataset.c===c);});
     if(loaded!==c){ loaded=c; loadInfo(); }
   }
-  /* 들어올 때마다: 두 아이 편지 중 가장 최근에 온 편지를 답장과 함께 바로 연다 (편지가 없으면 첫 화면) */
+  /* 들어올 때마다: 가장 최근에 편지를 보낸 아이 탭을 열고, 소개 아래에 그 편지를 펼친다 */
   window.__renderCp=function(){
     adminUi(); showList();
-    $('cpList').innerHTML='<div class="cpEmpty">편지를 불러오는 중…</div>';
+    $('cpLatest').innerHTML='<div class="cpEmpty" style="margin-top:16px">편지를 불러오는 중…</div>';
     Promise.all(Object.keys(NAMES).map(function(c){
       return get('action=cp_letters&child='+c).then(function(r){return {c:c,r:r};},function(){return {c:c,r:null};});
     })).then(function(all){
       let best=null;
       all.forEach(function(x){ ((x.r&&x.r.ok)?x.r.letters:[]).forEach(function(l){ if(!best||l.at>best.l.at) best={c:x.c,l:l}; }); });
       const c=best?best.c:child; setChild(c);
-      loadLetters(all.filter(function(x){return x.c===c;})[0].r).then(function(){
-        if(!best||!sec.classList.contains('on')) return;
-        const l=letters.filter(function(x){return x.id===best.l.id;})[0]; if(l) showDetail(l);
-      });
+      loadLetters(all.filter(function(x){return x.c===c;})[0].r);
     });
   };
   if(sec.classList.contains('on')) window.__renderCp();
