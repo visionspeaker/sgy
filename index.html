@@ -481,7 +481,8 @@
   .cpCm .a{width:30px;height:30px;border-radius:50%;background:#efecff;color:#6c5ce7;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
   .cpCm .n{font-size:11.5px;color:var(--tx3);margin-bottom:3px}
   .cpCm .b{background:#f5f4fa;border-radius:10px;padding:8px 10px;font-size:13.5px;line-height:1.5;color:var(--tx);white-space:pre-wrap;word-break:break-word}
-  .cpLike{display:inline-flex;align-items:center;gap:4px;border:none;background:none;color:#c9c7d6;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;padding:4px 6px 0 2px;-webkit-tap-highlight-color:transparent}
+  #s-cp{touch-action:manipulation}   /* 두 번 탭 확대 끔(손가락 벌려 확대는 그대로) */
+  .cpLike{touch-action:manipulation;user-select:none;-webkit-user-select:none;display:inline-flex;align-items:center;gap:4px;border:none;background:none;color:#c9c7d6;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;padding:4px 6px 0 2px;-webkit-tap-highlight-color:transparent}
   .cpLike i{font-size:16px;transition:transform .15s}
   .cpLike.on{color:#e2574c}
   .cpLike.pop i{transform:scale(1.35)}
@@ -2066,7 +2067,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
 (function(){
   const RELEASES=[
     {v:'v30',d:'2026/10/13',t:'해외 어린이 양육 편지함',
-      f:['더보기 → 해외 어린이 양육에서 살마·헤수스의 정보를 앱 안에서 바로 볼 수 있습니다','어린이가 보낸 편지 사진과 번역문을 볼 수 있습니다','편지마다 답장을 남길 수 있습니다','컴패션에 새 편지가 오면 매주 앱으로 옮겨 옵니다','편지마다 달린 답장을 한 번에 복사할 수 있습니다','새 편지가 오면 홈 화면에 며칠 동안 알려 줍니다','마음에 드는 답장에 하트를 누를 수 있습니다'],i:['어린이 사진을 크게 보여 줍니다'],x:[]},
+      f:['더보기 → 해외 어린이 양육에서 살마·헤수스의 정보를 앱 안에서 바로 볼 수 있습니다','어린이가 보낸 편지 사진과 번역문을 볼 수 있습니다','편지마다 답장을 남길 수 있습니다','컴패션에 새 편지가 오면 매주 앱으로 옮겨 옵니다','편지마다 달린 답장을 한 번에 복사할 수 있습니다','새 편지가 오면 홈 화면에 며칠 동안 알려 줍니다','마음에 드는 답장에 하트를 누를 수 있습니다'],i:['어린이 사진을 크게 보여 줍니다','들어가면 가장 최근에 온 편지가 바로 열립니다'],x:[]},
     {v:'v29',d:'2026/10/11',t:'2027 사역 신청',
       f:['홈에서 2027 중고등부 사역 신청을 할 수 있습니다 (10/11~11/29)','찬양팀(싱어·리더·율동·신디·드럼·베이스·기타·일렉), 임원(회장·부회장·총무·서기), 방송팀, SNS 기자, 성가대, 헬퍼, 보조교사 중에서 고를 수 있습니다'],
       i:['화면 맨 아래 저작권 표기를 두 줄로 정리했습니다','홈·더보기 위쪽 카드의 교회·십자가 그림을 세로 가운데로 맞췄습니다'],x:[]},
@@ -2574,11 +2575,11 @@ if('serviceWorker' in navigator){
     }).catch(function(){ if(c===child) $('cpSub').textContent='정보를 불러오지 못했어요'; });
   }
 
-  function loadLetters(){
+  function loadLetters(pre){
     const c=child;
     $('cpLtTitle').textContent=NAMES[c]+'가 보낸 편지'; $('cpLtCnt').textContent='';
     $('cpList').innerHTML='<div class="cpEmpty">편지를 불러오는 중…</div>';
-    return get('action=cp_letters&child='+c).then(function(r){
+    return (pre?Promise.resolve(pre):get('action=cp_letters&child='+c)).then(function(r){
       if(c!==child) return;
       letters=(r&&r.ok)?r.letters:[];
       $('cpLtCnt').textContent=letters.length?letters.length+'통':'';
@@ -2622,7 +2623,7 @@ if('serviceWorker' in navigator){
     clearTimeout(likeT[id]);
     likeT[id]=setTimeout(function(){
       const n=likeQ[id]; likeQ[id]=0; if(!n) return;
-      post({kind:'cp_like',id:id,n:Math.min(n,20)}).then(function(r){
+      post({kind:'cp_like',id:id,n:n}).then(function(r){
         if(r&&r.ok){ c.likes=r.likes+(likeQ[id]||0); const b=document.querySelector('#cpDetail .cpLike[data-like="'+id+'"]'); if(b) b.querySelector('span').textContent=c.likes; }
       }).catch(function(){});
     },700);
@@ -2683,7 +2684,26 @@ if('serviceWorker' in navigator){
 
   let loaded='';
   /* 화면에 들어올 때마다 첫 화면(어린이 정보 + 편지 목록)으로 — 보던 편지에 머물지 않음 */
-  window.__renderCp=function(){ adminUi(); showList(); if(loaded!==child){ loaded=child; loadInfo(); } loadLetters(); };
+  function setChild(c){
+    child=c; sec.querySelectorAll('#cpTabs button').forEach(function(x){x.classList.toggle('on',x.dataset.c===c);});
+    if(loaded!==c){ loaded=c; loadInfo(); }
+  }
+  /* 들어올 때마다: 두 아이 편지 중 가장 최근에 온 편지를 답장과 함께 바로 연다 (편지가 없으면 첫 화면) */
+  window.__renderCp=function(){
+    adminUi(); showList();
+    $('cpList').innerHTML='<div class="cpEmpty">편지를 불러오는 중…</div>';
+    Promise.all(Object.keys(NAMES).map(function(c){
+      return get('action=cp_letters&child='+c).then(function(r){return {c:c,r:r};},function(){return {c:c,r:null};});
+    })).then(function(all){
+      let best=null;
+      all.forEach(function(x){ ((x.r&&x.r.ok)?x.r.letters:[]).forEach(function(l){ if(!best||l.at>best.l.at) best={c:x.c,l:l}; }); });
+      const c=best?best.c:child; setChild(c);
+      loadLetters(all.filter(function(x){return x.c===c;})[0].r).then(function(){
+        if(!best||!sec.classList.contains('on')) return;
+        const l=letters.filter(function(x){return x.id===best.l.id;})[0]; if(l) showDetail(l);
+      });
+    });
+  };
   if(sec.classList.contains('on')) window.__renderCp();
 })();
 
