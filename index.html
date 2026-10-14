@@ -481,6 +481,10 @@
   .cpCm .a{width:30px;height:30px;border-radius:50%;background:#efecff;color:#6c5ce7;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
   .cpCm .n{font-size:11.5px;color:var(--tx3);margin-bottom:3px}
   .cpCm .b{background:#f5f4fa;border-radius:10px;padding:8px 10px;font-size:13.5px;line-height:1.5;color:var(--tx);white-space:pre-wrap;word-break:break-word}
+  .cpLike{display:inline-flex;align-items:center;gap:4px;border:none;background:none;color:#c9c7d6;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;padding:4px 6px 0 2px;-webkit-tap-highlight-color:transparent}
+  .cpLike i{font-size:16px;transition:transform .15s}
+  .cpLike.on{color:#e2574c}
+  .cpLike.pop i{transform:scale(1.35)}
   .cpX{border:none;background:none;color:#e2574c;font-size:12px;font-family:inherit;cursor:pointer;padding:2px 4px;margin-left:4px}
   .cpIn{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:16px;font-family:inherit;color:var(--tx);background:#fff;margin-top:8px;outline:none}
   .cpIn:focus{border-color:#f59e0b}
@@ -2062,7 +2066,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
 (function(){
   const RELEASES=[
     {v:'v30',d:'2026/10/13',t:'해외 어린이 양육 편지함',
-      f:['더보기 → 해외 어린이 양육에서 살마·헤수스의 정보를 앱 안에서 바로 볼 수 있습니다','어린이가 보낸 편지 사진과 번역문을 볼 수 있습니다','편지마다 답장을 남길 수 있습니다','컴패션에 새 편지가 오면 매주 앱으로 옮겨 옵니다','편지마다 달린 답장을 한 번에 복사할 수 있습니다','새 편지가 오면 홈 화면에 며칠 동안 알려 줍니다'],i:['어린이 사진을 크게 보여 줍니다'],x:[]},
+      f:['더보기 → 해외 어린이 양육에서 살마·헤수스의 정보를 앱 안에서 바로 볼 수 있습니다','어린이가 보낸 편지 사진과 번역문을 볼 수 있습니다','편지마다 답장을 남길 수 있습니다','컴패션에 새 편지가 오면 매주 앱으로 옮겨 옵니다','편지마다 달린 답장을 한 번에 복사할 수 있습니다','새 편지가 오면 홈 화면에 며칠 동안 알려 줍니다','마음에 드는 답장에 하트를 누를 수 있습니다'],i:['어린이 사진을 크게 보여 줍니다'],x:[]},
     {v:'v29',d:'2026/10/11',t:'2027 사역 신청',
       f:['홈에서 2027 중고등부 사역 신청을 할 수 있습니다 (10/11~11/29)','찬양팀(싱어·리더·율동·신디·드럼·베이스·기타·일렉), 임원(회장·부회장·총무·서기), 방송팀, SNS 기자, 성가대, 헬퍼, 보조교사 중에서 고를 수 있습니다'],
       i:['화면 맨 아래 저작권 표기를 두 줄로 정리했습니다','홈·더보기 위쪽 카드의 교회·십자가 그림을 세로 가운데로 맞췄습니다'],x:[]},
@@ -2598,7 +2602,7 @@ if('serviceWorker' in navigator){
       '<div style="font-size:11.5px;color:var(--tx3);margin-top:8px">사진을 누르면 크게 볼 수 있어요</div></div>'+
       '<div class="cpH"><b>답장 '+l.comments.length+'</b>'+(l.comments.length?'<button type="button" id="cpCopyAll" style="border:1px solid #f2c46b;background:#fffaf0;color:#9a5b00;border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer"><i class="ti ti-copy"></i> 답장 모두 복사</button>':'')+'</div>';
     h+=l.comments.length?l.comments.map(function(c){
-      return '<div class="cpCm"><div class="a">'+esc(c.name.slice(0,1))+'</div><div style="flex:1;min-width:0"><div class="n">'+esc(c.name)+' · '+fmt(c.at)+(adm?'<button class="cpX" data-del="'+esc(c.id)+'">삭제</button>':'')+'</div><div class="b">'+esc(c.text)+'</div></div></div>';
+      return '<div class="cpCm"><div class="a">'+esc(c.name.slice(0,1))+'</div><div style="flex:1;min-width:0"><div class="n">'+esc(c.name)+' · '+fmt(c.at)+(adm?'<button class="cpX" data-del="'+esc(c.id)+'">삭제</button>':'')+'</div><div class="b">'+esc(c.text)+'</div><button type="button" class="cpLike'+((c.likes||0)?' on':'')+'" data-like="'+esc(c.id)+'"><i class="ti ti-heart-filled"></i><span>'+(c.likes||0)+'</span></button></div></div>';
     }).join(''):'<div class="cpEmpty">첫 답장을 남겨 주세요.</div>';
     h+='<div class="cpCard"><input class="cpIn" id="cpCmName" type="text" maxlength="20" placeholder="이름" style="margin-top:0">'+
       '<textarea class="cpIn" id="cpCmText" maxlength="500" placeholder="'+esc(NAMES[child])+'에게 답장 쓰기"></textarea>'+
@@ -2608,6 +2612,20 @@ if('serviceWorker' in navigator){
     $('cpDetail').innerHTML=h; $('cpDetail').style.display='';
     try{ $('cpCmName').value=localStorage.getItem('sgy_att_name')||''; }catch(e){}
     sec.parentNode.scrollTop=0;
+  }
+  /* 하트: 누를 때마다 바로 +1(여러 번 가능), 0.7초 모아서 서버에 한 번에 보냄 */
+  const likeQ={}, likeT={};
+  function like(btn){
+    const id=btn.dataset.like, c=cur&&cur.comments.filter(function(x){return x.id===id;})[0]; if(!c) return;
+    c.likes=(c.likes||0)+1; likeQ[id]=(likeQ[id]||0)+1;
+    btn.classList.add('on','pop'); btn.querySelector('span').textContent=c.likes; setTimeout(function(){btn.classList.remove('pop');},150);
+    clearTimeout(likeT[id]);
+    likeT[id]=setTimeout(function(){
+      const n=likeQ[id]; likeQ[id]=0; if(!n) return;
+      post({kind:'cp_like',id:id,n:Math.min(n,20)}).then(function(r){
+        if(r&&r.ok){ c.likes=r.likes+(likeQ[id]||0); const b=document.querySelector('#cpDetail .cpLike[data-like="'+id+'"]'); if(b) b.querySelector('span').textContent=c.likes; }
+      }).catch(function(){});
+    },700);
   }
   function refreshDetail(){ const id=cur&&cur.id; return loadLetters().then(function(){ const l=letters.filter(function(x){return x.id===id;})[0]; if(l) showDetail(l); else showList(); }); }
 
@@ -2630,6 +2648,8 @@ if('serviceWorker' in navigator){
   $('cpDetail').addEventListener('click',function(e){
     const t=e.target;
     if(t.closest('#cpBackList')){ showList(); return; }
+    const lk=t.closest('.cpLike');
+    if(lk){ like(lk); return; }
     if(t.closest('#cpCopyAll')){
       const txt='['+NAMES[child]+'에게 · '+cur.title+' 답장 '+cur.comments.length+'개]\n\n'+cur.comments.map(function(c){return c.name+': '+c.text;}).join('\n\n');
       const done=function(){ const b=$('cpCopyAll'); if(b){ b.innerHTML='<i class="ti ti-check"></i> 복사했어요'; setTimeout(function(){ if($('cpCopyAll')) $('cpCopyAll').innerHTML='<i class="ti ti-copy"></i> 답장 모두 복사'; },1800); } };
