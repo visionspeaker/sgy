@@ -2618,7 +2618,7 @@ if('serviceWorker' in navigator){
     h+='<div class="cpCard"><input class="cpIn cpCmName" type="text" maxlength="20" placeholder="이름" style="margin-top:0">'+
       '<textarea class="cpIn cpCmText" maxlength="500" placeholder="'+esc(NAMES[child])+'에게 답장 쓰기"></textarea>'+
       '<button class="cpBtn cpCmGo" type="button">답장 등록</button><div class="cpErr cpCmErr"></div>'+
-      '<div style="font-size:11.5px;color:var(--tx3);margin-top:6px;line-height:1.5">답장은 앱에서 함께 보는 글이에요. 실제 편지는 담당 선생님이 모아서 컴패션으로 보내요.</div></div>';
+      '<div style="font-size:11.5px;color:var(--tx3);margin-top:6px;line-height:1.5">남겨 준 답장은 영어로 번역해서 컴패션을 통해 '+esc(NAMES[child])+'에게 보내요 ✉️</div></div>';
     if(adm) h+='<button class="cpUpBtn cpDelLetter" type="button" style="border-color:#f3b3ad;background:#fff6f5;color:#c0392b">이 편지 삭제 (담당자)</button>';
     return h+'</div>';
   }
