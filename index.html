@@ -2088,8 +2088,11 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
    헤더의 버전 칩은 맨 앞 항목에서 자동으로 가져온다. */
 (function(){
   const RELEASES=[
+    {v:'v31',d:'2026/10/14',t:'내 답장 고치기 · 지우기',
+      f:['답장을 쓸 때 숫자 4자리 비밀번호를 정해 두면, 나중에 그 답장을 고치거나 지울 수 있습니다'],
+      i:['고친 답장에는 이름 옆에 (수정됨)이 표시됩니다'],x:[]},
     {v:'v30',d:'2026/10/13',t:'해외 어린이 양육 편지함',
-      f:['더보기 → 해외 어린이 양육에서 살마·헤수스의 정보를 앱 안에서 바로 볼 수 있습니다','어린이가 보낸 편지 사진과 번역문을 볼 수 있습니다','편지마다 답장을 남길 수 있습니다','컴패션에 새 편지가 오면 매주 앱으로 옮겨 옵니다','편지마다 달린 답장을 한 번에 복사할 수 있습니다','새 편지가 오면 홈 화면에 며칠 동안 알려 줍니다','마음에 드는 답장에 하트를 누를 수 있습니다'],i:['어린이 사진을 크게 보여 줍니다','어린이 소개 바로 아래에 가장 최근 편지가 펼쳐지고, 지난 편지는 아래 목록으로 볼 수 있습니다','답장 카드 아무 데나 누르면 하트가 올라갑니다','비밀번호를 정해 둔 내 답장은 고치거나 지울 수 있습니다'],x:[]},
+      f:['더보기 → 해외 어린이 양육에서 살마·헤수스의 정보를 앱 안에서 바로 볼 수 있습니다','어린이가 보낸 편지 사진과 번역문을 볼 수 있습니다','편지마다 답장을 남길 수 있습니다','컴패션에 새 편지가 오면 매주 앱으로 옮겨 옵니다','편지마다 달린 답장을 한 번에 복사할 수 있습니다','새 편지가 오면 홈 화면에 며칠 동안 알려 줍니다','마음에 드는 답장에 하트를 누를 수 있습니다'],i:['어린이 사진을 크게 보여 줍니다','어린이 소개 바로 아래에 가장 최근 편지가 펼쳐지고, 지난 편지는 아래 목록으로 볼 수 있습니다','답장 카드 아무 데나 누르면 하트가 올라갑니다'],x:[]},
     {v:'v29',d:'2026/10/11',t:'2027 사역 신청',
       f:['홈에서 2027 중고등부 사역 신청을 할 수 있습니다 (10/11~11/29)','찬양팀(싱어·리더·율동·신디·드럼·베이스·기타·일렉), 임원(회장·부회장·총무·서기), 방송팀, SNS 기자, 성가대, 헬퍼, 보조교사 중에서 고를 수 있습니다'],
       i:['화면 맨 아래 저작권 표기를 두 줄로 정리했습니다','홈·더보기 위쪽 카드의 교회·십자가 그림을 세로 가운데로 맞췄습니다'],x:[]},
@@ -2679,13 +2682,15 @@ if('serviceWorker' in navigator){
   });
   $('cpList').addEventListener('click',function(e){ const c=e.target.closest('.cpLt'); if(c) showDetail(letters[Number(c.dataset.i)]); });
   $('cpUpOpen').addEventListener('click',function(){ const box=$('cpUp'); box.style.display=box.style.display==='none'?'':'none'; adminUi(); });
-  $('cpLogout').addEventListener('click',function(){ setPw(''); adminUi(); });
+  /* 담당자 모드를 켜고 끌 때 답장 옆 '삭제' 버튼이 바로 나타나고 사라지도록 다시 그림 */
+  function rerender(){ if(cur) showDetail(cur); else loadLetters(); }
+  $('cpLogout').addEventListener('click',function(){ setPw(''); adminUi(); rerender(); });
   $('cpPwGo').addEventListener('click',function(){
     const b=this, v=$('cpPw').value.trim(), err=$('cpPwErr'); err.textContent='';
     if(!v){ err.textContent='비밀번호를 입력해 주세요.'; return; }
     b.disabled=true;
     post({kind:'cp_check',pw:v}).then(function(r){ b.disabled=false;
-      if(r&&r.ok){ setPw(v); $('cpPw').value=''; adminUi(); } else err.textContent=(r&&r.msg)||'확인하지 못했어요.';
+      if(r&&r.ok){ setPw(v); $('cpPw').value=''; adminUi(); rerender(); } else err.textContent=(r&&r.msg)||'확인하지 못했어요.';
     }).catch(function(){ b.disabled=false; err.textContent='확인하지 못했어요. 인터넷 연결을 확인해 주세요.'; });
   });
   /* 내 답장 수정·삭제: 비밀번호 확인 → 수정 칸 또는 삭제 */
