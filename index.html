@@ -2814,6 +2814,15 @@ if('serviceWorker' in navigator){
     }).catch(function(){ if(!all) $('cpLatest').innerHTML='<div class="cpEmpty" style="margin-top:16px">편지를 불러오지 못했어요.</div>'; });
   };
   if(sec.classList.contains('on')) window.__renderCp();
+  /* 이 기기에 받아 둔 게 없으면, 앱을 열고 3초 뒤 조용히 미리 받아 둠 → 처음 들어갈 때도 바로 뜸 (사진도 미리 받아 둠) */
+  else if(!all) setTimeout(function(){
+    if(all||sec.classList.contains('on')) return;
+    get('action=cp_all').then(function(r){
+      if(!r||!r.ok||!r.children||all) return;
+      all={children:r.children}; saveAll();
+      Object.keys(r.children).forEach(function(c){ const f=r.children[c].info, l=r.children[c].letters; if(f&&f.photoSmall){ new Image().src=f.photoSmall; } if(l&&l[0]&&l[0].photos[0]){ new Image().src=img(l[0].photos[0],1200); } });
+    }).catch(function(){});
+  },3000);
 })();
 
 /* ===== 하위 화면: 뒤로가기 / 왼쪽 끝 스와이프 → 상위 화면 ===== */
