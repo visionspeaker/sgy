@@ -2090,7 +2090,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   const RELEASES=[
     {v:'v31',d:'2026/10/14',t:'내 답장 고치기 · 지우기',
       f:['답장을 쓸 때 숫자 4자리 비밀번호를 정해 두면, 나중에 그 답장을 고치거나 지울 수 있습니다'],
-      i:['고친 답장에는 이름 옆에 (수정됨)이 표시됩니다'],x:[]},
+      i:['고친 답장에는 이름 옆에 (수정됨)이 표시됩니다','해외 어린이 양육 화면이 훨씬 빨리 열립니다 (한 번 본 내용은 바로 보여 주고 뒤에서 새로 받아요)'],x:[]},
     {v:'v30',d:'2026/10/13',t:'해외 어린이 양육 편지함',
       f:['더보기 → 해외 어린이 양육에서 살마·헤수스의 정보를 앱 안에서 바로 볼 수 있습니다','어린이가 보낸 편지 사진과 번역문을 볼 수 있습니다','편지마다 답장을 남길 수 있습니다','컴패션에 새 편지가 오면 매주 앱으로 옮겨 옵니다','편지마다 달린 답장을 한 번에 복사할 수 있습니다','새 편지가 오면 홈 화면에 며칠 동안 알려 줍니다','마음에 드는 답장에 하트를 누를 수 있습니다'],i:['어린이 사진을 크게 보여 줍니다','어린이 소개 바로 아래에 가장 최근 편지가 펼쳐지고, 지난 편지는 아래 목록으로 볼 수 있습니다','답장 카드 아무 데나 누르면 하트가 올라갑니다'],x:[]},
     {v:'v29',d:'2026/10/11',t:'2027 사역 신청',
@@ -2574,7 +2574,7 @@ if('serviceWorker' in navigator){
   let child='salma', letters=[], cur=null;
   const $=function(id){return document.getElementById(id);};
   const esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
-  const img=function(id,w){return 'https://drive.google.com/thumbnail?id='+encodeURIComponent(id)+'&sz=w'+(w||1600);};
+  const img=function(id,w){return 'https://lh3.googleusercontent.com/d/'+encodeURIComponent(id)+'=w'+(w||1600);};   /* 드라이브를 거치지 않는 주소(하루 캐시) */
   const pw=function(){ try{return sessionStorage.getItem(PWKEY)||'';}catch(e){return '';} };
   const setPw=function(v){ try{ v?sessionStorage.setItem(PWKEY,v):sessionStorage.removeItem(PWKEY); }catch(e){} };
   const fmt=function(iso){ const d=new Date(iso); return isNaN(d)?'':(d.getMonth()+1)+'/'+d.getDate(); };
@@ -2583,22 +2583,30 @@ if('serviceWorker' in navigator){
 
   function adminUi(){ const on=!!pw(); $('cpAdm').style.display=on?'flex':'none'; $('cpPwBox').style.display=on?'none':''; if(on) $('cpUp').style.display='none'; $('cpUpOpen').style.display=on?'none':''; }
 
-  function loadInfo(){
-    const c=child;
-    $('cpName').textContent=NAMES[c]; $('cpSub').textContent='불러오는 중…';
-    $('cpAv').innerHTML='<i class="ti ti-mood-kid"></i>'; $('cpAv').onclick=null;
-    get('action=cp_child&child='+c).then(function(r){
-      if(c!==child) return;
-      if(!r||!r.ok){ $('cpSub').textContent='정보를 불러오지 못했어요'; $('cpInfo').innerHTML='<div class="cpEmpty">잠시 후 다시 열어 주세요.</div>'; return; }
-      const f=r.info;
-      $('cpName').textContent=f.name||NAMES[c];
-      $('cpSub').innerHTML=esc([f.country,f.age?f.age+'세':''].filter(String).join(' · '))+(f.days?'<br>함께한 지 '+esc(f.days)+'일':'');
-      if(f.photo){ const im=new Image(); im.alt=f.name||''; im.onload=function(){ if(c===child){ $('cpAv').innerHTML=''; $('cpAv').appendChild(im); $('cpAv').onclick=function(){ window.open(f.photo,'_blank','noopener'); }; } }; im.src=f.photo; }
-      const kv=[['생일',f.birthday],['학교',f.school],['좋아하는 과목',f.subjects],['가족',f.family],['어린이센터',f.center]].filter(function(x){return x[1];});
-      $('cpInfo').innerHTML='<div class="cpKv">'+kv.map(function(x){return '<b>'+esc(x[0])+'</b><span>'+esc(x[1])+'</span>';}).join('')+'</div>'+
-        (f.likes?'<div style="margin-top:4px">'+f.likes.split(',').map(function(s){return '<span class="cpChip">'+esc(s.trim())+'</span>';}).join('')+'</div>':'');
-    }).catch(function(){ if(c===child) $('cpSub').textContent='정보를 불러오지 못했어요'; });
+  /* 받아 둔 전체 데이터(두 아이 정보 + 편지): 휴대폰에 기억해 두고 들어오면 바로 그림 */
+  const CACHE_KEY='sgy_cp_all_v1';
+  let all=null;
+  try{ all=JSON.parse(localStorage.getItem(CACHE_KEY)||'null'); }catch(e){ all=null; }
+  function saveAll(){ try{ localStorage.setItem(CACHE_KEY, JSON.stringify(all)); }catch(e){} }
+
+  function renderInfo(){
+    const c=child, f=all&&all.children&&all.children[c]&&all.children[c].info;
+    $('cpName').textContent=(f&&f.name)||NAMES[c];
+    if(!f){ $('cpSub').textContent='불러오는 중…'; $('cpInfo').innerHTML='<div class="cpEmpty">어린이 정보를 불러오는 중…</div>'; $('cpAv').innerHTML='<i class="ti ti-mood-kid"></i>'; $('cpAv').onclick=null; return; }
+    $('cpSub').innerHTML=esc([f.country,f.age?f.age+'세':''].filter(String).join(' · '))+(f.days?'<br>함께한 지 '+esc(f.days)+'일':'');
+    const src=f.photoSmall||f.photo, big=f.photoBig||f.photo;
+    const old=$('cpAv').querySelector('img');
+    if(src && (!old || old.getAttribute('src')!==src)){
+      const im=new Image(); im.alt=f.name||''; im.decoding='async';
+      im.onload=function(){ if(c===child){ $('cpAv').innerHTML=''; $('cpAv').appendChild(im); } }; im.src=src;
+    } else if(!src){ $('cpAv').innerHTML='<i class="ti ti-mood-kid"></i>'; }
+    $('cpAv').onclick=big?function(){ window.open(big,'_blank','noopener'); }:null;
+    const kv=[['생일',f.birthday],['학교',f.school],['좋아하는 과목',f.subjects],['가족',f.family],['어린이센터',f.center]].filter(function(x){return x[1];});
+    $('cpInfo').innerHTML='<div class="cpKv">'+kv.map(function(x){return '<b>'+esc(x[0])+'</b><span>'+esc(x[1])+'</span>';}).join('')+'</div>'+
+      (f.likes?'<div style="margin-top:4px">'+f.likes.split(',').map(function(s){return '<span class="cpChip">'+esc(s.trim())+'</span>';}).join('')+'</div>':'');
   }
+  /* 처음(받아 둔 게 없을 때)에만 쓰는 예비 경로 */
+  function loadInfo(){ renderInfo(); }
 
   /* ---- 편지 한 통 그리기: 사진 · 번역문 · 답장(카드 아무 데나 누르면 하트) · 답장 쓰기 ---- */
   function newUntil(){ try{ const u=new Date(localStorage.getItem('sgy_cp_until')||''); return isNaN(u)?null:u; }catch(e){ return null; } }
@@ -2639,6 +2647,7 @@ if('serviceWorker' in navigator){
     return (pre?Promise.resolve(pre):get('action=cp_letters&child='+c)).then(function(r){
       if(c!==child) return;
       letters=(r&&r.ok)?r.letters:[];
+      if(r&&r.ok&&all&&all.children&&all.children[c]){ all.children[c].letters=letters; saveAll(); }
       if(!r||!r.ok){ $('cpLatest').innerHTML='<div class="cpEmpty" style="margin-top:16px">편지를 불러오지 못했어요.</div>'; return; }
       if(!letters.length){ $('cpLatest').innerHTML='<div class="cpEmpty" style="margin-top:16px">아직 올라온 편지가 없어요.</div>'; return; }
       $('cpLatest').innerHTML=letterHtml(letters[0],true); fillName($('cpLatest'));
@@ -2678,7 +2687,9 @@ if('serviceWorker' in navigator){
   $('cpTabs').addEventListener('click',function(e){
     const b=e.target.closest('button'); if(!b||b.dataset.c===child) return;
     child=b.dataset.c; sec.querySelectorAll('#cpTabs button').forEach(function(x){x.classList.toggle('on',x===b);});
-    showList(); loaded=child; loadInfo(); loadLetters();
+    showList(); loaded=child; renderInfo();
+    const cc=all&&all.children&&all.children[child];
+    if(cc) loadLetters({ok:true,letters:cc.letters}); else loadLetters();
   });
   $('cpList').addEventListener('click',function(e){ const c=e.target.closest('.cpLt'); if(c) showDetail(letters[Number(c.dataset.i)]); });
   $('cpUpOpen').addEventListener('click',function(){ const box=$('cpUp'); box.style.display=box.style.display==='none'?'':'none'; adminUi(); });
@@ -2772,20 +2783,35 @@ if('serviceWorker' in navigator){
   let loaded='';
   function setChild(c){
     child=c; sec.querySelectorAll('#cpTabs button').forEach(function(x){x.classList.toggle('on',x.dataset.c===c);});
-    if(loaded!==c){ loaded=c; loadInfo(); }
+    loaded=c; renderInfo();
   }
-  /* 들어올 때마다: 가장 최근에 편지를 보낸 아이 탭을 열고, 소개 아래에 그 편지를 펼친다 */
+  /* 들어올 때마다: 받아 둔 내용으로 바로 그리고(가장 최근 편지를 보낸 아이 탭), 뒤에서 한 번에 새로 받아 바뀐 게 있으면 다시 그림 */
+  function paintAll(){
+    let best=null;
+    Object.keys(NAMES).forEach(function(c){ ((all.children[c]&&all.children[c].letters)||[]).forEach(function(l){ if(!best||l.at>best.l.at) best={c:c,l:l}; }); });
+    setChild(best?best.c:child);
+    loadLetters({ok:true,letters:(all.children[child]&&all.children[child].letters)||[]});
+  }
   window.__renderCp=function(){
     adminUi(); showList();
-    $('cpLatest').innerHTML='<div class="cpEmpty" style="margin-top:16px">편지를 불러오는 중…</div>';
-    Promise.all(Object.keys(NAMES).map(function(c){
-      return get('action=cp_letters&child='+c).then(function(r){return {c:c,r:r};},function(){return {c:c,r:null};});
-    })).then(function(all){
-      let best=null;
-      all.forEach(function(x){ ((x.r&&x.r.ok)?x.r.letters:[]).forEach(function(l){ if(!best||l.at>best.l.at) best={c:x.c,l:l}; }); });
-      const c=best?best.c:child; setChild(c);
-      loadLetters(all.filter(function(x){return x.c===c;})[0].r);
-    });
+    if(all&&all.children) paintAll();
+    else { renderInfo(); $('cpLatest').innerHTML='<div class="cpEmpty" style="margin-top:16px">편지를 불러오는 중…</div>'; }
+    const before=all?JSON.stringify(all.children):'';
+    /* 예비: 한 번에 받기가 안 되면 예전처럼 아이별로 받아서 맞춤 */
+    const legacy=function(){ return Promise.all(Object.keys(NAMES).map(function(c){
+      return Promise.all([get('action=cp_child&child='+c).catch(function(){return null;}), get('action=cp_letters&child='+c).catch(function(){return null;})])
+        .then(function(x){ return [c,{info:(x[0]&&x[0].ok)?x[0].info:null, letters:(x[1]&&x[1].ok)?x[1].letters:[]}]; });
+    })).then(function(list){ const ch={}; list.forEach(function(p){ ch[p[0]]=p[1]; }); return {ok:true,children:ch}; }); };
+    get('action=cp_all').then(function(r){ return (r&&r.ok&&r.children)?r:legacy(); },legacy).then(function(r){
+      if(!r||!r.ok||!r.children) return;
+      all={children:r.children}; saveAll();
+      if(r.cpUntil!==undefined){ try{ localStorage.setItem('sgy_cp_until', r.cpUntil||''); }catch(e){} }
+      if(JSON.stringify(r.children)===before) return;          /* 바뀐 게 없으면 그대로 */
+      const a=document.activeElement;
+      if(a && sec.contains(a) && /INPUT|TEXTAREA/.test(a.tagName)) return;   /* 답장 쓰는 중이면 건드리지 않음 */
+      if(cur) return;                                          /* 지난 편지를 보고 있으면 그대로 */
+      paintAll();
+    }).catch(function(){ if(!all) $('cpLatest').innerHTML='<div class="cpEmpty" style="margin-top:16px">편지를 불러오지 못했어요.</div>'; });
   };
   if(sec.classList.contains('on')) window.__renderCp();
 })();
