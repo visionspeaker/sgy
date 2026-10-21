@@ -561,6 +561,26 @@
   /* 헤더 → 업데이트 기록 */
   .hdTap{cursor:pointer;-webkit-tap-highlight-color:transparent}
   .hdTap:active{opacity:.6}
+  /* 헤더 계정 버튼 + 계정 창 */
+  .accBtn{margin-left:auto;flex:none;width:44px;height:44px;border-radius:50%;border:1px solid #d9d3fb;background:#fff;color:var(--primary);font-size:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;font-family:inherit;-webkit-tap-highlight-color:transparent}
+  .accBtn.open{background:var(--primary);color:#fff;border-color:var(--primary)}
+  .accBtn.in{background:var(--primary);color:#fff;border-color:var(--primary);font-size:13.5px;font-weight:800;box-shadow:0 0 0 3px #d9d3fb}
+  .accBtn.in.tch{background:#1f9d63;border-color:#1f9d63;box-shadow:0 0 0 3px #c9ead8}
+  #accPanel{position:absolute;left:12px;right:12px;z-index:60;display:none;max-height:75vh;overflow-y:auto;border-radius:16px;box-shadow:0 12px 32px rgba(29,27,58,.18)}
+  #accPanel.on{display:block}
+  #accPanel .dnCard{margin-top:0}
+  #accPanel .grBtn:not(:disabled){background:#5b3fd6}
+  #accPanel .grIn:focus{border-color:#5b3fd6}
+  .acHd{display:flex;align-items:center;gap:10px;padding-bottom:10px}
+  .acAv{width:40px;height:40px;border-radius:50%;background:#efecff;color:#4b3bc4;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
+  .acAv.tch{background:#e3f4ea;color:#1f7a4a}
+  .acMi{display:flex;align-items:center;gap:9px;padding:12px 4px;font-size:14px;border-top:1px solid #f0eef8;cursor:pointer;color:var(--tx)}
+  .acMi i{font-size:18px;color:var(--tx2)}
+  .acMi .acR{margin-left:auto;color:var(--tx3)}
+  .acOk{margin-left:auto;font-size:11px;font-weight:700;color:#1f7a4a;background:#e3f4ea;border-radius:999px;padding:3px 9px}
+  .acOut,.acOut i{color:#e2574c}
+  .attAuto{font-size:12px;text-align:center;margin-top:10px;line-height:1.6}
+  .attAuto button{border:1px solid #d9d3fb;background:#fff;color:var(--primary);font-weight:800;font-size:12px;border-radius:999px;padding:4px 11px;margin-left:4px;font-family:inherit;cursor:pointer}
   .verChip{display:inline-block;background:#efeafd;color:var(--primary);font-size:9.5px;font-weight:800;border-radius:999px;padding:1.5px 6px;margin-left:3px;vertical-align:1px;letter-spacing:.2px}
   /* 업데이트 기록(릴리스노트) */
   .rlBack{display:inline-flex;align-items:center;gap:6px;background:var(--primary);color:#fff;border-radius:999px;padding:9px 16px 9px 13px;margin:16px 2px 0;font-size:13.5px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(124,108,255,.3);-webkit-tap-highlight-color:transparent}
@@ -612,6 +632,7 @@
   <header>
     <img class="logo" src="sgy_logo.png" alt="SGY 2.0 로고">
     <div class="hdTap" onclick="toggleRelease()" role="button" tabindex="0" aria-label="업데이트 기록 보기"><h1>송탄영광교회 중고등부</h1><p>SGY 2.0 · 공식 앱 <span class="verChip" id="verChip">v28</span></p></div>
+    <button class="accBtn" id="accBtn" type="button" aria-label="로그인"><i class="ti ti-user-circle"></i></button>
   </header>
 
   <main>
@@ -780,6 +801,7 @@
       <div class="calWeek"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
       <div class="calGrid" id="calGrid"></div>
       <button class="attBtn" id="attBtn">오늘 출석하기</button>
+      <div class="attAuto" id="attAuto"></div>
       <div class="hint">출석한 날엔 도장이 찍혀요 · 오늘 출석은 하루에 한 번만 가능합니다.</div>
     </section>
 
@@ -1727,7 +1749,7 @@ document.addEventListener('visibilitychange',function(){
   function getName(){try{return localStorage.getItem('sgy_att_name')||'';}catch(e){return '';}}
   function setName(n){try{localStorage.setItem('sgy_att_name',n);}catch(e){}}
   function renderName(){const n=getName();nameEl.textContent=n?n:'이름 등록하기';}
-  function askName(){const n=window.prompt('이름을 입력하세요 (출석 인증용)',getName());if(n!==null){setName(n.trim());renderName();}}
+  function askName(){if(window.__dnUser&&window.__dnUser()){alert('로그인한 이름('+window.__dnUser()+')으로 출석돼요.\n이름을 바꾸려면 로그아웃하세요.');return;}const n=window.prompt('이름을 입력하세요 (출석 인증용)',getName());if(n!==null){setName(n.trim());renderName();}}
   nameEl.onclick=askName; document.getElementById('attEdit').onclick=askName;
   function render(){
     const y=view.getFullYear(), m=view.getMonth();
@@ -1761,10 +1783,11 @@ document.addEventListener('visibilitychange',function(){
     const days=getDays(); if(days.indexOf(t)<0){days.push(t);setDays(days);}
     view=new Date(); view.setDate(1);
     render();
+    if(window.__attSync) window.__attSync();
   };
   document.getElementById('calPrev').onclick=function(){view.setMonth(view.getMonth()-1);render();};
   document.getElementById('calNext').onclick=function(){view.setMonth(view.getMonth()+1);render();};
-  window.__renderAttend=function(){view=new Date();view.setDate(1);render();};
+  window.__renderAttend=function(){view=new Date();view.setDate(1);renderName();render();if(window.__attHint)window.__attHint();};
   renderName(); render();
 })();
 
@@ -2145,6 +2168,9 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
    헤더의 버전 칩은 맨 앞 항목에서 자동으로 가져온다. */
 (function(){
   const RELEASES=[
+    {v:'v33',d:'2026/10/21',t:'로그인 · 자동 출석',
+      f:['화면 위 오른쪽 동그라미 버튼으로 로그인할 수 있습니다 (학생은 이름과 숫자 4자리, 선생님은 교사앱 계정)','로그인한 계정은 앱을 열기만 해도 그날 출석 도장이 자동으로 찍힙니다','출석 도장이 서버에도 저장돼서, 앱을 지우거나 폰을 바꿔도 다시 로그인하면 돌아옵니다'],
+      i:['로그인하면 도장깨기 이름도 로그인한 이름으로 자동으로 맞춰집니다'],x:[]},
     {v:'v32',d:'2026/10/21',t:'2026 다니엘기도회 참여 체크',
       f:['11/1~21 다니엘기도회 기간에 홈에서 매일 참여를 체크할 수 있습니다','처음 한 번 이름과 숫자 4자리로 로그인하면, 그 폰에서는 다음부터 자동으로 로그인됩니다','참여 체크는 매일 저녁 7시~11시(기도회 앞뒤 1시간)에 열립니다','21일 도장판에서 내 참여 일수를 보고, 10일 참여·21일 완주 배지를 받을 수 있습니다','다니엘TV 생방송을 앱에서 바로 열 수 있습니다','선생님도 함께 참여할 수 있습니다 (교사앱에 로그인돼 있으면 자동으로, 아니면 교사앱 이름·비밀번호로 한 번 로그인)'],i:[],x:[]},
     {v:'v31',d:'2026/10/14',t:'내 답장 고치기 · 지우기',
@@ -3107,14 +3133,15 @@ if('serviceWorker' in navigator){
 })();
 </script>
 <script>
-/* ===== 2026 다니엘기도회 (11/1~21) =====
-   참여 기록은 교사앱 서버(dn_*)의 비공개 시트에 쌓인다. 로그인 = 출석 명단 이름 + 학생이 처음 정한 숫자 4자리.
-   참여 체크 가능 여부는 서버 시각으로 판정(매일 19~23시), 화면은 서버 시각과의 차이(off)로 버튼 상태만 미리 맞춘다. */
+/* ===== 2026 다니엘기도회 (11/1~21) + 학생앱 로그인(헤더 계정 버튼) + 로그인 자동 출석 =====
+   참여 기록은 교사앱 서버(dn_*)의 비공개 시트에 쌓인다. 로그인 = 출석 명단 이름 + 학생이 처음 정한 숫자 4자리(교사는 교사앱 계정).
+   참여 체크 가능 여부는 서버 시각으로 판정(매일 19~23시), 화면은 서버 시각과의 차이(off)로 버튼 상태만 미리 맞춘다.
+   로그인한 계정은 앱을 열면 그날 출석 도장(dn_att, 비공개 시트 'SGY 학생앱 출석기록')이 찍히고, 서버 도장을 폰 도장깨기에 합친다. */
 (function(){
   const API="https://script.google.com/macros/s/AKfycbynttLT1S2F3OjVW345W3NUijszhXpnUmeTfZObxb6W3I4wxUmqrj5HgPK5gFqAiri5/exec";
-  const AK='sgy_dn_auth_v1', MK='sgy_dn_me_v1', DAYS=21, D0=Date.UTC(2026,10,1);
-  const box=document.getElementById('dnBody'); if(!box) return;
-  let me=null, off=0, busy=false, firstNote=false, timer=null, role='s', autoPending=false;
+  const AK='sgy_dn_auth_v1', MK='sgy_dn_me_v1', SK='sgy_att_sync_v1', DAYS=21, D0=Date.UTC(2026,10,1);
+  const box=document.getElementById('dnBody'), accBtn=document.getElementById('accBtn'); if(!box) return;
+  let me=null, off=0, busy=false, firstNote=false, timer=null, role='s', autoPending=false, panelOpen=false;
   const NOAUTO='sgy_dn_noauto_v1';   /* 교사가 직접 로그아웃하면 그 이름은 자동 참여하지 않음 */
   function lsGet(k){ try{ return JSON.parse(localStorage.getItem(k)||'null'); }catch(e){ return null; } }
   function lsSet(k,v){ try{ if(v==null) localStorage.removeItem(k); else localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
@@ -3141,30 +3168,81 @@ if('serviceWorker' in navigator){
     const day=Math.round((Date.UTC(t.getUTCFullYear(),t.getUTCMonth(),t.getUTCDate())-D0)/864e5)+1, h=t.getUTCHours();
     return {day:day, h:h, inP:day>=1&&day<=DAYS, open:day>=1&&day<=DAYS&&h>=19&&h<23};
   }
+  function pad(n){ return (n<10?'0':'')+n; }
+  function todayLocal(){ const d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
   function setMe(j){ me={name:j.name,grade:j.grade,role:j.role||'s',days:j.days||[]}; if(j.state) off=j.state.now-Date.now(); lsSet(MK,{me:me,off:off}); homeBadge(); }
+  function onScreen(){ return !!document.querySelector('#s-daniel.on'); }
 
-  function loginHTML(){
+  /* ── 로그인 폼 (다니엘기도회 화면 px='dn' · 헤더 계정 창 px='ac' 공용) ── */
+  function loginHTML(px){
     if(autoPending) return '<div class="dnCard"><div class="dnNm">선생님으로 연결하는 중…</div><div class="dnSub">교사앱 로그인 정보를 확인하고 있어요.</div></div>';
     const seg='<div class="dnSeg"><button type="button" data-role="s" class="'+(role==='s'?'on':'')+'">학생</button><button type="button" data-role="t" class="'+(role==='t'?'on':'')+'">선생님</button></div>';
+    const att=px==='ac'?'<div class="dnSub" style="color:#4b3bc4;margin-top:6px"><i class="ti ti-calendar-check" style="vertical-align:-2px"></i> 로그인하면 앱을 열 때마다 출석 도장이 자동으로 찍혀요.</div>':'';
     if(role==='t') return '<div class="dnCard">'+seg+
-      '<div class="dnNm">선생님 로그인</div>'+
+      '<div class="dnNm">선생님 로그인</div>'+att+
       '<div class="dnSub">교사앱과 같은 이름·비밀번호로 한 번만 로그인하면, 이 폰에서는 다음부터 자동이에요.</div>'+
-      '<input class="grIn" id="dnName" type="text" placeholder="교사 이름" autocomplete="off">'+
-      '<input class="grIn" id="dnPw" type="password" placeholder="교사앱 비밀번호" autocomplete="current-password">'+
-      '<button class="grBtn" id="dnTLoginBtn">로그인</button>'+
-      '<div class="grErr" id="dnErr"></div>'+
+      '<input class="grIn" id="'+px+'Name" type="text" placeholder="교사 이름" autocomplete="off">'+
+      '<input class="grIn" id="'+px+'Pw" type="password" placeholder="교사앱 비밀번호" autocomplete="current-password">'+
+      '<button class="grBtn" id="'+px+'TLoginBtn">로그인</button>'+
+      '<div class="grErr" id="'+px+'Err"></div>'+
       '<div class="dnHint">교사앱 로그인 명단에 있는 선생님만 가능해요.<br>비밀번호는 교사앱에서 바꿀 수 있어요.</div>'+
     '</div>';
     return '<div class="dnCard">'+seg+
-      '<div class="dnNm">학생 로그인</div>'+
+      '<div class="dnNm">학생 로그인</div>'+att+
       '<div class="dnSub">처음이면 쓸 숫자 4자리를 직접 정해요. 이 폰에서는 다음부터 자동으로 로그인돼요.</div>'+
-      '<input class="grIn" id="dnName" type="text" placeholder="이름 (출석부 이름 그대로)" autocomplete="off">'+
-      '<input class="grIn dnPin" id="dnPin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="숫자 4자리" autocomplete="off">'+
-      '<button class="grBtn" id="dnLoginBtn">로그인</button>'+
-      '<div class="grErr" id="dnErr"></div>'+
+      '<input class="grIn" id="'+px+'Name" type="text" placeholder="이름 (출석부 이름 그대로)" autocomplete="off">'+
+      '<input class="grIn dnPin" id="'+px+'Pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="숫자 4자리" autocomplete="off">'+
+      '<button class="grBtn" id="'+px+'LoginBtn">로그인</button>'+
+      '<div class="grErr" id="'+px+'Err"></div>'+
       '<div class="dnHint">출석부에 있는 이름으로만 로그인할 수 있어요.<br>숫자를 잊어버리면 선생님께 초기화를 부탁하세요.</div>'+
     '</div>';
   }
+  const ERR={notteacher:'교사앱 로그인 명단에 없는 이름이에요.',notstudent:'출석부에서 이름을 찾지 못했어요. 선생님이시면 위에서 [선생님]을 눌러 주세요.',badpin:'숫자 4자리를 입력해 주세요.',locked:'여러 번 틀려서 10분 동안 잠겼어요. 잠시 뒤에 다시 해 주세요.',neterr:'연결이 불안정해요. 다시 눌러 주세요.'};
+  function err(px,t){ const e=document.getElementById(px+'Err'); if(e) e.textContent=t||''; }
+  function bindLogin(root,px,rerender){
+    root.querySelectorAll('[data-role]').forEach(function(b){ b.onclick=function(e){ e.stopPropagation(); role=b.getAttribute('data-role'); rerender(); }; });
+    const tb=document.getElementById(px+'TLoginBtn');
+    if(tb) tb.onclick=async function(){
+      if(busy) return;
+      const name=(document.getElementById(px+'Name').value||'').replace(/\s+/g,''), pw=document.getElementById(px+'Pw').value||'';
+      if(!name){ err(px,'이름을 입력해 주세요.'); return; }
+      if(!pw){ err(px,'비밀번호를 입력해 주세요.'); return; }
+      busy=true; tb.disabled=true; tb.textContent='확인 중…'; err(px,'');
+      const j=await post({action:'dn_tlogin',name:name,pw:pw});
+      busy=false;
+      if(j&&j.ok){ lsSet(NOAUTO,null); signedIn(j,false,false); return; }
+      tb.disabled=false; tb.textContent='로그인';
+      err(px, j&&j.error==='wrongpw' ? '비밀번호가 맞지 않아요.'+(j.left>0?' (남은 기회 '+j.left+'번)':' 10분 동안 잠겼어요.') : (ERR[j&&j.error]||'로그인하지 못했어요. 다시 눌러 주세요.'));
+    };
+    const lb=document.getElementById(px+'LoginBtn');
+    if(lb) lb.onclick=async function(){
+      if(busy) return;
+      const name=(document.getElementById(px+'Name').value||'').replace(/\s+/g,''), pin=(document.getElementById(px+'Pin').value||'').trim();
+      if(!name){ err(px,'이름을 입력해 주세요.'); return; }
+      if(!/^\d{4}$/.test(pin)){ err(px,ERR.badpin); return; }
+      busy=true; lb.disabled=true; lb.textContent='확인 중…'; err(px,'');
+      const j=await post({action:'dn_login',name:name,pin:pin});
+      busy=false;
+      if(j&&j.ok){ signedIn(j,!!j.first,false); return; }
+      lb.disabled=false; lb.textContent='로그인';
+      err(px, j&&j.error==='wrongpin' ? '숫자가 맞지 않아요.'+(j.left>0?' (남은 기회 '+j.left+'번)':' 10분 동안 잠겼어요.') : (ERR[j&&j.error]||'로그인하지 못했어요. 다시 눌러 주세요.'));
+    };
+  }
+  /* 로그인 성공(직접·자동 공통) → 화면·헤더·출석 갱신 */
+  function signedIn(j,first,auto){
+    lsSet(AK,auto?{name:j.name,token:j.token,auto:1}:{name:j.name,token:j.token});
+    firstNote=first; setMe(j); refreshAll(); attSync();
+  }
+  function signOut(){
+    const t=me&&me.role==='t';
+    if(!confirm(t?'로그아웃할까요?\n다시 들어올 때 [선생님]에서 교사앱 이름·비밀번호로 로그인하면 돼요.':'로그아웃할까요?\n다시 들어올 때 이름과 숫자 4자리가 필요해요.')) return;
+    if(t) lsSet(NOAUTO,me.name);
+    lsSet(AK,null); lsSet(MK,null); lsSet(SK,null); me=null; firstNote=false; role=t?'t':'s';
+    panelClose(); refreshAll();
+  }
+  function refreshAll(){ accRender(); homeBadge(); attHint(); if(onScreen()) paint(); if(panelOpen) panelRender(); }
+
+  /* ── 다니엘기도회 화면 ── */
   function goalText(n,t){
     let left=DAYS-Math.max(t.day,0)+((t.inP&&t.h<23&&me.days.indexOf(t.day)<0)?1:0);   /* 앞으로 더 채울 수 있는 날 */
     if(t.day<1) left=DAYS; if(t.day>DAYS) left=0;
@@ -3204,80 +3282,45 @@ if('serviceWorker' in navigator){
       '<div class="dnHint">참여 체크는 매일 저녁 7시~11시(기도회 앞뒤 1시간)에만 열려요.<br>'+(me.role==='t'?'놓친 날은 교사앱 참여 현황에서 체크할 수 있어요.':'폰이 없던 날은 선생님이 대신 체크해 줄 수 있어요.')+'</div>'+
     '</div>';
   }
-  function err(t){ const e=document.getElementById('dnErr'); if(e) e.textContent=t||''; }
   function paint(){
     const keepName=document.getElementById('dnName'), nv=keepName?keepName.value:'';
-    box.innerHTML = (window.__dnUser() && me) ? meHTML() : loginHTML();
+    box.innerHTML = (window.__dnUser() && me) ? meHTML() : loginHTML('dn');
     const ni=document.getElementById('dnName'); if(ni&&nv) ni.value=nv;
-    bind();
-  }
-  const ERR={notteacher:'교사앱 로그인 명단에 없는 이름이에요.',notstudent:'출석부에서 이름을 찾지 못했어요. 선생님이시면 위에서 [선생님]을 눌러 주세요.',badpin:'숫자 4자리를 입력해 주세요.',locked:'여러 번 틀려서 10분 동안 잠겼어요. 잠시 뒤에 다시 해 주세요.',neterr:'연결이 불안정해요. 다시 눌러 주세요.'};
-  function bind(){
-    box.querySelectorAll('[data-role]').forEach(function(b){ b.onclick=function(){ role=b.getAttribute('data-role'); box.innerHTML=loginHTML(); bind(); }; });
-    const tb=document.getElementById('dnTLoginBtn');
-    if(tb) tb.onclick=async function(){
-      if(busy) return;
-      const name=(document.getElementById('dnName').value||'').replace(/\s+/g,''), pw=document.getElementById('dnPw').value||'';
-      if(!name){ err('이름을 입력해 주세요.'); return; }
-      if(!pw){ err('비밀번호를 입력해 주세요.'); return; }
-      busy=true; tb.disabled=true; tb.textContent='확인 중…'; err('');
-      const j=await post({action:'dn_tlogin',name:name,pw:pw});
-      busy=false;
-      if(j&&j.ok){ lsSet(AK,{name:j.name,token:j.token}); lsSet(NOAUTO,null); setMe(j); paint(); return; }
-      tb.disabled=false; tb.textContent='로그인';
-      err(j&&j.error==='wrongpw' ? '비밀번호가 맞지 않아요.'+(j.left>0?' (남은 기회 '+j.left+'번)':' 10분 동안 잠겼어요.') : (ERR[j&&j.error]||'로그인하지 못했어요. 다시 눌러 주세요.'));
-    };
-    const lb=document.getElementById('dnLoginBtn');
-    if(lb) lb.onclick=async function(){
-      if(busy) return;
-      const name=(document.getElementById('dnName').value||'').replace(/\s+/g,''), pin=(document.getElementById('dnPin').value||'').trim();
-      if(!name){ err('이름을 입력해 주세요.'); return; }
-      if(!/^\d{4}$/.test(pin)){ err(ERR.badpin); return; }
-      busy=true; lb.disabled=true; lb.textContent='확인 중…'; err('');
-      const j=await post({action:'dn_login',name:name,pin:pin});
-      busy=false;
-      if(j&&j.ok){ lsSet(AK,{name:j.name,token:j.token}); firstNote=!!j.first; setMe(j); paint(); return; }
-      lb.disabled=false; lb.textContent='로그인';
-      err(j&&j.error==='wrongpin' ? '숫자가 맞지 않아요.'+(j.left>0?' (남은 기회 '+j.left+'번)':' 10분 동안 잠겼어요.') : (ERR[j&&j.error]||'로그인하지 못했어요. 다시 눌러 주세요.'));
-    };
-    const ob=document.getElementById('dnOutBtn');
-    if(ob) ob.onclick=function(){
-      const t=me&&me.role==='t';
-      if(!confirm(t?'로그아웃할까요?\n다시 들어올 때 [선생님]에서 교사앱 이름·비밀번호로 로그인하면 돼요.':'로그아웃할까요?\n다시 들어올 때 이름과 숫자 4자리가 필요해요.')) return;
-      if(t) lsSet(NOAUTO,me.name);
-      lsSet(AK,null); lsSet(MK,null); me=null; firstNote=false; role=t?'t':'s'; homeBadge(); paint();
-    };
+    bindLogin(box,'dn',paint);
+    const ob=document.getElementById('dnOutBtn'); if(ob) ob.onclick=signOut;
     const cb=document.getElementById('dnCheckBtn');
     if(cb) cb.onclick=async function(){
       if(busy||cb.disabled) return;
       const a=lsGet(AK); if(!a) return;
-      busy=true; cb.disabled=true; cb.textContent='기록하는 중…'; err('');
+      busy=true; cb.disabled=true; cb.textContent='기록하는 중…'; err('dn','');
       const j=await post({action:'dn_check',name:a.name,token:a.token});
       busy=false;
       if(j&&j.ok){ setMe(j); paint(); return; }
-      if(j&&j.error==='auth'){ lsSet(AK,null); lsSet(MK,null); me=null; paint(); err('로그인이 풀렸어요. 다시 로그인해 주세요.'); return; }
+      if(j&&j.error==='auth'){ lost(); err('dn','로그인이 풀렸어요. 다시 로그인해 주세요.'); return; }
       if(j&&j.state) off=j.state.now-Date.now();
-      paint(); err(j&&j.error==='closed' ? '지금은 참여 체크 시간이 아니에요.' : ERR.neterr);
+      paint(); err('dn', j&&j.error==='closed' ? '지금은 참여 체크 시간이 아니에요.' : ERR.neterr);
     };
   }
+  function lost(){ lsSet(AK,null); lsSet(MK,null); lsSet(SK,null); me=null; refreshAll(); }
   /* 교사앱에 로그인돼 있으면 따로 로그인하지 않고 그 선생님으로 참여 */
   async function autoT(){
     const n=tName(); if(lsGet(AK)||!n||lsGet(NOAUTO)===n||autoPending) return false;
-    autoPending=true; if(document.querySelector('#s-daniel.on')) paint();
+    autoPending=true; if(onScreen()) paint(); if(panelOpen) panelRender();
     const j=await post({action:'dn_tauto',name:n});
     autoPending=false;
-    if(j&&j.ok){ lsSet(AK,{name:j.name,token:j.token,auto:1}); setMe(j); }
-    return !!(j&&j.ok);
+    if(j&&j.ok){ signedIn(j,false,true); return true; }
+    refreshAll(); return false;
   }
   async function refresh(){
     const a=lsGet(AK);
-    if(!a){ await autoT(); if(document.querySelector('#s-daniel.on')) paint(); return; }
+    if(!a){ await autoT(); if(onScreen()) paint(); return; }
     const j=await post({action:'dn_me',name:a.name,token:a.token});
     if(j&&j.ok){ setMe(j); }
-    else if(j&&j.error==='auth'){ lsSet(AK,null); lsSet(MK,null); me=null; }
+    else if(j&&j.error==='auth'){ lost(); }
     else return;
-    const on=document.querySelector('#s-daniel.on'), typing=document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#dnBody');
-    if(on&&!typing) paint();
+    const typing=document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#dnBody');
+    if(onScreen()&&!typing) paint();
+    accRender();
   }
   /* 홈 카드: 기간 중 Day N, 오늘 체크했으면 '참여 완료', 11/22엔 '결과 보기' */
   function homeBadge(){
@@ -3290,16 +3333,85 @@ if('serviceWorker' in navigator){
     b.style.background=done?'#1f9d63':'#5b3fd6';
     if(ds) ds.textContent=done?'오늘도 함께 기도했어요 · 매일 저녁 8시':'매일 저녁 8시 · 오늘 참여 체크하기';
   }
+
+  /* ── 로그인 자동 출석: 하루 한 번 서버에 오늘 도장 + 처음 한 번은 폰 도장도 옮기고, 서버 도장을 폰 도장깨기에 합친다 ── */
+  function localDays(){ try{ return JSON.parse(localStorage.getItem('sgy_att_days')||'[]'); }catch(e){ return []; } }
+  let syncing=false;
+  async function attSync(){
+    const a=lsGet(AK); if(!a||syncing) return;
+    const sk=lsGet(SK)||{}, first=sk.name!==a.name;
+    syncing=true;
+    const j=await post({action:'dn_att',name:a.name,token:a.token,days:first?localDays():[]});
+    syncing=false;
+    if(j&&j.ok&&Array.isArray(j.days)){
+      const set={}; localDays().concat(j.days).forEach(function(d){ set[d]=1; });
+      try{ localStorage.setItem('sgy_att_days',JSON.stringify(Object.keys(set).sort())); localStorage.setItem('sgy_att_name',a.name); }catch(e){}
+      lsSet(SK,{name:a.name,d:j.today});
+      if(document.querySelector('#s-attend.on')&&window.__renderAttend) window.__renderAttend();
+      attHint(); if(panelOpen) panelRender();
+    } else if(j&&j.error==='auth'){ lost(); }
+  }
+  window.__attSync=attSync;
+  function attDue(){ const a=lsGet(AK), sk=lsGet(SK)||{}; return !!a && (sk.name!==a.name || sk.d!==todayLocal()); }
+  /* 출석체크 화면 안내 줄 */
+  function attHint(){
+    const el=document.getElementById('attAuto'); if(!el) return;
+    el.style.color=window.__dnUser()?'#1f7a4a':'var(--tx2)';
+    if(window.__dnUser()) el.innerHTML='<i class="ti ti-circle-check"></i> 로그인한 계정은 앱을 열면 자동으로 출석돼요';
+    else el.innerHTML='로그인하면 앱을 열 때마다 자동으로 출석돼요 <button type="button" id="attLoginBtn">로그인</button>';
+    const lb=document.getElementById('attLoginBtn'); if(lb) lb.onclick=function(e){ e.stopPropagation(); panelOpenFn(); };
+  }
+
+  /* ── 헤더 계정 버튼 + 계정 창 ── */
+  const panel=document.createElement('div'); panel.id='accPanel';
+  (document.getElementById('app')||document.body).appendChild(panel);
+  function initials(n){ n=String(n||''); return n.length>2?n.slice(-2):n; }
+  function accRender(){
+    if(!accBtn) return;
+    const n=window.__dnUser(), t=me&&me.role==='t';
+    accBtn.classList.toggle('in',!!n); accBtn.classList.toggle('tch',!!(n&&t)); accBtn.classList.toggle('open',panelOpen);
+    accBtn.innerHTML=n?'<span>'+esc(initials(n))+'</span>':'<i class="ti ti-user-circle"></i>';
+    accBtn.setAttribute('aria-label',n?n+' 계정':'로그인');
+  }
+  function panelRender(){
+    const n=window.__dnUser();
+    if(!n||!me){ panel.innerHTML=loginHTML('ac'); bindLogin(panel,'ac',panelRender); return; }
+    const t=me.role==='t', att=localDays().indexOf(todayLocal())>=0;
+    panel.innerHTML='<div class="dnCard">'+
+      '<div class="acHd"><div class="acAv'+(t?' tch':'')+'">'+esc(initials(me.name))+'</div><div><div class="dnNm">'+esc(me.name)+(t?' 선생님':'')+'</div><div class="dnSub" style="margin-top:1px">'+(t?'선생님':esc(me.grade||'')+' · 학생')+((lsGet(AK)||{}).auto?' · 교사앱 로그인으로 자동':'')+'</div></div></div>'+
+      '<div class="acMi" data-go="attend"><i class="ti ti-calendar-check"></i>출석체크 도장깨기'+(att?'<span class="acOk">오늘 출석 완료</span>':'<i class="ti ti-chevron-right acR"></i>')+'</div>'+
+      '<div class="acMi" data-go="daniel"><i class="ti ti-flame"></i>다니엘기도회 내 기록<i class="ti ti-chevron-right acR"></i></div>'+
+      '<div class="acMi acOut" data-out="1"><i class="ti ti-logout"></i>로그아웃</div>'+
+    '</div>';
+    panel.querySelectorAll('[data-go]').forEach(function(x){ x.onclick=function(){ const g=x.getAttribute('data-go'); panelClose(); go(g); }; });
+    const o=panel.querySelector('[data-out]'); if(o) o.onclick=signOut;
+  }
+  function panelOpenFn(){
+    panelOpen=true; panelRender(); panel.classList.add('on'); accRender();
+    const h=document.querySelector('header'); panel.style.top=(h?h.offsetHeight:80)+'px';
+    if(!lsGet(AK)) autoT();
+  }
+  function panelClose(){ if(!panelOpen) return; panelOpen=false; panel.classList.remove('on'); accRender(); }
+  if(accBtn) accBtn.onclick=function(e){ e.stopPropagation(); if(panelOpen) panelClose(); else panelOpenFn(); };
+  document.addEventListener('click',function(e){ if(panelOpen && !panel.contains(e.target) && !(accBtn&&accBtn.contains(e.target))) panelClose(); },true);
+  window.addEventListener('hashchange',panelClose);
+
   const c=lsGet(MK); if(c&&c.me&&window.__dnUser()){ me=c.me; off=c.off||0; }
-  homeBadge();
+  accRender(); homeBadge(); attHint();
   window.__renderDaniel=function(){
     paint(); refresh();
     clearInterval(timer);
-    timer=setInterval(function(){ if(!document.querySelector('#s-daniel.on')){ clearInterval(timer); return; } const typing=document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#dnBody'); if(!busy&&!typing) paint(); },30000);
+    timer=setInterval(function(){ if(!onScreen()){ clearInterval(timer); return; } const typing=document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#dnBody'); if(!busy&&!typing) paint(); },30000);
   };
-  if(document.querySelector('#s-daniel.on')) window.__renderDaniel();
-  /* 홈에 카드가 떠 있는 기간엔 열 때마다 서버에서 오늘 체크 여부를 받아 둔다 */
-  if(window.__dnHome && (window.__dnUser()||tName())) setTimeout(refresh,2500);
+  window.__attHint=attHint;
+  if(onScreen()) window.__renderDaniel();
+  /* 앱을 열 때: 교사 자동 로그인 → 로그인돼 있으면 하루 한 번 자동 출석, 기간 중엔 다니엘 기록도 받아 둔다 */
+  setTimeout(async function(){
+    if(!lsGet(AK)) await autoT();
+    if(attDue()) attSync();
+    if(window.__dnHome && lsGet(AK) && !onScreen()) refresh();
+  },1500);
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible' && attDue()) attSync(); });
 })();
 </script>
 <script>
