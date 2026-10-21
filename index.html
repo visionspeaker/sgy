@@ -311,6 +311,37 @@
   .grRO .grHero{opacity:.75}
   /* 사역 신청: 신급 교육 스타일(gr*) 재사용 + 주황 */
   #s-ministry .grHero,#s-ministry .grBtn:not(:disabled){background:#d9772b}
+  /* 2026 다니엘기도회 */
+  #s-daniel .grHero,#s-daniel .grBtn:not(:disabled){background:#5b3fd6}
+  #s-daniel .grIn:focus{border-color:#5b3fd6}
+  .dnCard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 15px;margin-top:10px}
+  .dnTop{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .dnNm{font-size:15px;font-weight:800;color:var(--tx)}
+  .dnSub{font-size:12px;color:var(--tx2);line-height:1.55;margin-top:4px}
+  .dnOut{flex:none;font-size:12px;color:var(--tx3);background:none;border:0;font-family:inherit;cursor:pointer;padding:2px 0}
+  .dnPin{letter-spacing:8px}
+  .dnPin:placeholder-shown{letter-spacing:normal}
+  .dnNew{background:#fff3df;border:1px solid #f4dfb4;color:#7a5a12;border-radius:10px;padding:9px 11px;font-size:12.5px;line-height:1.5;margin-top:10px}
+  .dnStats{display:flex;gap:8px;margin-top:12px}
+  .dnSt{flex:1;border-radius:11px;padding:9px 11px;min-width:0}
+  .dnSt .l{font-size:11px;font-weight:700}
+  .dnSt .v{font-size:20px;font-weight:800;margin-top:2px}
+  .dnSt .v small{font-size:12px;font-weight:700}
+  .dnSt .t{font-size:13px;font-weight:800;margin-top:5px;line-height:1.35}
+  .dnGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:13px}
+  .dnS{aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:#f6f5fb;color:#c4c2d6}
+  .dnS.past{background:#ecebf3;color:#a09eb8}
+  .dnS.done{background:#6c5ce7;color:#fff}
+  .dnS.today{background:#fff;box-shadow:inset 0 0 0 2px #6c5ce7;color:#4b3bc4}
+  .dnS.done.today{background:#6c5ce7;color:#fff;box-shadow:none}
+  .dnBadges{display:flex;gap:6px;margin-top:12px}
+  .dnBadge{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;font-size:12px;font-weight:800;border-radius:999px;padding:7px 8px;background:#f1f0f6;color:#b3b1c6}
+  .dnBadge i{font-size:16px}
+  .dnBadge.g10{background:#fff3df;color:#a06a00}
+  .dnBadge.g21{background:#e3f4ea;color:#1f7a4a}
+  .dnHint{font-size:11.5px;color:var(--tx3);text-align:center;margin-top:8px;line-height:1.5}
+  .dnLive{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:13px;margin-top:10px;font-size:14.5px;font-weight:800;color:var(--tx);font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+  .dnLive i{color:#e53935;font-size:20px}
   #s-ministry .grIn:focus{border-color:#d9772b}
   #s-ministry .grOpt.sel{border-color:#d9772b;background:#fdf4ec}
   #s-ministry .grOpt .dot{border-radius:5px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;box-sizing:border-box}
@@ -590,6 +621,11 @@
           <div class="ntbV" id="ntBibleV"></div>
         </div>
         <i class="ti ti-building-church"></i>
+      </div>
+      <div class="tile tileRow" id="homeDnTile" style="margin-top:12px;display:none;background:#f3efff;border-color:#d9cffb" onclick="go('daniel')">
+        <div class="ic" style="background:#e4dbff;color:#5b3fd6;font-size:23px"><i class="ti ti-flame"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">2026 다니엘기도회</div><div class="ds" id="homeDnDs">매일 저녁 8시 · 오늘 참여 체크하기</div></div>
+        <span id="homeDnBadge" style="flex:none;background:#5b3fd6;color:#fff;font-size:11.5px;font-weight:800;border-radius:999px;padding:5px 11px">Day 1</span>
       </div>
       <div class="tile tileRow" id="homeGradeTile" style="margin-top:12px;display:none;background:#f2faf5;border-color:#cfe8da" onclick="go('grade')">
         <div class="ic" style="background:#d9efe3;color:#2f8f5b;font-size:23px"><i class="ti ti-certificate"></i></div>
@@ -962,6 +998,11 @@
     <section class="screen" id="s-archive">
       <div class="sec-t">아카이브</div>
       <div class="archiveEmpty" id="archiveEmpty">보관된 항목이 없습니다.</div>
+      <div class="tile tileRow" id="arcDaniel" onclick="go('daniel')" style="display:none">
+        <div class="ic" style="background:#e4dbff;color:#5b3fd6"><i class="ti ti-flame"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">2026 다니엘기도회</div><div class="ds">21일 기도 참여 체크 · 2026/11/01~11/21</div></div>
+        <span class="archiveBadge" id="arcDanielBadge" style="background:#e4dbff;color:#4b2fb8">예정</span>
+      </div>
       <div class="tile tileRow" id="arcMinistry" onclick="go('ministry')">
         <div class="ic" style="background:#fbeadb;color:#d9772b"><i class="ti ti-heart-handshake"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">사역 신청</div><div class="ds" id="arcMinistryDs">신청 기간 2026/10/11~11/29</div></div>
@@ -1091,6 +1132,17 @@
       </div>
     </section>
 
+    <section class="screen" id="s-daniel">
+      <div class="dlBack" id="danielBack" onclick="go('archive')"><i class="ti ti-arrow-left"></i> 아카이브</div>
+      <div class="sec-t">다니엘기도회</div>
+      <div class="grHero">
+        <div class="gt">2026 다니엘기도회</div>
+        <div class="gh">21일간 열방과 함께하는 기도</div>
+        <div class="gs">11/1(주일) ~ 11/21(토) · 매일 저녁 8시~10시 · 온·오프라인</div>
+      </div>
+      <div id="dnBody"></div>
+      <button class="dnLive" onclick="open_('https://www.youtube.com/@danielprayer/live')"><i class="ti ti-brand-youtube"></i> 다니엘TV 생방송 보기</button>
+    </section>
     <section class="screen" id="s-cp">
       <div class="dlBack" onclick="go('more')"><i class="ti ti-arrow-left"></i> 더보기</div>
       <div class="sec-t">컴패션 구제/선교 사역</div>
@@ -1325,6 +1377,7 @@ function afterActivate(s){
   if(s==='deeplink'&&window.__renderDeeplinks){window.__renderDeeplinks();}
   if(s==='release'&&window.__renderRelease){window.__renderRelease();}
   if(s==='cp'&&window.__renderCp){window.__renderCp();}
+  if(s==='daniel'&&window.__renderDaniel){window.__renderDaniel();}
   if(s==='camp'){updateCampApply();}
   if(s==='pray'&&window.__renderPray){window.__renderPray();}
   if(s==='thanks'&&window.__renderThanks){window.__renderThanks();}
@@ -2088,6 +2141,8 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
    헤더의 버전 칩은 맨 앞 항목에서 자동으로 가져온다. */
 (function(){
   const RELEASES=[
+    {v:'v32',d:'2026/10/21',t:'2026 다니엘기도회 참여 체크',
+      f:['11/1~21 다니엘기도회 기간에 홈에서 매일 참여를 체크할 수 있습니다','처음 한 번 이름과 숫자 4자리로 로그인하면, 그 폰에서는 다음부터 자동으로 로그인됩니다','참여 체크는 매일 저녁 7시~11시(기도회 앞뒤 1시간)에 열립니다','21일 도장판에서 내 참여 일수를 보고, 10일 참여·21일 완주 배지를 받을 수 있습니다','다니엘TV 생방송을 앱에서 바로 열 수 있습니다'],i:[],x:[]},
     {v:'v31',d:'2026/10/14',t:'내 답장 고치기 · 지우기',
       f:['답장을 쓸 때 숫자 4자리 비밀번호를 정해 두면, 나중에 그 답장을 고치거나 지울 수 있습니다'],
       i:['고친 답장에는 이름 옆에 (수정됨)이 표시됩니다','해외 어린이 양육 화면이 훨씬 빨리 열립니다 (한 번 본 내용은 바로 보여 주고 뒤에서 새로 받아요)'],x:[]},
@@ -2335,15 +2390,26 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
     if(minEnded){ mb.textContent='종료'; mb.removeAttribute('style'); }
     else if(minOpen){ mb.textContent='신청중'; }
   }
+  /* 2026 다니엘기도회: 11/1 0:00 ~ 11/22 23:59 홈(11/22는 결과 확인용), 그 전엔 아카이브 '예정', 끝나면 아카이브 '종료' */
+  const dnOpen = now >= new Date(2026,10,1,0,0,0);
+  const dnHomeEnd = now >= new Date(2026,10,23,0,0,0);
+  const dnLive = dnOpen && !dnHomeEnd;
+  window.__dnHome = dnLive;
+  const dbk=document.getElementById('danielBack'); if(dbk) dbk.style.display = dnLive ? 'none' : '';
+  const homeDn=document.getElementById('homeDnTile');
+  const arcDn=document.getElementById('arcDaniel');
+  if(homeDn) homeDn.style.display = dnLive ? '' : 'none';
+  if(arcDn) arcDn.style.display = dnLive ? 'none' : '';
+  if(dnHomeEnd){ const db=document.getElementById('arcDanielBadge'); if(db){ db.textContent='종료'; db.removeAttribute('style'); } }
   /* 아카이브 빈 상태: 표시 중인 아카이브 항목이 하나도 없을 때만 노출 */
   const arcEmpty=document.getElementById('archiveEmpty');
-  const anyArc = (arcCamp && arcCamp.style.display!=='none') || (arcSurvey && arcSurvey.style.display!=='none') || (arcPray && arcPray.style.display!=='none') || (arcThanks && arcThanks.style.display!=='none') || (arcGrade && arcGrade.style.display!=='none') || (arcMin && arcMin.style.display!=='none');
+  const anyArc = (arcCamp && arcCamp.style.display!=='none') || (arcSurvey && arcSurvey.style.display!=='none') || (arcPray && arcPray.style.display!=='none') || (arcThanks && arcThanks.style.display!=='none') || (arcGrade && arcGrade.style.display!=='none') || (arcMin && arcMin.style.display!=='none') || (arcDn && arcDn.style.display!=='none');
   if(arcEmpty) arcEmpty.style.display = anyArc ? 'none' : '';
 })();
 
 /* ===== 메뉴 딥링크 (URL 라우팅) ===== */
 (function(){
-  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks','deeplink','backup','grade','release','ministry','cp'];
+  const ROUTES=['home','pod','vid','more','attend','notice','camp','contact','enroll','pray','plan','archive','survey','thanks','deeplink','backup','grade','release','ministry','cp','daniel'];
   const EXT={
     bulletin:'https://vision153.notion.site/_250601-2026eda158ae8095999ac133933fd32a?pvs=4',
     map:'https://map.naver.com/p/search/송탄영광교회',
@@ -2396,14 +2462,14 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   const groups=[
     ['메인',[['홈','home'],['설교 팟캐스트','pod'],['유튜브 영상','vid'],['더보기','more']]],
     ['여름 수련회',[['여름 수련회','camp'],['수련회 종료 감사 7일 기도','thanks'],['30번 중보기도','pray']]],
-    ['신앙·참여',[['사역 신청','ministry'],['컴패션 구제/선교 사역','compassion'],['신급 교육 신청','grade'],['공지사항','notice'],['출석체크 도장깨기','attend'],['입회원서','enroll'],['문의하기','contact']]],
+    ['신앙·참여',[['2026 다니엘기도회','daniel'],['사역 신청','ministry'],['컴패션 구제/선교 사역','compassion'],['신급 교육 신청','grade'],['공지사항','notice'],['출석체크 도장깨기','attend'],['입회원서','enroll'],['문의하기','contact']]],
     ['정보·보관',[['연간계획','plan'],['보관함(아카이브)','archive'],['업데이트 기록','release']]],
     ['외부 링크',[['온라인 주보','bulletin'],['오시는 길','map'],['중고등부 유튜브','youtube'],['설교 팟캐스트(팟빵)','podbbang'],['인스타그램','insta'],['중고등부 밴드','band']]]
   ];
   /* 자동 최신화 설정 — 목록에 일부러 넣지 않을 라우트 */
   const SKIP={deeplink:1,survey:1};
   /* 자동 추가될 때 쓸 한글 이름 (없으면 라우트 키를 그대로 표시) */
-  const AUTO_NAMES={backup:'앱 데이터 백업 · 복원',grade:'신급 교육 신청',ministry:'2027 사역 신청',survey:'2026 여름 수련회 설문'};
+  const AUTO_NAMES={backup:'앱 데이터 백업 · 복원',grade:'신급 교육 신청',ministry:'2027 사역 신청',daniel:'2026 다니엘기도회',survey:'2026 여름 수련회 설문'};
 
   function fallback(text){ try{ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity=0; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }catch(e){} }
   function makeRow(name,key){
@@ -2828,7 +2894,7 @@ if('serviceWorker' in navigator){
 /* ===== 하위 화면: 뒤로가기 / 왼쪽 끝 스와이프 → 상위 화면 ===== */
 (function(){
   const main=document.querySelector('main'); if(!main)return;
-  const PARENT={camp:'archive',pray:'archive',thanks:'archive',survey:'archive',grade:'archive',ministry:(window.__ministryHome?'home':'archive'),deeplink:'archive',notice:'archive',backup:'more',cp:'more',plan:'more',enroll:'more',contact:'more',attend:'home',release:'home'};
+  const PARENT={camp:'archive',pray:'archive',thanks:'archive',survey:'archive',grade:'archive',ministry:(window.__ministryHome?'home':'archive'),daniel:(window.__dnHome?'home':'archive'),deeplink:'archive',notice:'archive',backup:'more',cp:'more',plan:'more',enroll:'more',contact:'more',attend:'home',release:'home'};
   window.__parentOf=function(s){ return PARENT[s]||''; };
   let sx=0,sy=0,armed=false,cur='';
   main.addEventListener('touchstart',function(e){
@@ -3034,6 +3100,212 @@ if('serviceWorker' in navigator){
     console.log('%cCopyright (c) 2026 visionspeaker. All rights reserved.','font-size:12px;color:#5d5b7e');
     console.log('%c⚠ 무단 복제·배포·2차적저작물 작성을 금합니다.\n이 앱의 소스코드·디자인 등 모든 권리는 visionspeaker에게 귀속됩니다.\n무단 이용 시 저작권법에 따른 민·형사상 책임을 질 수 있습니다.','font-size:13px;font-weight:700;color:#e11d48');
   }catch(e){}
+})();
+</script>
+<script>
+/* ===== 2026 다니엘기도회 (11/1~21) =====
+   참여 기록은 교사앱 서버(dn_*)의 비공개 시트에 쌓인다. 로그인 = 출석 명단 이름 + 학생이 처음 정한 숫자 4자리.
+   참여 체크 가능 여부는 서버 시각으로 판정(매일 19~23시), 화면은 서버 시각과의 차이(off)로 버튼 상태만 미리 맞춘다. */
+(function(){
+  const API="https://script.google.com/macros/s/AKfycbynttLT1S2F3OjVW345W3NUijszhXpnUmeTfZObxb6W3I4wxUmqrj5HgPK5gFqAiri5/exec";
+  const AK='sgy_dn_auth_v1', MK='sgy_dn_me_v1', DAYS=21, D0=Date.UTC(2026,10,1);
+  const box=document.getElementById('dnBody'); if(!box) return;
+  let me=null, off=0, busy=false, firstNote=false, timer=null;
+  function lsGet(k){ try{ return JSON.parse(localStorage.getItem(k)||'null'); }catch(e){ return null; } }
+  function lsSet(k,v){ try{ if(v==null) localStorage.removeItem(k); else localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+  function esc(t){ return String(t==null?'':t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  window.__dnUser=function(){ const a=lsGet(AK); return (a&&a.name)||''; };
+  function wait(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+  /* 구글 쪽이 POST를 GET으로 돌리면 doGet 기본 응답(출석 API 연결됨)이 온다 → 저장 전이므로 다시 보낸다 */
+  async function post(o){
+    for(let i=0;i<3;i++){
+      try{
+        const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(o)});
+        const j=await r.json();
+        if(j && j.msg==='출석 API 연결됨'){ await wait(800); continue; }
+        return j;
+      }catch(e){ await wait(800); }
+    }
+    return {ok:false,error:'neterr'};
+  }
+  /* 서버 시각 기준 오늘 */
+  function now(){
+    const t=new Date(Date.now()+off+9*3600e3);
+    const day=Math.round((Date.UTC(t.getUTCFullYear(),t.getUTCMonth(),t.getUTCDate())-D0)/864e5)+1, h=t.getUTCHours();
+    return {day:day, h:h, inP:day>=1&&day<=DAYS, open:day>=1&&day<=DAYS&&h>=19&&h<23};
+  }
+  function setMe(j){ me={name:j.name,grade:j.grade,days:j.days||[]}; if(j.state) off=j.state.now-Date.now(); lsSet(MK,{me:me,off:off}); homeBadge(); }
+
+  function loginHTML(){
+    return '<div class="dnCard">'+
+      '<div class="dnNm">학생 로그인</div>'+
+      '<div class="dnSub">처음이면 쓸 숫자 4자리를 직접 정해요. 이 폰에서는 다음부터 자동으로 로그인돼요.</div>'+
+      '<input class="grIn" id="dnName" type="text" placeholder="이름 (출석부 이름 그대로)" autocomplete="off">'+
+      '<input class="grIn dnPin" id="dnPin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="숫자 4자리" autocomplete="off">'+
+      '<button class="grBtn" id="dnLoginBtn">로그인</button>'+
+      '<div class="grErr" id="dnErr"></div>'+
+      '<div class="dnHint">출석부에 있는 이름으로만 로그인할 수 있어요.<br>숫자를 잊어버리면 선생님께 초기화를 부탁하세요.</div>'+
+    '</div>';
+  }
+  function goalText(n,t){
+    let left=DAYS-Math.max(t.day,0)+((t.inP&&t.h<23&&me.days.indexOf(t.day)<0)?1:0);   /* 앞으로 더 채울 수 있는 날 */
+    if(t.day<1) left=DAYS; if(t.day>DAYS) left=0;
+    if(n>=DAYS) return '21일 완주!';
+    if(n>=10) return DAYS-n<=left ? '21일 완주까지 '+(DAYS-n)+'일' : '10일 참여 달성!';
+    return 10-n<=left ? '10일 참여까지 '+(10-n)+'일' : '끝까지 함께 기도해요';
+  }
+  function meHTML(){
+    const t=now(), n=me.days.length, done=me.days.indexOf(t.day)>=0;
+    let cells='';
+    for(let d=1;d<=DAYS;d++){
+      const c=me.days.indexOf(d)>=0?' done':'';
+      cells+='<div class="dnS'+c+(d===t.day?' today':(d<t.day&&!c?' past':''))+'">'+d+'</div>';
+    }
+    let btn, dis=true;
+    if(t.day<1) btn='11/1(주일)부터 참여 체크가 열려요';
+    else if(t.day>DAYS) btn='다니엘기도회가 끝났어요';
+    else if(done) btn='<i class="ti ti-check"></i> 오늘(Day '+t.day+') 참여 완료';
+    else if(t.open){ btn='오늘(Day '+t.day+') 참여했어요'; dis=false; }
+    else if(t.h<19) btn='Day '+t.day+' 참여 체크는 저녁 7시에 열려요';
+    else btn='오늘 참여 체크 시간이 끝났어요';
+    return '<div class="dnCard">'+
+      '<div class="dnTop"><div class="dnNm">'+esc(me.name)+'님의 다니엘기도회</div><button class="dnOut" id="dnOutBtn">로그아웃</button></div>'+
+      (firstNote?'<div class="dnNew">로그인 완료! 정한 숫자 4자리를 꼭 기억해 두세요. 다른 폰에서 들어올 때 필요해요.</div>':'')+
+      '<div class="dnStats">'+
+        '<div class="dnSt" style="background:#efecff"><div class="l" style="color:#5d5b7e">참여</div><div class="v" style="color:#4b3bc4">'+n+'<small>/21일</small></div></div>'+
+        '<div class="dnSt" style="flex:1.4;background:#fff3df"><div class="l" style="color:#8a5a00">다음 목표</div><div class="t" style="color:#8a5a00">'+goalText(n,t)+'</div></div>'+
+      '</div>'+
+      '<div class="dnGrid">'+cells+'</div>'+
+      '<div class="dnBadges">'+
+        '<div class="dnBadge'+(n>=10?' g10':'')+'"><i class="ti ti-medal"></i>10일 참여</div>'+
+        '<div class="dnBadge'+(n>=DAYS?' g21':'')+'"><i class="ti ti-award"></i>21일 완주</div>'+
+      '</div>'+
+      '<button class="grBtn" id="dnCheckBtn"'+(dis?' disabled':'')+'>'+btn+'</button>'+
+      '<div class="grErr" id="dnErr"></div>'+
+      '<div class="dnHint">참여 체크는 매일 저녁 7시~11시(기도회 앞뒤 1시간)에만 열려요.<br>폰이 없던 날은 선생님이 대신 체크해 줄 수 있어요.</div>'+
+    '</div>';
+  }
+  function err(t){ const e=document.getElementById('dnErr'); if(e) e.textContent=t||''; }
+  function paint(){
+    const keepName=document.getElementById('dnName'), nv=keepName?keepName.value:'';
+    box.innerHTML = (window.__dnUser() && me) ? meHTML() : loginHTML();
+    const ni=document.getElementById('dnName'); if(ni&&nv) ni.value=nv;
+    bind();
+  }
+  const ERR={notstudent:'출석부에서 이름을 찾지 못했어요. 선생님께 문의해 주세요.',badpin:'숫자 4자리를 입력해 주세요.',locked:'여러 번 틀려서 10분 동안 잠겼어요. 잠시 뒤에 다시 해 주세요.',neterr:'연결이 불안정해요. 다시 눌러 주세요.'};
+  function bind(){
+    const lb=document.getElementById('dnLoginBtn');
+    if(lb) lb.onclick=async function(){
+      if(busy) return;
+      const name=(document.getElementById('dnName').value||'').replace(/\s+/g,''), pin=(document.getElementById('dnPin').value||'').trim();
+      if(!name){ err('이름을 입력해 주세요.'); return; }
+      if(!/^\d{4}$/.test(pin)){ err(ERR.badpin); return; }
+      busy=true; lb.disabled=true; lb.textContent='확인 중…'; err('');
+      const j=await post({action:'dn_login',name:name,pin:pin});
+      busy=false;
+      if(j&&j.ok){ lsSet(AK,{name:j.name,token:j.token}); firstNote=!!j.first; setMe(j); paint(); return; }
+      lb.disabled=false; lb.textContent='로그인';
+      err(j&&j.error==='wrongpin' ? '숫자가 맞지 않아요.'+(j.left>0?' (남은 기회 '+j.left+'번)':' 10분 동안 잠겼어요.') : (ERR[j&&j.error]||'로그인하지 못했어요. 다시 눌러 주세요.'));
+    };
+    const ob=document.getElementById('dnOutBtn');
+    if(ob) ob.onclick=function(){
+      if(!confirm('로그아웃할까요?\n다시 들어올 때 이름과 숫자 4자리가 필요해요.')) return;
+      lsSet(AK,null); lsSet(MK,null); me=null; firstNote=false; homeBadge(); paint();
+    };
+    const cb=document.getElementById('dnCheckBtn');
+    if(cb) cb.onclick=async function(){
+      if(busy||cb.disabled) return;
+      const a=lsGet(AK); if(!a) return;
+      busy=true; cb.disabled=true; cb.textContent='기록하는 중…'; err('');
+      const j=await post({action:'dn_check',name:a.name,token:a.token});
+      busy=false;
+      if(j&&j.ok){ setMe(j); paint(); return; }
+      if(j&&j.error==='auth'){ lsSet(AK,null); lsSet(MK,null); me=null; paint(); err('로그인이 풀렸어요. 다시 로그인해 주세요.'); return; }
+      if(j&&j.state) off=j.state.now-Date.now();
+      paint(); err(j&&j.error==='closed' ? '지금은 참여 체크 시간이 아니에요.' : ERR.neterr);
+    };
+  }
+  async function refresh(){
+    const a=lsGet(AK); if(!a) return;
+    const j=await post({action:'dn_me',name:a.name,token:a.token});
+    if(j&&j.ok){ setMe(j); }
+    else if(j&&j.error==='auth'){ lsSet(AK,null); lsSet(MK,null); me=null; }
+    else return;
+    const on=document.querySelector('#s-daniel.on'), typing=document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#dnBody');
+    if(on&&!typing) paint();
+  }
+  /* 홈 카드: 기간 중 Day N, 오늘 체크했으면 '참여 완료', 11/22엔 '결과 보기' */
+  function homeBadge(){
+    const b=document.getElementById('homeDnBadge'), ds=document.getElementById('homeDnDs'); if(!b) return;
+    const t=now();
+    if(t.day>DAYS){ b.textContent='결과 보기'; if(ds) ds.textContent='기도회를 마쳤어요 · 내 참여 기록 보기'; return; }
+    if(t.day<1){ b.textContent='11/1 시작'; return; }
+    const done=me&&window.__dnUser()&&me.days.indexOf(t.day)>=0;
+    b.textContent=done?'참여 완료':'Day '+t.day;
+    b.style.background=done?'#1f9d63':'#5b3fd6';
+    if(ds) ds.textContent=done?'오늘도 함께 기도했어요 · 매일 저녁 8시':'매일 저녁 8시 · 오늘 참여 체크하기';
+  }
+  const c=lsGet(MK); if(c&&c.me&&window.__dnUser()){ me=c.me; off=c.off||0; }
+  homeBadge();
+  window.__renderDaniel=function(){
+    paint(); refresh();
+    clearInterval(timer);
+    timer=setInterval(function(){ if(!document.querySelector('#s-daniel.on')){ clearInterval(timer); return; } const typing=document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#dnBody'); if(!busy&&!typing) paint(); },30000);
+  };
+  if(document.querySelector('#s-daniel.on')) window.__renderDaniel();
+  /* 홈에 카드가 떠 있는 기간엔 열 때마다 서버에서 오늘 체크 여부를 받아 둔다 */
+  if(window.__dnHome && window.__dnUser()) setTimeout(refresh,2500);
+})();
+</script>
+<script>
+/* 앱 사용 기록 — 화면에 떠 있는 시간만 15초 단위로 폰에 쌓고, 앱을 내릴 때 sendBeacon 1회 전송.
+   30분 넘게 쉬면 새 세션. 강제 종료로 못 보낸 조각은 다음 실행 때 전송. localhost에선 보내지 않음(window.__TRK_TEST로 강제). */
+(function(){
+ var API="https://script.google.com/macros/s/AKfycbynttLT1S2F3OjVW345W3NUijszhXpnUmeTfZObxb6W3I4wxUmqrj5HgPK5gFqAiri5/exec";
+ var TK="sgy_trk_v1", GAP=30*60000;
+ function me(){
+   var n=window.__dnUser?window.__dnUser():""; if(n) return n;
+   try{ var k="sgy_dev_v1", d=localStorage.getItem(k); if(!d){ d="d"+Math.random().toString(36).slice(2,12); localStorage.setItem(k,d); } return d; }catch(e){ return ""; }
+ }
+ function menuOf(t){
+   var el;
+   if((el=t.closest(".tile"))) return txt(el.querySelector(".nm"));
+   if((el=t.closest("nav button"))) return el.dataset.s==="home"?"":txt(el);
+   if((el=t.closest(".dnLive"))) return "다니엘TV 생방송";
+   return "";
+ }
+ var LOCAL=/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+ var st={}; try{ st=JSON.parse(localStorage.getItem(TK)||"{}")||{}; }catch(e){ st={}; }
+ var visT=0;
+ function save(){ try{ localStorage.setItem(TK,JSON.stringify(st)); }catch(e){} }
+ function newSid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+ function send(ch){
+   var u=me(); if(!u||!ch||(ch.sec<1&&!(ch.m||[]).length)) return;
+   var body=JSON.stringify({action:"track_s",user:u,sid:ch.sid,s:ch.s,e:ch.e,sec:Math.round(ch.sec),m:ch.m||[]});
+   if(LOCAL&&!window.__TRK_TEST){ window.__TRK_SENT=(window.__TRK_SENT||[]).concat([JSON.parse(body)]); return; }
+   var ok=false;
+   try{ ok=navigator.sendBeacon&&navigator.sendBeacon(API,new Blob([body],{type:"text/plain;charset=utf-8"})); }catch(e){}
+   if(!ok){ try{ fetch(API,{method:"POST",keepalive:true,headers:{"Content-Type":"text/plain;charset=utf-8"},body:body}); }catch(e){} }
+ }
+ function tick(){ if(!visT||!st.ch) return; var n=Date.now(); st.ch.sec+=(n-visT)/1000; st.ch.e=n; st.last=n; visT=n; save(); }
+ function begin(){
+   var n=Date.now();
+   if(st.ch){ send(st.ch); st.ch=null; }
+   if(!st.sid||!st.last||n-st.last>GAP) st.sid=newSid();
+   st.ch={sid:st.sid,s:n,e:n,sec:0,m:[]}; st.last=n; visT=n; save();
+ }
+ function end(){ if(!st.ch) return; tick(); var ch=st.ch; st.ch=null; visT=0; save(); send(ch); }
+ function menu(name){
+   name=String(name||"").replace(/\s+/g," ").trim().slice(0,30); if(!name) return;
+   if(!st.ch) begin(); var m=st.ch.m; if(m.length<60&&m[m.length-1]!==name) m.push(name); tick(); save();
+ }
+ function txt(el){ if(!el) return ""; var t=""; for(var i=0;i<el.childNodes.length;i++){ var c=el.childNodes[i]; if(c.nodeType===3) t+=c.nodeValue; } return t.trim()||el.textContent.trim(); }
+ document.addEventListener("visibilitychange",function(){ if(document.visibilityState==="hidden") end(); else begin(); });
+ window.addEventListener("pagehide",end);
+ setInterval(function(){ if(document.visibilityState!=="hidden") tick(); },15000);
+ if(document.visibilityState!=="hidden") begin();
+ var h=(location.hash||"").replace(/^#\/?/,""); if(h&&h!=="home") menu("링크·"+h);
+ document.addEventListener("click",function(e){ if(e.target.closest) menu(menuOf(e.target)); },true);
 })();
 </script>
 </body>
