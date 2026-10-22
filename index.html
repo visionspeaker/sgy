@@ -3172,6 +3172,9 @@ if('serviceWorker' in navigator){
   function todayLocal(){ const d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
   function setMe(j){ me={name:j.name,grade:j.grade,role:j.role||'s',days:j.days||[]}; if(j.state) off=j.state.now-Date.now(); lsSet(MK,{me:me,off:off}); homeBadge(); }
   function onScreen(){ return !!document.querySelector('#s-daniel.on'); }
+  /* 교사 호칭 — 전도사님은 전도사님으로 */
+  const TITLE={'강유석':'전도사'};
+  function title(n){ return TITLE[n]||'선생'; }
 
   /* ── 로그인 폼 (다니엘기도회 화면 px='dn' · 헤더 계정 창 px='ac' 공용) ── */
   function loginHTML(px){
@@ -3265,7 +3268,7 @@ if('serviceWorker' in navigator){
     else if(t.h<19) btn='Day '+t.day+' 참여 체크는 저녁 7시에 열려요';
     else btn='오늘 참여 체크 시간이 끝났어요';
     return '<div class="dnCard">'+
-      '<div class="dnTop"><div class="dnNm">'+esc(me.name)+(me.role==='t'?' 선생님':'님')+'의 다니엘기도회</div><button class="dnOut" id="dnOutBtn">로그아웃</button></div>'+
+      '<div class="dnTop"><div class="dnNm">'+esc(me.name)+(me.role==='t'?' '+title(me.name)+'님':'님')+'의 다니엘기도회</div><button class="dnOut" id="dnOutBtn">로그아웃</button></div>'+
       ((lsGet(AK)||{}).auto?'<div class="dnAuto"><i class="ti ti-school"></i>교사앱 로그인으로 자동 참여 중</div>':'')+
       (firstNote?'<div class="dnNew">로그인 완료! 정한 숫자 4자리를 꼭 기억해 두세요. 다른 폰에서 들어올 때 필요해요.</div>':'')+
       '<div class="dnStats">'+
@@ -3378,7 +3381,7 @@ if('serviceWorker' in navigator){
     if(!n||!me){ panel.innerHTML=loginHTML('ac'); bindLogin(panel,'ac',panelRender); return; }
     const t=me.role==='t', att=localDays().indexOf(todayLocal())>=0;
     panel.innerHTML='<div class="dnCard">'+
-      '<div class="acHd"><div class="acAv'+(t?' tch':'')+'">'+esc(initials(me.name))+'</div><div><div class="dnNm">'+esc(me.name)+(t?' 선생님':'')+'</div><div class="dnSub" style="margin-top:1px">'+(t?'선생님':esc(me.grade||'')+' · 학생')+((lsGet(AK)||{}).auto?' · 교사앱 로그인으로 자동':'')+'</div></div></div>'+
+      '<div class="acHd"><div class="acAv'+(t?' tch':'')+'">'+esc(initials(me.name))+'</div><div><div class="dnNm">'+esc(me.name)+(t?' '+title(me.name)+'님':'')+'</div><div class="dnSub" style="margin-top:1px">'+(t?title(me.name)+'님':esc(me.grade||'')+' · 학생')+((lsGet(AK)||{}).auto?' · 교사앱 로그인으로 자동':'')+'</div></div></div>'+
       '<div class="acMi" data-go="attend"><i class="ti ti-calendar-check"></i>출석체크 도장깨기'+(att?'<span class="acOk">오늘 출석 완료</span>':'<i class="ti ti-chevron-right acR"></i>')+'</div>'+
       '<div class="acMi" data-go="daniel"><i class="ti ti-flame"></i>다니엘기도회 내 기록<i class="ti ti-chevron-right acR"></i></div>'+
       '<div class="acMi acOut" data-out="1"><i class="ti ti-logout"></i>로그아웃</div>'+
