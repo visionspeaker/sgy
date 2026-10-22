@@ -750,11 +750,6 @@
         <div class="ic" style="background:#eef0f4;color:var(--tx2)"><i class="ti ti-archive"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">아카이브</div><div class="ds">지난 행사·자료 보관함</div></div>
       </div>
-      <div class="tile tileRow" style="margin-top:10px" onclick="go('backup')">
-        <div class="ic" style="background:#efecff;color:var(--primary)"><i class="ti ti-shield-lock"></i></div>
-        <div style="flex:1;min-width:0"><div class="nm">앱 데이터 백업 · 복원</div><div class="ds">앱 지우기 전 꼭 저장하세요</div></div>
-        <i class="ti ti-chevron-right" style="color:var(--tx3);font-size:20px"></i>
-      </div>
       <div class="tile tileRow" style="margin-top:10px" onclick="open_('https://visionspeaker.github.io/stgc/')">
         <div class="ic" style="background:#e6f6f4;color:#0d9488"><i class="ti ti-messages"></i></div>
         <div style="flex:1;min-width:0"><div class="nm">영광 커넥트</div><div class="ds">송탄영광교회 영광 커넥트 바로가기</div></div>
@@ -1069,6 +1064,11 @@
         <div style="flex:1;min-width:0"><div class="nm">공지사항</div><div class="ds">중고등부 소식·알림</div></div>
         <i class="ti ti-chevron-right" style="color:var(--tx3);font-size:20px"></i>
       </div>
+      <div class="tile tileRow" id="arcBackup" onclick="go('backup')">
+        <div class="ic" style="background:#efecff;color:var(--primary)"><i class="ti ti-shield-lock"></i></div>
+        <div style="flex:1;min-width:0"><div class="nm">앱 데이터 백업 · 복원</div><div class="ds">로그인하면 출석은 자동 저장돼요</div></div>
+        <i class="ti ti-chevron-right" style="color:var(--tx3);font-size:20px"></i>
+      </div>
     </section>
 
     <section class="screen" id="s-deeplink">
@@ -1191,7 +1191,7 @@
     </section>
 
     <section class="screen" id="s-backup">
-      <div class="dlBack" onclick="go('more')"><i class="ti ti-arrow-left"></i> 더보기</div>
+      <div class="dlBack" onclick="go('archive')"><i class="ti ti-arrow-left"></i> 아카이브</div>
       <div class="sec-t">앱 데이터 백업 · 복원</div>
       <div class="bkNote">
         <i class="ti ti-alert-circle"></i>
@@ -2925,7 +2925,7 @@ if('serviceWorker' in navigator){
 /* ===== 하위 화면: 뒤로가기 / 왼쪽 끝 스와이프 → 상위 화면 ===== */
 (function(){
   const main=document.querySelector('main'); if(!main)return;
-  const PARENT={camp:'archive',pray:'archive',thanks:'archive',survey:'archive',grade:'archive',ministry:(window.__ministryHome?'home':'archive'),daniel:(window.__dnHome?'home':'archive'),deeplink:'archive',notice:'archive',backup:'more',cp:'more',plan:'more',enroll:'more',contact:'more',attend:'home',release:'home'};
+  const PARENT={camp:'archive',pray:'archive',thanks:'archive',survey:'archive',grade:'archive',ministry:(window.__ministryHome?'home':'archive'),daniel:(window.__dnHome?'home':'archive'),deeplink:'archive',notice:'archive',backup:'archive',cp:'more',plan:'more',enroll:'more',contact:'more',attend:'home',release:'home'};
   window.__parentOf=function(s){ return PARENT[s]||''; };
   let sx=0,sy=0,armed=false,cur='';
   main.addEventListener('touchstart',function(e){
