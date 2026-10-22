@@ -1404,6 +1404,7 @@ function afterActivate(s){
   if(s==='release'&&window.__renderRelease){window.__renderRelease();}
   if(s==='cp'&&window.__renderCp){window.__renderCp();}
   if(s==='daniel'&&window.__renderDaniel){window.__renderDaniel();}
+  if((s==='ministry'||s==='cp')&&window.__fillLoginName){window.__fillLoginName();}
   if(s==='camp'){updateCampApply();}
   if(s==='pray'&&window.__renderPray){window.__renderPray();}
   if(s==='thanks'&&window.__renderThanks){window.__renderThanks();}
@@ -2170,7 +2171,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   const RELEASES=[
     {v:'v33',d:'2026/10/21',t:'로그인 · 자동 출석',
       f:['화면 위 오른쪽 동그라미 버튼으로 로그인할 수 있습니다 (학생은 이름과 숫자 4자리, 선생님은 교사앱 계정)','로그인한 계정은 앱을 열기만 해도 그날 출석 도장이 자동으로 찍힙니다','출석 도장이 서버에도 저장돼서, 앱을 지우거나 폰을 바꿔도 다시 로그인하면 돌아옵니다'],
-      i:['로그인하면 도장깨기 이름도 로그인한 이름으로 자동으로 맞춰집니다'],x:[]},
+      i:['로그인하면 도장깨기 이름도 로그인한 이름으로 자동으로 맞춰집니다','로그인하면 컴패션 답장과 사역 신청의 이름 칸이 자동으로 채워집니다'],x:[]},
     {v:'v32',d:'2026/10/21',t:'2026 다니엘기도회 참여 체크',
       f:['11/1~21 다니엘기도회 기간에 홈에서 매일 참여를 체크할 수 있습니다','처음 한 번 이름과 숫자 4자리로 로그인하면, 그 폰에서는 다음부터 자동으로 로그인됩니다','참여 체크는 매일 저녁 7시~11시(기도회 앞뒤 1시간)에 열립니다','21일 도장판에서 내 참여 일수를 보고, 10일 참여·21일 완주 배지를 받을 수 있습니다','다니엘TV 생방송을 앱에서 바로 열 수 있습니다','선생님도 함께 참여할 수 있습니다 (교사앱에 로그인돼 있으면 자동으로, 아니면 교사앱 이름·비밀번호로 한 번 로그인)'],i:[],x:[]},
     {v:'v31',d:'2026/10/14',t:'내 답장 고치기 · 지우기',
@@ -2734,7 +2735,7 @@ if('serviceWorker' in navigator){
     if(adm) h+='<button class="cpUpBtn cpDelLetter" type="button" style="border-color:#f3b3ad;background:#fff6f5;color:#c0392b">이 편지 삭제 (담당자)</button>';
     return h+'</div>';
   }
-  function fillName(box){ try{ const v=localStorage.getItem('sgy_att_name')||''; box.querySelectorAll('.cpCmName').forEach(function(i){ if(!i.value) i.value=v; }); }catch(e){} }
+  function fillName(box){ try{ const v=(window.__dnUser&&window.__dnUser())||localStorage.getItem('sgy_att_name')||'';   /* 로그인 이름 우선 */ box.querySelectorAll('.cpCmName').forEach(function(i){ if(!i.value) i.value=v; }); }catch(e){} }
 
   /* 최근 편지는 소개 바로 아래에 펼치고, 나머지는 '지난 편지' 카드로 */
   function loadLetters(pre){
@@ -3243,7 +3244,14 @@ if('serviceWorker' in navigator){
     lsSet(AK,null); lsSet(MK,null); lsSet(SK,null); me=null; firstNote=false; role=t?'t':'s';
     panelClose(); refreshAll();
   }
-  function refreshAll(){ accRender(); homeBadge(); attHint(); if(onScreen()) paint(); if(panelOpen) panelRender(); }
+  function refreshAll(){ accRender(); homeBadge(); attHint(); fillLoginName(); if(onScreen()) paint(); if(panelOpen) panelRender(); }
+  /* 로그인하면 사역 신청·컴패션 답장의 빈 이름 칸을 로그인 이름으로 채움(고칠 수 있음) */
+  function fillLoginName(){
+    const n=window.__dnUser(); if(!n) return;
+    const mi=document.getElementById('mn_name'); if(mi&&!mi.value&&!mi.closest('.grRO')) mi.value=n;
+    document.querySelectorAll('.cpCmName').forEach(function(i){ if(!i.value) i.value=n; });
+  }
+  window.__fillLoginName=fillLoginName;
 
   /* ── 다니엘기도회 화면 ── */
   function goalText(n,t){
