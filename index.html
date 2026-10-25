@@ -338,6 +338,17 @@
   .dnS.done{background:#6c5ce7;color:#fff}
   .dnS.today{background:#fff;box-shadow:inset 0 0 0 2px #6c5ce7;color:#4b3bc4}
   .dnS.done.today{background:#6c5ce7;color:#fff;box-shadow:none}
+  .dnS.done.yt{background:#f97316}
+  .dnS.done i{font-size:16px}
+  .dnModes{display:flex;gap:8px;margin-top:8px}
+  .dnMb{flex:1;border-radius:12px;padding:12px 6px;font-size:13.5px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:inherit;cursor:pointer;border:0;background:#5b3fd6;color:#fff}
+  .dnMb i{font-size:22px}
+  .dnMb.yt{background:#fff;color:#c2410c;border:1.5px solid #f5c4b3}
+  .dnMb:disabled{opacity:.6}
+  .dnAsk{font-size:12.5px;font-weight:800;text-align:center;margin-top:12px;color:var(--tx)}
+  .dnLg{display:flex;gap:10px;justify-content:center;font-size:11px;color:var(--tx3);margin-top:8px}
+  .dnLg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:-1px}
+  .dnSw{background:none;border:0;color:#5b3fd6;text-decoration:underline;font-size:11.5px;font-family:inherit;cursor:pointer;padding:0}
   .dnBadges{display:flex;gap:6px;margin-top:12px}
   .dnBadge{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;font-size:12px;font-weight:800;border-radius:999px;padding:7px 8px;background:#f1f0f6;color:#b3b1c6}
   .dnBadge i{font-size:16px}
@@ -2173,7 +2184,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
       f:['화면 위 오른쪽 동그라미 버튼으로 로그인할 수 있습니다 (학생은 이름과 숫자 4자리, 선생님은 교사앱 계정)','로그인한 계정은 앱을 열기만 해도 그날 출석 도장이 자동으로 찍힙니다','출석 도장이 서버에도 저장돼서, 앱을 지우거나 폰을 바꿔도 다시 로그인하면 돌아옵니다'],
       i:['로그인하면 도장깨기 이름도 로그인한 이름으로 자동으로 맞춰집니다','로그인하면 컴패션 답장과 사역 신청의 이름 칸이 자동으로 채워집니다','로그인하고 쓴 컴패션 답장은 비밀번호 없이 고치거나 지울 수 있습니다'],x:[]},
     {v:'v32',d:'2026/10/21',t:'2026 다니엘기도회 참여 체크',
-      f:['11/1~21 다니엘기도회 기간에 홈에서 매일 참여를 체크할 수 있습니다','처음 한 번 이름과 숫자 4자리로 로그인하면, 그 폰에서는 다음부터 자동으로 로그인됩니다','참여 체크는 매일 저녁 7시~11시(기도회 앞뒤 1시간)에 열립니다','21일 도장판에서 내 참여 일수를 보고, 10일 참여·21일 완주 배지를 받을 수 있습니다','다니엘TV 생방송을 앱에서 바로 열 수 있습니다','선생님도 함께 참여할 수 있습니다 (교사앱에 로그인돼 있으면 자동으로, 아니면 교사앱 이름·비밀번호로 한 번 로그인)'],i:[],x:[]},
+      f:['11/1~21 다니엘기도회 기간에 홈에서 매일 참여를 체크할 수 있습니다','처음 한 번 이름과 숫자 4자리로 로그인하면, 그 폰에서는 다음부터 자동으로 로그인됩니다','참여 체크는 매일 저녁 7시~11시(기도회 앞뒤 1시간)에 열립니다','21일 도장판에서 내 참여 일수를 보고, 10일 참여·21일 완주 배지를 받을 수 있습니다','다니엘TV 생방송을 앱에서 바로 열 수 있습니다','참여할 때 교회(오프라인)·유튜브(온라인) 중 골라 체크하고, 도장판에서 색과 아이콘으로 구분됩니다','선생님도 함께 참여할 수 있습니다 (교사앱에 로그인돼 있으면 자동으로, 아니면 교사앱 이름·비밀번호로 한 번 로그인)'],i:[],x:[]},
     {v:'v31',d:'2026/10/14',t:'내 답장 고치기 · 지우기',
       f:['답장을 쓸 때 숫자 4자리 비밀번호를 정해 두면, 나중에 그 답장을 고치거나 지울 수 있습니다'],
       i:['고친 답장에는 이름 옆에 (수정됨)이 표시됩니다','해외 어린이 양육 화면이 훨씬 빨리 열립니다 (한 번 본 내용은 바로 보여 주고 뒤에서 새로 받아요)'],x:[]},
@@ -3178,7 +3189,7 @@ if('serviceWorker' in navigator){
   }
   function pad(n){ return (n<10?'0':'')+n; }
   function todayLocal(){ const d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
-  function setMe(j){ me={name:j.name,grade:j.grade,role:j.role||'s',days:j.days||[]}; if(j.state) off=j.state.now-Date.now(); lsSet(MK,{me:me,off:off}); homeBadge(); }
+  function setMe(j){ me={name:j.name,grade:j.grade,role:j.role||'s',days:j.days||[],modes:j.modes||{}}; if(j.state) off=j.state.now-Date.now(); lsSet(MK,{me:me,off:off}); homeBadge(); }
   function onScreen(){ return !!document.querySelector('#s-daniel.on'); }
   /* 교사 호칭 — 전도사님은 전도사님으로 */
   const TITLE={'강유석':'전도사'};
@@ -3269,25 +3280,35 @@ if('serviceWorker' in navigator){
     return 10-n<=left ? '10일 참여까지 '+(10-n)+'일' : '끝까지 함께 기도해요';
   }
   function meHTML(){
-    const t=now(), n=me.days.length, done=me.days.indexOf(t.day)>=0;
-    let cells='';
+    const t=now(), n=me.days.length, done=me.days.indexOf(t.day)>=0, M=me.modes||{};
+    const md=function(d){ return M[d]==='y'?'y':'c'; };   /* c 교회 · y 유튜브 */
+    let cells='', nc=0, ny=0;
     for(let d=1;d<=DAYS;d++){
-      const c=me.days.indexOf(d)>=0?' done':'';
-      cells+='<div class="dnS'+c+(d===t.day?' today':(d<t.day&&!c?' past':''))+'">'+d+'</div>';
+      const has=me.days.indexOf(d)>=0;
+      if(has){ if(md(d)==='y') ny++; else nc++; }
+      cells+='<div class="dnS'+(has?' done'+(md(d)==='y'?' yt':''):'')+(d===t.day?' today':(d<t.day&&!has?' past':''))+'">'+(has?'<i class="ti '+(md(d)==='y'?'ti-brand-youtube':'ti-building-church')+'"></i>':d)+'</div>';
     }
-    let btn, dis=true;
-    if(t.day<1) btn='11/1(주일)부터 참여 체크가 열려요';
-    else if(t.day>DAYS) btn='다니엘기도회가 끝났어요';
-    else if(done) btn='<i class="ti ti-check"></i> 오늘(Day '+t.day+') 참여 완료';
-    else if(t.open){ btn='오늘(Day '+t.day+') 참여했어요'; dis=false; }
-    else if(t.h<19) btn='Day '+t.day+' 참여 체크는 저녁 7시에 열려요';
-    else btn='오늘 참여 체크 시간이 끝났어요';
+    /* 체크 시간이면 교회/유튜브 두 버튼, 체크했으면 완료 + (시간 안이면) 방식 바꾸기 */
+    let act;
+    const dis=function(t2){ return '<button class="grBtn" disabled>'+t2+'</button>'; };
+    if(t.day<1) act=dis('11/1(주일)부터 참여 체크가 열려요');
+    else if(t.day>DAYS) act=dis('다니엘기도회가 끝났어요');
+    else if(done){
+      const y=md(t.day)==='y';
+      act=dis('<i class="ti ti-check"></i> 오늘(Day '+t.day+') '+(y?'유튜브로':'교회에서')+' 참여 완료')+
+        (t.open?'<div class="dnHint" style="margin-top:6px">잘못 눌렀으면 <button type="button" class="dnSw" data-mode="'+(y?'c':'y')+'">'+(y?'교회로':'유튜브로')+' 바꾸기</button></div>':'');
+    }
+    else if(t.open) act='<div class="dnAsk">오늘(Day '+t.day+') 어떻게 참여했나요?</div><div class="dnModes">'+
+        '<button type="button" class="dnMb" data-mode="c"><i class="ti ti-building-church"></i>교회에서 참여</button>'+
+        '<button type="button" class="dnMb yt" data-mode="y"><i class="ti ti-brand-youtube"></i>유튜브로 참여</button></div>';
+    else if(t.h<19) act=dis('Day '+t.day+' 참여 체크는 저녁 7시에 열려요');
+    else act=dis('오늘 참여 체크 시간이 끝났어요');
     return '<div class="dnCard">'+
       '<div class="dnTop"><div class="dnNm">'+esc(me.name)+(me.role==='t'?' '+title(me.name)+'님':'님')+'의 다니엘기도회</div><button class="dnOut" id="dnOutBtn">로그아웃</button></div>'+
       ((lsGet(AK)||{}).auto?'<div class="dnAuto"><i class="ti ti-school"></i>교사앱 로그인으로 자동 참여 중</div>':'')+
       (firstNote?'<div class="dnNew">로그인 완료! 정한 숫자 4자리를 꼭 기억해 두세요. 다른 폰에서 들어올 때 필요해요.</div>':'')+
       '<div class="dnStats">'+
-        '<div class="dnSt" style="background:#efecff"><div class="l" style="color:#5d5b7e">참여</div><div class="v" style="color:#4b3bc4">'+n+'<small>/21일</small></div></div>'+
+        '<div class="dnSt" style="background:#efecff"><div class="l" style="color:#5d5b7e">참여</div><div class="v" style="color:#4b3bc4">'+n+'<small>/21일</small></div>'+(n?'<div class="l" style="color:#5d5b7e;margin-top:2px;font-weight:600">교회 '+nc+' · 유튜브 '+ny+'</div>':'')+'</div>'+
         '<div class="dnSt" style="flex:1.4;background:#fff3df"><div class="l" style="color:#8a5a00">다음 목표</div><div class="t" style="color:#8a5a00">'+goalText(n,t)+'</div></div>'+
       '</div>'+
       '<div class="dnGrid">'+cells+'</div>'+
@@ -3295,7 +3316,8 @@ if('serviceWorker' in navigator){
         '<div class="dnBadge'+(n>=10?' g10':'')+'"><i class="ti ti-medal"></i>10일 참여</div>'+
         '<div class="dnBadge'+(n>=DAYS?' g21':'')+'"><i class="ti ti-award"></i>21일 완주</div>'+
       '</div>'+
-      '<button class="grBtn" id="dnCheckBtn"'+(dis?' disabled':'')+'>'+btn+'</button>'+
+      act+
+      '<div class="dnLg"><span><i style="background:#6c5ce7"></i>교회</span><span><i style="background:#f97316"></i>유튜브</span></div>'+
       '<div class="grErr" id="dnErr"></div>'+
       '<div class="dnHint">참여 체크는 매일 저녁 7시~11시(기도회 앞뒤 1시간)에만 열려요.<br>'+(me.role==='t'?'놓친 날은 교사앱 참여 현황에서 체크할 수 있어요.':'폰이 없던 날은 선생님이 대신 체크해 줄 수 있어요.')+'</div>'+
     '</div>';
@@ -3306,18 +3328,17 @@ if('serviceWorker' in navigator){
     const ni=document.getElementById('dnName'); if(ni&&nv) ni.value=nv;
     bindLogin(box,'dn',paint);
     const ob=document.getElementById('dnOutBtn'); if(ob) ob.onclick=signOut;
-    const cb=document.getElementById('dnCheckBtn');
-    if(cb) cb.onclick=async function(){
-      if(busy||cb.disabled) return;
+    box.querySelectorAll('[data-mode]').forEach(function(cb){ cb.onclick=async function(){
+      if(busy) return;
       const a=lsGet(AK); if(!a) return;
-      busy=true; cb.disabled=true; cb.textContent='기록하는 중…'; err('dn','');
-      const j=await post({action:'dn_check',name:a.name,token:a.token});
+      busy=true; box.querySelectorAll('[data-mode]').forEach(function(x){ x.disabled=true; }); if(cb.classList.contains('dnMb')) cb.lastChild.textContent='기록하는 중…'; err('dn','');
+      const j=await post({action:'dn_check',name:a.name,token:a.token,mode:cb.getAttribute('data-mode')});
       busy=false;
       if(j&&j.ok){ setMe(j); paint(); return; }
       if(j&&j.error==='auth'){ lost(); err('dn','로그인이 풀렸어요. 다시 로그인해 주세요.'); return; }
       if(j&&j.state) off=j.state.now-Date.now();
       paint(); err('dn', j&&j.error==='closed' ? '지금은 참여 체크 시간이 아니에요.' : ERR.neterr);
-    };
+    }; });
   }
   function lost(){ lsSet(AK,null); lsSet(MK,null); lsSet(SK,null); me=null; refreshAll(); }
   /* 교사앱에 로그인돼 있으면 따로 로그인하지 않고 그 선생님으로 참여 */
