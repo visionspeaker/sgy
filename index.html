@@ -3445,12 +3445,19 @@ if('serviceWorker' in navigator){
   window.__attHint=attHint;
   if(onScreen()) window.__renderDaniel();
   /* 앱을 열 때: 교사 자동 로그인 → 로그인돼 있으면 하루 한 번 자동 출석, 기간 중엔 다니엘 기록도 받아 둔다 */
+  /* 마지막 접속 신호 — 접속 통계 보완: 로그인한 사람만 30분에 한 번, 서버가 SEEN_S_이름에 시각을 적음(실패해도 무시) */
+  function seenPing(){
+    const a=lsGet(AK); if(!a||/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) return;
+    const n=Date.now(), l=lsGet('sgy_seen_v1')||{}; if(l.u===a.name&&n-(l.t||0)<1800000) return;
+    lsSet('sgy_seen_v1',{u:a.name,t:n}); post({action:'seen',app:'S',name:a.name,token:a.token});
+  }
   setTimeout(async function(){
     if(!lsGet(AK)) await autoT();
+    seenPing();
     if(attDue()) attSync();
     if(window.__dnHome && lsGet(AK) && !onScreen()) refresh();
   },1500);
-  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible' && attDue()) attSync(); });
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState!=='visible') return; seenPing(); if(attDue()) attSync(); });
 })();
 </script>
 <script>
