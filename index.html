@@ -311,6 +311,18 @@
   .grRO .grHero{opacity:.75}
   /* 사역 신청: 신급 교육 스타일(gr*) 재사용 + 주황 */
   #s-ministry .grHero,#s-ministry .grBtn:not(:disabled){background:#d9772b}
+  /* 내 사역 신청 내역 · 로그인 이름 잠금 (10/28) */
+  .mnMine{background:#fdf4ec;border:1px solid #f3d9c2;border-radius:14px;padding:13px 14px;margin-top:10px}
+  .mnMine .t{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:800;color:#9a4f12}
+  .mnMine .w{font-size:11.5px;color:#b5896b;margin-top:7px}
+  .mnMine .sep{border-top:1px dashed #f3d9c2;margin-top:9px;padding-top:2px}
+  .mnMine .tg{display:inline-block;font-size:12px;border-radius:999px;padding:3px 9px;margin:5px 4px 0 0}
+  .mnMine .nt{font-size:11px;color:#a8987f;margin-top:9px;line-height:1.5}
+  .mnLog{display:flex;align-items:center;gap:9px;background:#f3efff;border:1px solid #d9cffb;border-radius:14px;padding:11px 13px;margin-top:10px}
+  .mnLog i{font-size:23px;color:#5b3fd6;flex:none}
+  .mnLog div{flex:1;font-size:12px;color:#4b2fb8;line-height:1.5}
+  .mnLog button{flex:none;border:0;background:#5b3fd6;color:#fff;font-size:12px;font-weight:800;border-radius:999px;padding:7px 13px;font-family:inherit;cursor:pointer}
+  #mn_name[readonly]{background:#f5f4fa;color:#8b89a3}
   /* 2026 다니엘기도회 */
   #s-daniel .grHero,#s-daniel .grBtn:not(:disabled){background:#5b3fd6}
   #s-daniel .grIn:focus{border-color:#5b3fd6}
@@ -1136,6 +1148,7 @@
           <div class="gh">함께 섬길 자리를 골라주세요</div>
           <div class="gs">신청기간 10/11(주일) ~ 11/29(주일)</div>
         </div>
+        <div id="ministryMine"></div>
         <div class="grLock" id="ministryLock" style="display:none">
           <i class="ti ti-lock"></i>
           <div><div class="lt" id="ministryLockT">아직 신청 기간이 아니에요</div><div class="lp" id="ministryLockP">10/11(주일)부터 신청할 수 있어요. 내용은 미리 확인해 두세요.</div></div>
@@ -1143,6 +1156,7 @@
         <div class="grQ">
           <div class="qn">이름 <span class="req">*</span></div>
           <input class="grIn" id="mn_name" type="text" placeholder="이름을 입력하세요" autocomplete="off" maxlength="20">
+          <div class="qh" id="mn_nameHint" style="display:none"><i class="ti ti-lock" style="vertical-align:-1px"></i> 로그인한 이름으로 신청돼요</div>
         </div>
         <div class="grQ">
           <div class="qn">지원 사역 <span class="req">*</span></div>
@@ -2182,7 +2196,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   const RELEASES=[
     {v:'v33',d:'2026/10/21',t:'로그인 · 자동 출석',
       f:['화면 위 오른쪽 동그라미 버튼으로 로그인할 수 있습니다 (학생은 이름과 숫자 4자리, 선생님은 교사앱 계정)','로그인한 계정은 앱을 열기만 해도 그날 출석 도장이 자동으로 찍힙니다','출석 도장이 서버에도 저장돼서, 앱을 지우거나 폰을 바꿔도 다시 로그인하면 돌아옵니다'],
-      i:['로그인하면 도장깨기 이름도 로그인한 이름으로 자동으로 맞춰집니다','로그인하면 컴패션 답장과 사역 신청의 이름 칸이 자동으로 채워집니다','로그인하고 쓴 컴패션 답장은 비밀번호 없이 고치거나 지울 수 있습니다'],x:[]},
+      i:['로그인하면 도장깨기 이름도 로그인한 이름으로 자동으로 맞춰집니다','로그인하면 컴패션 답장과 사역 신청의 이름 칸이 자동으로 채워집니다','로그인하고 쓴 컴패션 답장은 비밀번호 없이 고치거나 지울 수 있습니다','사역 신청에서 로그인하면 내 신청 내역이 맨 위에 보이고, 로그인한 이름으로 신청됩니다'],x:[]},
     {v:'v32',d:'2026/10/21',t:'2026 다니엘기도회 참여 체크',
       f:['11/1~21 다니엘기도회 기간에 홈에서 매일 참여를 체크할 수 있습니다','처음 한 번 이름과 숫자 4자리로 로그인하면, 그 폰에서는 다음부터 자동으로 로그인됩니다','참여 체크는 매일 저녁 7시~11시(기도회 앞뒤 1시간)에 열립니다','21일 도장판에서 내 참여 일수를 보고, 10일 참여·21일 완주 배지를 받을 수 있습니다','다니엘TV 생방송을 앱에서 바로 열 수 있습니다','참여할 때 교회(오프라인)·유튜브(온라인) 중 골라 체크하고, 도장판에서 색과 아이콘으로 구분됩니다','선생님도 함께 참여할 수 있습니다 (교사앱에 로그인돼 있으면 자동으로, 아니면 교사앱 이름·비밀번호로 한 번 로그인)'],i:[],x:[]},
     {v:'v31',d:'2026/10/14',t:'내 답장 고치기 · 지우기',
@@ -2661,6 +2675,7 @@ if('serviceWorker' in navigator){
     btn.disabled=true; btn.textContent='신청 중…';
     const p=new URLSearchParams();
     p.append('kind','ministry'); p.append('name',name);
+    try{ const a=JSON.parse(localStorage.getItem('sgy_dn_auth_v1')||'null'); if(a&&a.token){ p.append('dnName',a.name); p.append('dnToken',a.token); } }catch(e){}
     p.append('praise',praise.join(',')); p.append('officer',off.join(',')); p.append('etc',ex.join(','));
     fetch(MIN_API,{method:'POST',body:p})
       .then(function(r){return r.json();})
@@ -3265,9 +3280,39 @@ if('serviceWorker' in navigator){
   function refreshAll(){ accRender(); homeBadge(); attHint(); fillLoginName(); if(onScreen()) paint(); if(panelOpen) panelRender(); if(document.querySelector('#s-cp.on')&&window.__renderCp) window.__renderCp(); }
   /* 로그인하면 사역 신청·컴패션 답장의 빈 이름 칸을 로그인 이름으로 채움(고칠 수 있음) */
   function fillLoginName(){
-    const n=window.__dnUser(); if(!n) return;
-    const mi=document.getElementById('mn_name'); if(mi&&!mi.value&&!mi.closest('.grRO')) mi.value=n;
-    document.querySelectorAll('.cpCmName').forEach(function(i){ if(!i.value) i.value=n; });
+    const n=window.__dnUser();
+    const mi=document.getElementById('mn_name'), mh=document.getElementById('mn_nameHint');
+    if(mi&&!mi.closest('.grRO')){   /* 사역 신청 이름 칸: 로그인하면 로그인 이름으로 잠금 */
+      if(n){ mi.value=n; mi.readOnly=true; } else if(mi.readOnly){ mi.readOnly=false; mi.value=''; }
+      if(mh) mh.style.display=n?'':'none';
+    }
+    if(n) document.querySelectorAll('.cpCmName').forEach(function(i){ if(!i.value) i.value=n; });
+    if(document.querySelector('#s-ministry.on')) minMine();
+  }
+  /* 내 사역 신청 내역 — 학생앱 서버(min_mine)가 로그인을 확인하고 그 이름의 신청만 돌려줌. 다시 신청한 줄도 모두 시간순 */
+  const MIN_API='https://script.google.com/macros/s/AKfycbzXb79Jpcks_rYXZBPX0g-6vO2sThZo93tO66Thl-hw0op7RqJtzk97LdLFBCl7mKZTxg/exec';
+  const WD=['일','월','화','수','목','금','토'];
+  function mnWhen(t){ const m=String(t).match(/(\d{4})-(\d{2})-(\d{2})\s+(\d{2}:\d{2})/); if(!m) return esc(t); const d=new Date(+m[1],+m[2]-1,+m[3]); return (+m[2])+'/'+(+m[3])+'('+WD[d.getDay()]+') '+m[4]; }
+  let minSeq=0;
+  async function minMine(){
+    const box=document.getElementById('ministryMine'); if(!box) return;
+    const a=lsGet(AK), my=++minSeq;
+    if(!a){
+      box.innerHTML='<div class="mnLog"><i class="ti ti-user-circle"></i><div>이미 신청했나요? 로그인하면<br>내 신청 내역을 볼 수 있어요</div><button type="button" id="mnLoginBtn">로그인</button></div>';
+      const b=document.getElementById('mnLoginBtn'); if(b) b.onclick=function(e){ e.stopPropagation(); panelOpenFn(); };
+      return;
+    }
+    if(box.querySelector('.mnLog')) box.innerHTML='';
+    let j=null;
+    try{ const r=await fetch(MIN_API,{method:'POST',body:new URLSearchParams({kind:'min_mine',dnName:a.name,dnToken:a.token})}); j=await r.json(); }catch(e){ return; }
+    if(my!==minSeq) return;
+    if(!j||!j.ok||!Array.isArray(j.list)||!j.list.length){ box.innerHTML=''; return; }
+    const tg=function(arr,pre,bg,c){ return arr.map(function(x){ return '<span class="tg" style="background:'+bg+';color:'+c+'">'+pre+esc(x)+'</span>'; }).join(''); };
+    const t=me&&me.role==='t';
+    box.innerHTML='<div class="mnMine"><div class="t"><i class="ti ti-clipboard-check"></i>'+esc(j.name)+(t?' '+title(j.name)+'님':'님')+'의 신청 내역</div>'+
+      j.list.map(function(x,i){ return '<div class="'+(i?'sep':'')+'"><div class="w">'+mnWhen(x.at)+' '+(i?'다시 신청':'신청')+'</div><div>'+
+        tg(x.praise,'찬양 ','#e6f1fb','#185fa5')+tg(x.officer,'임원 ','#faece7','#993c1d')+tg(x.etc,'','#e1f5ee','#0f6e56')+'</div></div>'; }).join('')+
+      '<div class="nt">본인만 볼 수 있어요'+(window.__ministryState==='open'?' · 바꾸고 싶으면 아래에서 다시 신청하면 한 줄 더 쌓여요(담당 선생님이 최근 신청을 확인해요)':'')+'</div></div>';
   }
   window.__fillLoginName=fillLoginName;
 
@@ -3436,7 +3481,7 @@ if('serviceWorker' in navigator){
   window.addEventListener('hashchange',panelClose);
 
   const c=lsGet(MK); if(c&&c.me&&window.__dnUser()){ me=c.me; off=c.off||0; }
-  accRender(); homeBadge(); attHint();
+  accRender(); homeBadge(); attHint(); fillLoginName();   /* 딥링크로 바로 사역 신청에 들어온 경우도 */
   window.__renderDaniel=function(){
     paint(); refresh();
     clearInterval(timer);
