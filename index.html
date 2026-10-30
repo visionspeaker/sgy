@@ -2198,7 +2198,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
       f:['화면 위 오른쪽 동그라미 버튼으로 로그인할 수 있습니다 (학생은 이름과 숫자 4자리, 선생님은 교사앱 계정)','로그인한 계정은 앱을 열기만 해도 그날 출석 도장이 자동으로 찍힙니다','출석 도장이 서버에도 저장돼서, 앱을 지우거나 폰을 바꿔도 다시 로그인하면 돌아옵니다'],
       i:['로그인하면 도장깨기 이름도 로그인한 이름으로 자동으로 맞춰집니다','로그인하면 컴패션 답장과 사역 신청의 이름 칸이 자동으로 채워집니다','로그인하고 쓴 컴패션 답장은 비밀번호 없이 고치거나 지울 수 있습니다','사역 신청에서 로그인하면 내 신청 내역이 맨 위에 보이고, 로그인한 이름으로 신청됩니다'],x:[]},
     {v:'v32',d:'2026/10/21',t:'2026 다니엘기도회 참여 체크',
-      f:['11/1~21 다니엘기도회 기간에 홈에서 매일 참여를 체크할 수 있습니다','처음 한 번 이름과 숫자 4자리로 로그인하면, 그 폰에서는 다음부터 자동으로 로그인됩니다','참여 체크는 매일 저녁 7시~11시(기도회 앞뒤 1시간)에 열립니다','21일 도장판에서 내 참여 일수를 보고, 10일 참여·21일 완주 배지를 받을 수 있습니다','다니엘TV 생방송을 앱에서 바로 열 수 있습니다','참여할 때 교회(오프라인)·유튜브(온라인) 중 골라 체크하고, 도장판에서 색과 아이콘으로 구분됩니다','선생님도 함께 참여할 수 있습니다 (교사앱에 로그인돼 있으면 자동으로, 아니면 교사앱 이름·비밀번호로 한 번 로그인)'],i:[],x:[]},
+      f:['11/1~21 다니엘기도회 기간에 홈에서 매일 참여를 체크할 수 있습니다','처음 한 번 이름과 숫자 4자리로 로그인하면, 그 폰에서는 다음부터 자동으로 로그인됩니다','참여 체크는 매일 저녁 7시~밤 12시에 열립니다','21일 도장판에서 내 참여 일수를 보고, 10일 참여·21일 완주 배지를 받을 수 있습니다','다니엘TV 생방송을 앱에서 바로 열 수 있습니다','참여할 때 교회(오프라인)·유튜브(온라인) 중 골라 체크하고, 도장판에서 색과 아이콘으로 구분됩니다','선생님도 함께 참여할 수 있습니다 (교사앱에 로그인돼 있으면 자동으로, 아니면 교사앱 이름·비밀번호로 한 번 로그인)'],i:[],x:[]},
     {v:'v31',d:'2026/10/14',t:'내 답장 고치기 · 지우기',
       f:['답장을 쓸 때 숫자 4자리 비밀번호를 정해 두면, 나중에 그 답장을 고치거나 지울 수 있습니다'],
       i:['고친 답장에는 이름 옆에 (수정됨)이 표시됩니다','해외 어린이 양육 화면이 훨씬 빨리 열립니다 (한 번 본 내용은 바로 보여 주고 뒤에서 새로 받아요)'],x:[]},
@@ -3169,7 +3169,7 @@ if('serviceWorker' in navigator){
 <script>
 /* ===== 2026 다니엘기도회 (11/1~21) + 학생앱 로그인(헤더 계정 버튼) + 로그인 자동 출석 =====
    참여 기록은 교사앱 서버(dn_*)의 비공개 시트에 쌓인다. 로그인 = 출석 명단 이름 + 학생이 처음 정한 숫자 4자리(교사는 교사앱 계정).
-   참여 체크 가능 여부는 서버 시각으로 판정(매일 19~23시), 화면은 서버 시각과의 차이(off)로 버튼 상태만 미리 맞춘다.
+   참여 체크 가능 여부는 서버 시각으로 판정(매일 19~24시), 화면은 서버 시각과의 차이(off)로 버튼 상태만 미리 맞춘다.
    로그인한 계정은 앱을 열면 그날 출석 도장(dn_att, 비공개 시트 'SGY 학생앱 출석기록')이 찍히고, 서버 도장을 폰 도장깨기에 합친다. */
 (function(){
   const API="https://script.google.com/macros/s/AKfycbynttLT1S2F3OjVW345W3NUijszhXpnUmeTfZObxb6W3I4wxUmqrj5HgPK5gFqAiri5/exec";
@@ -3200,7 +3200,7 @@ if('serviceWorker' in navigator){
   function now(){
     const t=new Date(Date.now()+off+9*3600e3);
     const day=Math.round((Date.UTC(t.getUTCFullYear(),t.getUTCMonth(),t.getUTCDate())-D0)/864e5)+1, h=t.getUTCHours();
-    return {day:day, h:h, inP:day>=1&&day<=DAYS, open:day>=1&&day<=DAYS&&h>=19&&h<23};
+    return {day:day, h:h, inP:day>=1&&day<=DAYS, open:day>=1&&day<=DAYS&&h>=19&&h<24};
   }
   function pad(n){ return (n<10?'0':'')+n; }
   function todayLocal(){ const d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
@@ -3318,7 +3318,7 @@ if('serviceWorker' in navigator){
 
   /* ── 다니엘기도회 화면 ── */
   function goalText(n,t){
-    let left=DAYS-Math.max(t.day,0)+((t.inP&&t.h<23&&me.days.indexOf(t.day)<0)?1:0);   /* 앞으로 더 채울 수 있는 날 */
+    let left=DAYS-Math.max(t.day,0)+((t.inP&&t.h<24&&me.days.indexOf(t.day)<0)?1:0);   /* 앞으로 더 채울 수 있는 날 */
     if(t.day<1) left=DAYS; if(t.day>DAYS) left=0;
     if(n>=DAYS) return '21일 완주!';
     if(n>=10) return DAYS-n<=left ? '21일 완주까지 '+(DAYS-n)+'일' : '10일 참여 달성!';
@@ -3364,7 +3364,7 @@ if('serviceWorker' in navigator){
       act+
       '<div class="dnLg"><span><i style="background:#6c5ce7"></i>교회</span><span><i style="background:#f97316"></i>유튜브</span></div>'+
       '<div class="grErr" id="dnErr"></div>'+
-      '<div class="dnHint">참여 체크는 매일 저녁 7시~11시(기도회 앞뒤 1시간)에만 열려요.<br>'+(me.role==='t'?'놓친 날은 교사앱 참여 현황에서 체크할 수 있어요.':'폰이 없던 날은 선생님이 대신 체크해 줄 수 있어요.')+'</div>'+
+      '<div class="dnHint">참여 체크는 매일 저녁 7시~밤 12시에만 열려요.<br>'+(me.role==='t'?'놓친 날은 교사앱 참여 현황에서 체크할 수 있어요.':'폰이 없던 날은 선생님이 대신 체크해 줄 수 있어요.')+'</div>'+
     '</div>';
   }
   function paint(){
