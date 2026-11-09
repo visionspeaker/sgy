@@ -323,6 +323,22 @@
   .mnLog div{flex:1;font-size:12px;color:#4b2fb8;line-height:1.5}
   .mnLog button{flex:none;border:0;background:#5b3fd6;color:#fff;font-size:12px;font-weight:800;border-radius:999px;padding:7px 13px;font-family:inherit;cursor:pointer}
   #mn_name[readonly]{background:#f5f4fa;color:#8b89a3}
+  /* 선생님 대리 신청 (11/10) — 학생 명단은 서버가 로그인한 선생님에게만 보냄 */
+  .mnPx{margin-top:8px}
+  .mnPxBtn{border:1px dashed #d9772b;background:#fff;color:#c2610f;font-size:12.5px;font-weight:700;border-radius:999px;padding:7px 13px;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+  .mnPxBox{border:1px solid #f3d9c2;background:#fffaf5;border-radius:12px;padding:10px;margin-top:8px}
+  .mnPxBox .grIn{margin-top:0}
+  .mnPxList{max-height:240px;overflow:auto;margin-top:6px;-webkit-overflow-scrolling:touch}
+  .mnPxIt{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:9px;font-size:14px;color:var(--tx);cursor:pointer}
+  .mnPxIt:active,.mnPxIt:hover{background:#fdf0e3}
+  .mnPxIt span{font-size:11.5px;color:var(--tx3)}
+  .mnPxMsg{font-size:12px;color:var(--tx3);padding:9px 4px;line-height:1.5}
+  .mnPxCl{display:block;margin:6px auto 0;border:0;background:none;color:var(--tx3);font-size:12px;font-family:inherit;cursor:pointer;padding:4px 8px}
+  .mnPxSel{display:flex;align-items:center;gap:9px;background:#fdf4ec;border:1px solid #f3d9c2;border-radius:12px;padding:10px 12px;margin-top:8px;font-size:12.5px;color:#9a4f12;line-height:1.5}
+  .mnPxSel>i{font-size:20px;flex:none}
+  .mnPxSel b{color:#7a3d0c;font-size:13.5px}
+  .mnPxSel button{flex:none;margin-left:auto;border:1px solid #f3d9c2;background:#fff;color:#9a4f12;font-size:12px;font-weight:700;border-radius:999px;padding:6px 11px;font-family:inherit;cursor:pointer}
+  #ministryAgain{display:none;margin:16px auto 0;border:0;background:#d9772b;color:#fff;font-size:14px;font-weight:800;border-radius:999px;padding:11px 18px;font-family:inherit;cursor:pointer}
   /* 2026 다니엘기도회 */
   #s-daniel .grHero,#s-daniel .grBtn:not(:disabled){background:#5b3fd6}
   #s-daniel .grIn:focus{border-color:#5b3fd6}
@@ -1157,6 +1173,7 @@
           <div class="qn">이름 <span class="req">*</span></div>
           <input class="grIn" id="mn_name" type="text" placeholder="이름을 입력하세요" autocomplete="off" maxlength="20">
           <div class="qh" id="mn_nameHint" style="display:none"><i class="ti ti-lock" style="vertical-align:-1px"></i> 로그인한 이름으로 신청돼요</div>
+          <div class="mnPx" id="mn_proxy" style="display:none"></div>
         </div>
         <div class="grQ">
           <div class="qn">지원 사역 <span class="req">*</span></div>
@@ -1178,8 +1195,9 @@
       </div>
       <div id="ministryDone" class="svDone" style="display:none">
         <div class="ic"><i class="ti ti-check"></i></div>
-        <h3>신청이 접수되었습니다</h3>
-        <p>함께 섬겨 주어 고마워요.<br>자세한 내용은 따로 안내해 드릴게요.</p>
+        <h3 id="ministryDoneT">신청이 접수되었습니다</h3>
+        <p id="ministryDoneP">함께 섬겨 주어 고마워요.<br>자세한 내용은 따로 안내해 드릴게요.</p>
+        <button type="button" id="ministryAgain">다른 학생도 대신 신청하기</button>
       </div>
     </section>
 
@@ -2196,7 +2214,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   const RELEASES=[
     {v:'v33',d:'2026/10/21',t:'로그인 · 자동 출석',
       f:['화면 위 오른쪽 동그라미 버튼으로 로그인할 수 있습니다 (학생은 이름과 숫자 4자리, 선생님은 교사앱 계정)','로그인한 계정은 앱을 열기만 해도 그날 출석 도장이 자동으로 찍힙니다','출석 도장이 서버에도 저장돼서, 앱을 지우거나 폰을 바꿔도 다시 로그인하면 돌아옵니다'],
-      i:['로그인하면 도장깨기 이름도 로그인한 이름으로 자동으로 맞춰집니다','로그인하면 컴패션 답장과 사역 신청의 이름 칸이 자동으로 채워집니다','로그인하고 쓴 컴패션 답장은 비밀번호 없이 고치거나 지울 수 있습니다','사역 신청에서 로그인하면 내 신청 내역이 맨 위에 보이고, 로그인한 이름으로 신청됩니다'],x:[]},
+      i:['로그인하면 도장깨기 이름도 로그인한 이름으로 자동으로 맞춰집니다','로그인하면 컴패션 답장과 사역 신청의 이름 칸이 자동으로 채워집니다','로그인하고 쓴 컴패션 답장은 비밀번호 없이 고치거나 지울 수 있습니다','사역 신청에서 로그인하면 내 신청 내역이 맨 위에 보이고, 로그인한 이름으로 신청됩니다','선생님으로 로그인하면 사역 신청에서 학생 이름을 골라 대신 신청할 수 있습니다 (대리 신청으로 기록)'],x:[]},
     {v:'v32',d:'2026/10/21',t:'2026 다니엘기도회 참여 체크',
       f:['11/1~21 다니엘기도회 기간에 홈에서 매일 참여를 체크할 수 있습니다','처음 한 번 이름과 숫자 4자리로 로그인하면, 그 폰에서는 다음부터 자동으로 로그인됩니다','참여 체크는 매일 저녁 7시~밤 12시에 열립니다','21일 도장판에서 내 참여 일수를 보고, 10일 참여·21일 완주 배지를 받을 수 있습니다','다니엘TV 생방송을 앱에서 바로 열 수 있습니다','참여할 때 교회(오프라인)·유튜브(온라인) 중 골라 체크하고, 도장판에서 색과 아이콘으로 구분됩니다','선생님도 함께 참여할 수 있습니다 (교사앱에 로그인돼 있으면 자동으로, 아니면 교사앱 이름·비밀번호로 한 번 로그인)'],i:[],x:[]},
     {v:'v31',d:'2026/10/14',t:'내 답장 고치기 · 지우기',
@@ -2676,14 +2694,33 @@ if('serviceWorker' in navigator){
     const p=new URLSearchParams();
     p.append('kind','ministry'); p.append('name',name);
     try{ const a=JSON.parse(localStorage.getItem('sgy_dn_auth_v1')||'null'); if(a&&a.token){ p.append('dnName',a.name); p.append('dnToken',a.token); } }catch(e){}
+    const px=window.__mnProxy?window.__mnProxy():null;   /* 선생님 대리 신청: 서버가 교사 로그인·명단을 다시 확인 */
+    if(px) p.append('forName',px.name);
     p.append('praise',praise.join(',')); p.append('officer',off.join(',')); p.append('etc',ex.join(','));
     fetch(MIN_API,{method:'POST',body:p})
       .then(function(r){return r.json();})
       .then(function(res){
-        if(res&&res.ok){ document.getElementById('ministryForm').style.display='none'; document.getElementById('ministryDone').style.display='block'; sec.parentNode.scrollTop=0; }
+        if(res&&res.ok){ doneShow(px); }
         else { btn.disabled=false; btn.textContent='신청하기'; err.textContent=(res&&res.msg)||'신청에 실패했어요. 잠시 후 다시 시도해 주세요.'; }
       })
       .catch(function(){ btn.disabled=false; btn.textContent='신청하기'; err.textContent='신청에 실패했어요. 인터넷 연결을 확인해 주세요.'; });
+  });
+  /* 접수 화면 — 대리 신청이면 학생 이름을 보여 주고, 다른 학생도 이어서 신청할 수 있게 */
+  function doneShow(px){
+    const T=document.getElementById('ministryDoneT'), P=document.getElementById('ministryDoneP'), A=document.getElementById('ministryAgain');
+    T.textContent=px?px.name+' 학생 이름으로 접수되었습니다':'신청이 접수되었습니다';
+    if(px){ P.textContent='대리 신청으로 기록됐어요. 학생이 로그인하면 내 신청 내역에서 볼 수 있어요.'; }
+    else { P.innerHTML='함께 섬겨 주어 고마워요.<br>자세한 내용은 따로 안내해 드릴게요.'; }
+    A.style.display=px?'block':'none';
+    document.getElementById('ministryForm').style.display='none'; document.getElementById('ministryDone').style.display='block'; sec.parentNode.scrollTop=0;
+  }
+  document.getElementById('ministryAgain').addEventListener('click',function(){
+    sec.querySelectorAll('.mnCh.on').forEach(function(c){ c.classList.remove('on'); });
+    sec.querySelectorAll('.grOpt.sel').forEach(function(o){ o.classList.remove('sel'); });
+    upd(); err.textContent=''; btn.disabled=false; btn.textContent='신청하기';
+    document.getElementById('ministryDone').style.display='none'; document.getElementById('ministryForm').style.display='';
+    if(window.__mnProxyReset) window.__mnProxyReset(true);
+    sec.parentNode.scrollTop=0;
   });
 })();
 
@@ -3282,9 +3319,12 @@ if('serviceWorker' in navigator){
   function fillLoginName(){
     const n=window.__dnUser();
     const mi=document.getElementById('mn_name'), mh=document.getElementById('mn_nameHint');
-    if(mi&&!mi.closest('.grRO')){   /* 사역 신청 이름 칸: 로그인하면 로그인 이름으로 잠금 */
-      if(n){ mi.value=n; mi.readOnly=true; } else if(mi.readOnly){ mi.readOnly=false; mi.value=''; }
-      if(mh) mh.style.display=n?'':'none';
+    if(mi&&!mi.closest('.grRO')){   /* 사역 신청 이름 칸: 로그인하면 로그인 이름으로 잠금 · 선생님은 학생을 골라 대신 신청 */
+      const tch=!!(n&&me&&me.role==='t'&&me.name===n);
+      if(!tch){ mnPx=null; mnRoster=null; }
+      if(n){ mi.value=mnPx?mnPx.name:n; mi.readOnly=true; } else if(mi.readOnly){ mi.readOnly=false; mi.value=''; }
+      if(mh) mh.style.display=(n&&!mnPx)?'':'none';
+      mnPxRender(tch);
     }
     if(n) document.querySelectorAll('.cpCmName').forEach(function(i){ if(!i.value) i.value=n; });
     if(document.querySelector('#s-ministry.on')) minMine();
@@ -3310,11 +3350,61 @@ if('serviceWorker' in navigator){
     const tg=function(arr,pre,bg,c){ return arr.map(function(x){ return '<span class="tg" style="background:'+bg+';color:'+c+'">'+pre+esc(x)+'</span>'; }).join(''); };
     const t=me&&me.role==='t';
     box.innerHTML='<div class="mnMine"><div class="t"><i class="ti ti-clipboard-check"></i>'+esc(j.name)+(t?' '+title(j.name)+'님':'님')+'의 신청 내역</div>'+
-      j.list.map(function(x,i){ return '<div class="'+(i?'sep':'')+'"><div class="w">'+mnWhen(x.at)+' '+(i?'다시 신청':'신청')+'</div><div>'+
+      j.list.map(function(x,i){ return '<div class="'+(i?'sep':'')+'"><div class="w">'+mnWhen(x.at)+' '+(i?'다시 신청':'신청')+(x.by?' · '+esc(x.by):'')+'</div><div>'+
         tg(x.praise,'찬양 ','#e6f1fb','#185fa5')+tg(x.officer,'임원 ','#faece7','#993c1d')+tg(x.etc,'','#e1f5ee','#0f6e56')+'</div></div>'; }).join('')+
       '<div class="nt">본인만 볼 수 있어요'+(window.__ministryState==='open'?' · 바꾸고 싶으면 아래에서 다시 신청하면 한 줄 더 쌓여요(담당 선생님이 최근 신청을 확인해요)':'')+'</div></div>';
   }
   window.__fillLoginName=fillLoginName;
+
+  /* ── 사역 신청: 선생님 대리 신청 (11/10) ──
+     학생 명단은 앱에 넣지 않고, 교사앱 서버(dn_roster)가 로그인 토큰과 교사 여부를 확인한 뒤에만 이름·학년을 보내 준다(메모리에만, 저장 안 함).
+     신청 때 forName을 붙이면 학생앱 서버가 다시 교사 로그인·명단을 확인하고 '사역신청' 탭에 「이름 교사 대리 신청」을 남긴다. */
+  let mnPx=null, mnRoster=null, mnOpen=false, mnLoading=false;
+  function mnPxRender(tch){
+    const box=document.getElementById('mn_proxy'); if(!box) return;
+    if(!tch){ mnOpen=false; box.style.display='none'; box.innerHTML=''; return; }
+    box.style.display='';
+    if(mnPx){
+      box.innerHTML='<div class="mnPxSel"><i class="ti ti-user-check"></i><div><b>'+esc(mnPx.name)+'</b>'+(mnPx.grade?' · '+esc(mnPx.grade):'')+' 학생 대신 신청해요<br>「'+esc(me.name)+' 교사 대리 신청」으로 기록돼요</div><button type="button" id="mnPxOff">본인으로</button></div>';
+      document.getElementById('mnPxOff').onclick=function(e){ e.stopPropagation(); mnPx=null; mnOpen=false; fillLoginName(); };
+      return;
+    }
+    if(!mnOpen){
+      box.innerHTML='<button type="button" class="mnPxBtn" id="mnPxOpen"><i class="ti ti-users"></i> 학생 대신 신청하기</button>';
+      document.getElementById('mnPxOpen').onclick=function(e){ e.stopPropagation(); mnOpen=true; mnPxRender(true); mnPxLoad(); const q=document.getElementById('mnPxQ'); if(q) q.focus(); };
+      return;
+    }
+    if(document.getElementById('mnPxQ')){ mnPxList(); return; }   /* 검색 중이면 입력 칸은 그대로 두고 목록만 */
+    box.innerHTML='<div class="mnPxBox"><input class="grIn" id="mnPxQ" type="text" placeholder="학생 이름 검색" autocomplete="off" maxlength="20"><div class="mnPxList" id="mnPxList"></div><button type="button" class="mnPxCl" id="mnPxClose">닫기</button></div>';
+    document.getElementById('mnPxQ').oninput=mnPxList;
+    document.getElementById('mnPxClose').onclick=function(e){ e.stopPropagation(); mnOpen=false; mnPxRender(true); };
+    mnPxList();
+  }
+  function mnPxList(){
+    const el=document.getElementById('mnPxList'); if(!el) return;
+    if(!mnRoster){ el.innerHTML='<div class="mnPxMsg">'+(mnLoading?'학생 명단을 불러오는 중…':'명단을 불러오지 못했어요. <button type="button" class="dnSw" id="mnPxRetry">다시 불러오기</button>')+'</div>'; const rb=document.getElementById('mnPxRetry'); if(rb) rb.onclick=function(e){ e.stopPropagation(); mnPxLoad(); }; return; }
+    const q=((document.getElementById('mnPxQ')||{}).value||'').replace(/\s+/g,'');
+    const hit=mnRoster.filter(function(x){ return !q || x.name.indexOf(q)>=0; });
+    if(!hit.length){ el.innerHTML='<div class="mnPxMsg">출석 명단에서 찾지 못했어요. 이름을 다시 확인해 주세요.</div>'; return; }
+    el.innerHTML=hit.map(function(x){ return '<div class="mnPxIt" data-n="'+esc(x.name)+'">'+esc(x.name)+'<span>'+esc(x.grade||'')+'</span></div>'; }).join('');
+    el.querySelectorAll('.mnPxIt').forEach(function(it){ it.onclick=function(e){
+      e.stopPropagation(); const nm=it.getAttribute('data-n');
+      const x=mnRoster.filter(function(r){ return r.name===nm; })[0]; if(!x) return;
+      mnPx={name:x.name,grade:x.grade||''}; mnOpen=false; fillLoginName();
+    }; });
+  }
+  async function mnPxLoad(){
+    const a=lsGet(AK); if(!a||mnLoading) return;
+    if(mnRoster){ mnPxList(); return; }
+    mnLoading=true; mnPxList();
+    const j=await post({action:'dn_roster',name:a.name,token:a.token});
+    mnLoading=false;
+    if(j&&j.ok&&Array.isArray(j.list)) mnRoster=j.list.filter(function(x){ return x&&x.name; });
+    else if(j&&j.error==='auth'){ lost(); return; }
+    mnPxList();
+  }
+  window.__mnProxy=function(){ return (mnPx&&me&&me.role==='t')?{name:mnPx.name,grade:mnPx.grade}:null; };
+  window.__mnProxyReset=function(){ mnPx=null; mnOpen=false; fillLoginName(); };
 
   /* ── 다니엘기도회 화면 ── */
   function goalText(n,t){
