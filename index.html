@@ -2217,7 +2217,7 @@ const CONTACT_API="https://script.google.com/macros/s/AKfycbwvVVB1-rTMOs7ZfICmjh
   const RELEASES=[
     {v:'v34',d:'2026/11/23',t:'당겨서 새로고침',
       f:['화면 맨 위에서 아래로 당겼다 놓으면 앱이 최신 화면으로 새로고침됩니다'],
-      i:['새 업데이트가 올라오면 앱을 다시 열 때 자동으로 최신 화면이 뜹니다','마지막 새로고침 후 하루가 지나 앱을 열면 자동으로 새로고침됩니다 (로그인·출석 기록은 그대로)'],x:[]},
+      i:['새 업데이트가 올라오면 앱을 다시 열 때 자동으로 최신 화면이 뜹니다','날짜가 바뀐 뒤 처음 앱을 열면 자동으로 새로고침됩니다 (로그인·출석 기록은 그대로)'],x:[]},
     {v:'v33',d:'2026/10/21',t:'로그인 · 자동 출석',
       f:['화면 위 오른쪽 동그라미 버튼으로 로그인할 수 있습니다 (학생은 이름과 숫자 4자리, 선생님은 교사앱 계정)','로그인한 계정은 앱을 열기만 해도 그날 출석 도장이 자동으로 찍힙니다','출석 도장이 서버에도 저장돼서, 앱을 지우거나 폰을 바꿔도 다시 로그인하면 돌아옵니다'],
       i:['로그인하면 도장깨기 이름도 로그인한 이름으로 자동으로 맞춰집니다','로그인하면 컴패션 답장과 사역 신청의 이름 칸이 자동으로 채워집니다','로그인하고 쓴 컴패션 답장은 비밀번호 없이 고치거나 지울 수 있습니다','사역 신청에서 로그인하면 내 신청 내역이 맨 위에 보이고, 로그인한 이름으로 신청됩니다','선생님으로 로그인하면 사역 신청에서 학생 이름을 골라 대신 신청할 수 있습니다 (대리 신청으로 기록)'],x:[]},
@@ -2615,13 +2615,13 @@ if('serviceWorker' in navigator){
 @keyframes ptrSpin{to{transform:rotate(360deg)}}
 </style>
 <script>
-/* 화면 맨 위에서 아래로 당기면 강제 새로고침 + 새 배포가 있으면 열 때 자동 새로고침 + 마지막 새로고침 후 24시간이 지나 열면 강제 새로고침 (11/23).
+/* 화면 맨 위에서 아래로 당기면 강제 새로고침 + 새 배포가 있으면 열 때 자동 새로고침 + 마지막 새로고침한 날짜가 오늘이 아니면 열 때 강제 새로고침 (11/23, 날짜는 휴대폰 시계 = 한국 시간).
    새로고침은 모두 하단 새로고침 버튼(#reloadBtn)을 누른 것과 같다(화면 파일만 새로 받음 — 로그인·기록 등 폰에 저장된 값은 그대로).
    글을 쓰는 중(입력칸에 커서, 쓰던 긴 글)에는 자동 새로고침을 미룬다.
    새 배포 확인 = GitHub Pages index.html의 ETag("수정시각-크기"). 같은 배포로는 한 번만 자동 새로고침(배포 직후 서버마다 반영이 늦어도 반복 안 됨). */
 (function(){
   var btn=document.getElementById('reloadBtn'); if(!btn) return;
-  var KEY='sgy_hard_t', GUARD='sgy_upd_guard', SC='main', DAY=864e5;
+  var KEY='sgy_hard_t', GUARD='sgy_upd_guard', SC='main';
   function now(){ return Date.now(); }
   function lsG(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
   function lsS(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
@@ -2635,8 +2635,9 @@ if('serviceWorker' in navigator){
   }
   function hard(){ if(!btn.disabled) btn.click(); }
 
-  /* ── 24시간 ── */
-  function dayCheck(){ var t=+lsG(KEY)||0; if(now()-t>DAY&&!typing()){ hard(); return true; } return false; }
+  /* ── 날짜가 바뀌면 ── 마지막 새로고침 날짜(휴대폰 시계 기준)가 오늘이 아니면 */
+  function ymd(t){ var d=new Date(t); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  function dayCheck(){ var t=+lsG(KEY)||0; if(ymd(t)!==ymd(now())&&!typing()){ hard(); return true; } return false; }
 
   /* ── 새 배포 확인 ── */
   var base=location.pathname.replace(/[^\/]*$/,''), loadTag=null, lastChk=0;
